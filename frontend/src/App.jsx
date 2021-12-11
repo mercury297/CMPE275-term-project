@@ -29,7 +29,7 @@ const App = () => {
         <Spin className='loader-container' tip="Loading..." spinning={loading} >
             <BrowserRouter>
                 <Switch>
-                    <PublicRoute exact path="/" isLoggedIn={user.role}>
+                    <PublicRoute exact path="/auth/login" isLoggedIn={user.role}>
                         <Login />
                     </PublicRoute>
                     <PrivateRoute path="/admin/dashboard" isLoggedIn={user.role !== 'admin'}>

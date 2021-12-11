@@ -1,8 +1,11 @@
+import HeaderComponent from "./Header";
+import '../../assets/scss/layout.scss';
+
 const LayoutComponent = ({children, current}) => {
     return (
         <div className='layout-container'>
             <div className='header-container'>
-                <LayoutComponent current={current} />
+                <HeaderComponent current={current}/>
             </div>
             <div className='content'>
                 {children}

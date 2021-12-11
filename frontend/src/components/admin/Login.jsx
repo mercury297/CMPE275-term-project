@@ -45,9 +45,6 @@ const LoginComponent = () => {
     return (
         <div className="signin">
             <div className='signin-main-container'>
-                <div className="signin-pos-logo-container">
-                    <img src='https://spa-durban.s3.us-east-2.amazonaws.com/spa-durban-logo.png' alt="logo"/>
-                </div>
                 <div className='signin-content-container'>
                     <div className='signin-header'>
                         <div className='logo-cont'><span>VMS - Login</span></div>

@@ -24,19 +24,6 @@
     align-items: center;
     margin-top: 4.8rem;
     gap: 2rem;
-    .signin-pos-logo-container {
-      width: 15.8rem;
-      height: 15.8rem;
-      background: white;
-      margin: auto 2rem;
-      padding: 10px;
-      border-radius: 10px;
-      box-shadow: 5px 11px 9px #7d7373;
-      z-index: 999;
-      img {
-        width: 100%;
-      }
-    }
   }
   &-content-container{
     width: 40vw;
@@ -50,8 +37,8 @@
     display: flex;
     justify-content: center;
     margin-bottom: 3.5rem;
-    span{
-      font-weight: 600;
+    span {
+      font-weight: 700;
       color: #2d7ba1;
       font-size: 2.5rem;
     }
@@ -64,7 +51,7 @@
       padding: 0.25rem 0.5rem;
       span{
         font-size:1rem;
-        font-weight:500;
+        font-weight:600;
         color: #262626;
       }
     }
@@ -79,12 +66,12 @@
       justify-content: space-between;
       &-primary{
         font-size:1rem;
-        font-weight:500;
+        font-weight:600;
         color: #262626;
       }
       &-secondary{
         font-size:1rem;
-        font-weight:500;
+        font-weight:600;
         color: #2766cc;
       }
     }
@@ -130,7 +117,7 @@ input {
   & span {
     font-size: 1.8rem;
     margin-right: 1.8rem;
-    font-weight: 500;
+    font-weight: 700;
   }
   &>div {
     flex: 1;
