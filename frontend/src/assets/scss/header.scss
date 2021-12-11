@@ -12,6 +12,9 @@
     align-items: center;
   }
   ul.ant-menu {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
     li.ant-menu-item {
       padding: 1rem 20px;
     }

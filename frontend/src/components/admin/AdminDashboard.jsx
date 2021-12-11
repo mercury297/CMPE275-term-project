@@ -1,10 +1,25 @@
-import React from "react";
+import React, {useState} from "react";
 import Layout from "../shared/Layout";
-import {Tabs, Button} from "antd";
+import {Tabs, Button, Modal} from "antd";
 import "../../assets/scss/admin-dashboard.scss"
+import AppointmentModal from "../shared/AppointmentModal";
 const { TabPane } = Tabs;
 
 const AdminDashboard = () => {
+    const [showModal, setShowModal] = useState(false);
+
+    const handleOk = () => {
+        setShowModal(false);
+    }
+
+    const handleCancel = () => {
+        setShowModal(false);
+    }
+
+    const handleShowModal = () => {
+        setShowModal(true);
+    }
+
     return (
         <Layout current={'/admin/dashboard'}>
             <div className='admin-dashboard-container'>
@@ -12,7 +27,7 @@ const AdminDashboard = () => {
                     Admin Dashboard
                 </div>
                 <div className='buttons-container'>
-                    <Button type="primary">Add an appointment</Button>
+                    <Button type="primary" onClick={handleShowModal}>Add an appointment</Button>
                     {/*<Button type="primary">Primary Button</Button>*/}
                 </div>
                 <div className='content'>
@@ -25,6 +40,11 @@ const AdminDashboard = () => {
                         </TabPane>
                     </Tabs>
                 </div>
+                <AppointmentModal
+                    showModal={showModal}
+                    handleOk={handleOk}
+                    handleCancel={handleCancel}
+                />
             </div>
         </Layout>
     )
