@@ -10,6 +10,7 @@ import AuthService from "./services/auth-service";
 import Login from "./components/admin/Login";
 import {PrivateRoute} from "./components/shared/PrivateRoute";
 import AdminDashboard from "./components/admin/AdminDashboard";
+import AdminDiseasesPage from "./components/admin/AdminDiseasesPage";
 
 const App = () => {
     const [loading, setLoading] = useState(false);
@@ -32,6 +33,15 @@ const App = () => {
                     <PublicRoute exact path="/auth/login" isLoggedIn={user.role}>
                         <Login />
                     </PublicRoute>
+                    <PrivateRoute path="/admin/dashboard" isLoggedIn={user.role !== 'admin'}>
+                        <AdminDashboard />
+                    </PrivateRoute>
+                    <PrivateRoute path="/admin/diseases" isLoggedIn={user.role !== 'admin'}>
+                        <AdminDiseasesPage />
+                    </PrivateRoute>
+                    <PrivateRoute path="/admin/dashboard" isLoggedIn={user.role !== 'admin'}>
+                        <AdminDashboard />
+                    </PrivateRoute>
                     <PrivateRoute path="/admin/dashboard" isLoggedIn={user.role !== 'admin'}>
                         <AdminDashboard />
                     </PrivateRoute>
