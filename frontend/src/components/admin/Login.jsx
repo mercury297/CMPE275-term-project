@@ -50,7 +50,7 @@ const LoginComponent = () => {
                 </div>
                 <div className='signin-content-container'>
                     <div className='signin-header'>
-                        <div className='logo-cont'>VMS <span> Login</span></div>
+                        <div className='logo-cont'><span>VMS - Login</span></div>
                     </div>
                     <Form>
                         <div className='signin-email-container input-container'>
