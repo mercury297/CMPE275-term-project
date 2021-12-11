@@ -1,18 +1,18 @@
 import './App.css';
-import {Switch} from "react-router-dom";
-import { BrowserRouter } from "react-router-dom";
+import {BrowserRouter, Switch} from "react-router-dom";
 import "antd/dist/antd.css";
 import "./assets/scss/app.scss";
 import {PublicRoute} from "./components/shared/PublicRoute";
 import {message, Spin} from "antd";
 import {useEffect, useState} from "react";
 import AuthService from "./services/auth-service";
-import Login from "./components/admin/Login";
+import LoginPage from "./components/shared/LoginPage";
 import {PrivateRoute} from "./components/shared/PrivateRoute";
 import AdminDashboard from "./components/admin/AdminDashboard";
 import AdminDiseasesPage from "./components/admin/AdminDiseasesPage";
 import AdminVaccinesPage from "./components/admin/AdminVaccinesPage";
 import AdminClinicsPage from "./components/admin/AdminClinicsPage";
+import SignupPage from "./components/shared/Signup";
 
 const App = () => {
     const [loading, setLoading] = useState(false);
@@ -32,8 +32,11 @@ const App = () => {
         <Spin className='loader-container' tip="Loading..." spinning={loading} >
             <BrowserRouter>
                 <Switch>
+                    <PublicRoute exact path="/auth/signup" isLoggedIn={user.role}>
+                        <SignupPage />
+                    </PublicRoute>
                     <PublicRoute exact path="/auth/login" isLoggedIn={user.role}>
-                        <Login />
+                        <LoginPage />
                     </PublicRoute>
                     <PrivateRoute path="/admin/dashboard" isLoggedIn={user.role !== 'admin'}>
                         <AdminDashboard />

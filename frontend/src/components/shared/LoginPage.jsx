@@ -4,7 +4,7 @@ import {LockOutlined, UserOutlined} from '@ant-design/icons';
 import "../../assets/scss/login.scss";
 import {toast} from "react-toastify";
 import AuthService from "../../services/auth-service";
-import {useHistory} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 
 const LoginComponent = () => {
     const history = useHistory();
@@ -73,8 +73,11 @@ const LoginComponent = () => {
                     </Form>
                     <button onClick={handleSubmit} className='signin-button'
                             disabled={!(state.email && state.password)}>
-                        <span>Sign In</span>
+                        <span>Log in</span>
                     </button>
+                    <div className='switch-cont'>
+                        <span>Don't have an account?</span> <Link className='link' to={'/auth/signup'}> Sign up </Link>
+                    </div>
                 </div>
             </div>
         </div>

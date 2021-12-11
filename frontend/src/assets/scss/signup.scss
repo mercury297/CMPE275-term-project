@@ -1,4 +1,4 @@
-.signin {
+.signup {
   position: relative;
   min-height: 100vh;
   //width: 100vw;
@@ -22,7 +22,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 4.8rem;
     gap: 2rem;
   }
   &-content-container{
@@ -125,12 +124,20 @@ input {
   &>div {
     flex: 1;
   }
-  &>span {
+  &>input, &>.ant-picker {
     flex: 2;
   }
-  &>.input{
-    flex: 3;
+  &>.option-cont {
+    flex: 2;
+    margin-left: -0.5rem;
+    display: flex;
+    .ant-select {
+      flex: 1;
+    }
   }
+  //&>.input{
+  //  flex: 3;
+  //}
 }
 
 @media only screen and (max-width: 1020px) {
