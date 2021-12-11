@@ -11,6 +11,8 @@ import Login from "./components/admin/Login";
 import {PrivateRoute} from "./components/shared/PrivateRoute";
 import AdminDashboard from "./components/admin/AdminDashboard";
 import AdminDiseasesPage from "./components/admin/AdminDiseasesPage";
+import AdminVaccinesPage from "./components/admin/AdminVaccinesPage";
+import AdminClinicsPage from "./components/admin/AdminClinicsPage";
 
 const App = () => {
     const [loading, setLoading] = useState(false);
@@ -39,11 +41,11 @@ const App = () => {
                     <PrivateRoute path="/admin/diseases" isLoggedIn={user.role !== 'admin'}>
                         <AdminDiseasesPage />
                     </PrivateRoute>
-                    <PrivateRoute path="/admin/dashboard" isLoggedIn={user.role !== 'admin'}>
-                        <AdminDashboard />
+                    <PrivateRoute path="/admin/vaccines" isLoggedIn={user.role !== 'admin'}>
+                        <AdminVaccinesPage />
                     </PrivateRoute>
-                    <PrivateRoute path="/admin/dashboard" isLoggedIn={user.role !== 'admin'}>
-                        <AdminDashboard />
+                    <PrivateRoute path="/admin/clinics" isLoggedIn={user.role !== 'admin'}>
+                        <AdminClinicsPage />
                     </PrivateRoute>
                 </Switch>
             </BrowserRouter>
