@@ -1,13 +1,13 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Layout from "../shared/Layout";
-import {Button, Table, Tabs} from "antd";
+import {Button, message, Table} from "antd";
 import "../../assets/scss/admin-diseases.scss"
 import AppointmentModal from "../shared/AppointmentModal";
-
-const { TabPane } = Tabs;
+import AdminService from "../../services/admin.service";
 
 const AdminDiseasesPage = () => {
     const [showModal, setShowModal] = useState(false);
+    const [data, setData] = useState([]);
 
     const handleOk = () => {
         setShowModal(false);
@@ -21,20 +21,6 @@ const AdminDiseasesPage = () => {
         setShowModal(true);
     }
 
-    const dataSource = [
-        {
-            key: '1',
-            name: 'Mike',
-            age: 32,
-            address: '10 Downing Street',
-        },
-        {
-            key: '2',
-            name: 'John',
-            age: 42,
-            address: '10 Downing Street',
-        },
-    ];
     const columns = [
         {
             title: 'Name',
@@ -42,16 +28,26 @@ const AdminDiseasesPage = () => {
             key: 'name',
         },
         {
-            title: 'Age',
-            dataIndex: 'age',
-            key: 'age',
+            title: 'Disease ID',
+            dataIndex: 'diseaseID',
+            key: 'diseaseID',
         },
         {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
+            title: 'Description',
+            dataIndex: 'description',
+            key: 'description',
         },
     ];
+
+    useEffect(() => {
+        AdminService.getAllDiseases().then(res => {
+            if (res.success) {
+                setData(res.data);
+            } else {
+                message.error(res.message);
+            }
+        });
+    }, []);
 
     return (
         <Layout current={'/admin/diseases'}>
@@ -65,7 +61,7 @@ const AdminDiseasesPage = () => {
                 </div>
                 <div className='content'>
                    <Table
-                       dataSource={dataSource}
+                       dataSource={data}
                        columns={columns}
                    />
                 </div>
