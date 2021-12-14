@@ -4,6 +4,7 @@ import {Button, message, Table} from "antd";
 import "../../assets/scss/admin-clinics.scss"
 import AppointmentModal from "../shared/AppointmentModal";
 import AdminService from "../../services/admin.service";
+import AddClinicsModal from "../shared/AddClinicsModal";
 
 const AdminClinicsPage = () => {
     const [showModal, setShowModal] = useState(false);
@@ -31,11 +32,6 @@ const AdminClinicsPage = () => {
             title: 'Street',
             dataIndex: 'street',
             key: 'street',
-        },
-        {
-            title: 'Number',
-            dataIndex: 'number',
-            key: 'number',
         },
         {
             title: 'Number',
@@ -95,7 +91,7 @@ const AdminClinicsPage = () => {
                        columns={columns}
                    />
                 </div>
-                <AppointmentModal
+                <AddClinicsModal
                     showModal={showModal}
                     handleOk={handleOk}
                     handleCancel={handleCancel}

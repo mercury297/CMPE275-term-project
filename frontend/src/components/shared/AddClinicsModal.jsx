@@ -2,15 +2,16 @@ import {Input, Modal} from "antd";
 import React, {useState} from "react";
 import '../../assets/scss/modals.scss';
 
-const AddVaccineModal = ({showModal, handleOk, handleCancel}) => {
+const AddClinicsModal = ({showModal, handleOk, handleCancel}) => {
     const [state, setState] = useState({
         name: '',
-        vaccinationId: '',
-        manufacture: '',
-        diseases: [],
-        numberOfShots: 1,
-        shotInternalVal: 20,
-        duration: 20,
+        street: '',
+        number: '',
+        city: '',
+        state: '',
+        zipCode: '',
+        businessHours: '',
+        numberOfPhysicians: 1,
     });
 
     const changeHandler = e => {
@@ -25,68 +26,77 @@ const AddVaccineModal = ({showModal, handleOk, handleCancel}) => {
     }
 
     return (
-        <Modal title="Add a new appointment" visible={showModal} onOk={handleDone} onCancel={handleCancel} okText={'Add Vaccine'}>
+        <Modal title="Add a new Clinic" visible={showModal} onOk={handleDone} onCancel={handleCancel} okText={'Add Clinics'}>
             <div className='form-container'>
                 <div className='input-container'>
                     <div className='form-header'><span>Name</span></div>
                     <Input onChange={changeHandler}
                            type='text'
                            name='name'
-                           placeholder='Vaccine Name'
+                           placeholder='Clinic Name'
                            style={{width: "100%"}}
                     />
                 </div>
                 <div className='input-container'>
-                    <div className='form-header'><span>Vaccination ID</span></div>
+                    <div className='form-header'><span>Street</span></div>
                     <Input onChange={changeHandler}
                            type='text'
-                           name='vaccinationID'
-                           placeholder='vaccination-id'
+                           name='street'
+                           placeholder='Street'
                            style={{width: "100%"}}
                     />
                 </div>
                 <div className='input-container'>
-                    <div className='form-header'><span>Manufacturer</span></div>
-                    <Input onChange={changeHandler}
-                           type='text'
-                           name='manufacturer'
-                           placeholder='Manufacture'
-                           style={{width: "100%"}}
-                    />
-                </div>
-                <div className='input-container'>
-                    <div className='form-header'><span>Diseases</span></div>
-                    <Input onChange={changeHandler}
-                           type='text'
-                           name='diseases'
-                           placeholder='Diseases'
-                           style={{width: "100%"}}
-                    />
-                </div>
-                <div className='input-container'>
-                    <div className='form-header'><span>No. of Shots</span></div>
-                    <Input onChange={changeHandler}
-                           type='text'
-                           name='numberOfShots'
-                           placeholder='number-of-shots'
-                           style={{width: "100%"}}
-                    />
-                </div>
-                <div className='input-container'>
-                    <div className='form-header'><span>Shot Interval</span></div>
-                    <Input onChange={changeHandler}
-                           type='text'
-                           name='shotInternalVal'
-                           placeholder='shot-internal-val'
-                           style={{width: "100%"}}
-                    />
-                </div>
-                <div className='input-container'>
-                    <div className='form-header'><span>Duration</span></div>
+                    <div className='form-header'><span>Number</span></div>
                     <Input onChange={changeHandler}
                            type='number'
-                           name='duration'
-                           placeholder='duration'
+                           name='number'
+                           placeholder='Number'
+                           style={{width: "100%"}}
+                    />
+                </div>
+                <div className='input-container'>
+                    <div className='form-header'><span>City</span></div>
+                    <Input onChange={changeHandler}
+                           type='text'
+                           name='city'
+                           placeholder='City'
+                           style={{width: "100%"}}
+                    />
+                </div>
+                <div className='input-container'>
+                    <div className='form-header'><span>State</span></div>
+                    <Input onChange={changeHandler}
+                           type='text'
+                           name='state'
+                           placeholder='State'
+                           style={{width: "100%"}}
+                    />
+                </div>
+                <div className='input-container'>
+                    <div className='form-header'><span>Zip Code</span></div>
+                    <Input onChange={changeHandler}
+                           type='text'
+                           name='zipCode'
+                           placeholder='zip-code'
+                           style={{width: "100%"}}
+                    />
+                </div>
+                <div className='input-container'>
+                    <div className='form-header'><span>Business Hours</span></div>
+                    <Input onChange={changeHandler}
+                           type='text'
+                           name='businessHours'
+                           placeholder='Business-hours'
+                           style={{width: "100%"}}
+                    />
+                </div>
+                <div className='input-container'>
+                    <div className='form-header'><span>Physicians Count</span></div>
+                    <Input onChange={changeHandler}
+                           type='number'
+                           name='numberOfPhysicians'
+                           placeholder='Physicians Count'
                            style={{width: "100%"}}
                     />
                 </div>
@@ -95,4 +105,4 @@ const AddVaccineModal = ({showModal, handleOk, handleCancel}) => {
     )
 }
 
-export default AddVaccineModal;
+export default AddClinicsModal;
