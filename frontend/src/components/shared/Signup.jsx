@@ -41,10 +41,7 @@ const SignupPage = () => {
 
     const handleSubmit = async () => {
         if (state.email && state.password) {
-            const res = await AuthService.login({
-                email: state.email,
-                password: state.password,
-            });
+            const res = await AuthService.signup(state);
             if (res.success) {
                 // Navigate to the schedule screen
                 if (res.user.role === 'admin') {

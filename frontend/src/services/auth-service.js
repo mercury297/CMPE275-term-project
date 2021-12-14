@@ -31,6 +31,22 @@ class AuthService {
             }
         }
     }
+
+    static async signup(payload) {
+        const url = '/user';
+        try {
+            const res = await API.post(url, payload);
+            return {
+                success: true,
+                res,
+            };
+        } catch (e) {
+            return {
+                success: false,
+                message: e.message || 'Something went wrong',
+            }
+        }
+    }
 }
 
 export default AuthService;
