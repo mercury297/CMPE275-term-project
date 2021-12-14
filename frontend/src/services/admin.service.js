@@ -48,4 +48,36 @@ export default class AdminService {
             }
         }
     }
+
+    static async getPastAppointments() {
+        const url = '/past-appointments';
+        try {
+            const res = await API.get(url);
+            return {
+                success: true,
+                res,
+            };
+        } catch (e) {
+            return {
+                success: false,
+                message: e.message || 'Something went wrong',
+            }
+        }
+    }
+
+    static async getFutureAppointments() {
+        const url = '/future-appointments';
+        try {
+            const res = await API.get(url);
+            return {
+                success: true,
+                res,
+            };
+        } catch (e) {
+            return {
+                success: false,
+                message: e.message || 'Something went wrong',
+            }
+        }
+    }
 }
