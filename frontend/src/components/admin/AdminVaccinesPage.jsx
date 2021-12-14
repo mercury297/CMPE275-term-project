@@ -4,6 +4,7 @@ import {Button, message, Table} from "antd";
 import "../../assets/scss/admin-vaccines.scss"
 import AppointmentModal from "../shared/AppointmentModal";
 import AdminService from "../../services/admin.service";
+import AddVaccineModal from "../shared/AddVaccineModal";
 
 const AdminVaccinesPage = () => {
     const [showModal, setShowModal] = useState(false);
@@ -80,7 +81,7 @@ const AdminVaccinesPage = () => {
                        columns={columns}
                    />
                 </div>
-                <AppointmentModal
+                <AddVaccineModal
                     showModal={showModal}
                     handleOk={handleOk}
                     handleCancel={handleCancel}
