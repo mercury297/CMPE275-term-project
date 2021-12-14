@@ -8,5 +8,6 @@ import java.util.List;
 public interface DiseaseRepository extends CrudRepository<Disease, Integer> {
 
     List<Disease> findAll();
+    Disease findDiseaseByName(String diseasName);
 
 }
