@@ -17,6 +17,22 @@ export default class AdminService {
         }
     }
 
+    static async getAllVaccines() {
+        const url = '/vaccines';
+        try {
+            const res = await API.get(url);
+            return {
+                success: true,
+                res,
+            };
+        } catch (e) {
+            return {
+                success: false,
+                message: e.message || 'Something went wrong',
+            }
+        }
+    }
+
     static async getAllClinics() {
         const url = '/clinics';
         try {

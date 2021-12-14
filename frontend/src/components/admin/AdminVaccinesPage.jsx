@@ -1,13 +1,13 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Layout from "../shared/Layout";
-import {Button, Table, Tabs} from "antd";
+import {Button, message, Table} from "antd";
 import "../../assets/scss/admin-vaccines.scss"
 import AppointmentModal from "../shared/AppointmentModal";
-
-const { TabPane } = Tabs;
+import AdminService from "../../services/admin.service";
 
 const AdminVaccinesPage = () => {
     const [showModal, setShowModal] = useState(false);
+    const [data, setData] = useState([]);
 
     const handleOk = () => {
         setShowModal(false);
@@ -21,37 +21,48 @@ const AdminVaccinesPage = () => {
         setShowModal(true);
     }
 
-    const dataSource = [
-        {
-            key: '1',
-            name: 'Mike',
-            age: 32,
-            address: '10 Downing Street',
-        },
-        {
-            key: '2',
-            name: 'John',
-            age: 42,
-            address: '10 Downing Street',
-        },
-    ];
     const columns = [
         {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
-        },
-        {
-            title: 'Age',
-            dataIndex: 'age',
-            key: 'age',
-        },
-        {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
+        }, {
+            title: 'Vaccination ID',
+            dataIndex: 'vaccinationID',
+            key: 'vaccinationID',
+        }, {
+            title: 'Manufacturer',
+            dataIndex: 'manufacturer',
+            key: 'manufacturer',
+        }, {
+            title: 'Diseases',
+            dataIndex: 'diseases',
+            key: 'diseases',
+            render: (val) => val ? val.join(', ') : '',
+        }, {
+            title: 'No Of Shots',
+            dataIndex: 'numberOfShots',
+            key: 'numberOfShots',
+        }, {
+            title: 'Shot Interval',
+            dataIndex: 'shotInternalVal',
+            key: 'shotInternalVal',
+        }, {
+            title: 'Duration',
+            dataIndex: 'duration',
+            key: 'duration',
         },
     ];
+
+    useEffect(() => {
+        AdminService.getAllVaccines().then(res => {
+            if (res.success) {
+                setData(res.data);
+            } else {
+                message.error(res.message);
+            }
+        });
+    }, []);
 
     return (
         <Layout current={'/admin/vaccines'}>
@@ -60,12 +71,12 @@ const AdminVaccinesPage = () => {
                     Vaccines
                 </div>
                 <div className='buttons-container'>
-                    <Button type="primary" onClick={handleShowModal}>Add new disease</Button>
+                    <Button type="primary" onClick={handleShowModal}>Add new vaccine</Button>
                     {/*<Button type="primary">Primary Button</Button>*/}
                 </div>
                 <div className='content'>
                    <Table
-                       dataSource={dataSource}
+                       dataSource={data}
                        columns={columns}
                    />
                 </div>
