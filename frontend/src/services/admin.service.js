@@ -2,7 +2,7 @@ import API from "../utils/api-util";
 
 export default class AdminService {
     static async getAllDiseases() {
-        const url = '/clinics';
+        const url = '/diseases';
         try {
             const res = await API.get(url);
             return {

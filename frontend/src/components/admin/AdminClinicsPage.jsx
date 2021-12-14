@@ -1,13 +1,13 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Layout from "../shared/Layout";
-import {Button, Table, Tabs} from "antd";
+import {Button, message, Table} from "antd";
 import "../../assets/scss/admin-clinics.scss"
 import AppointmentModal from "../shared/AppointmentModal";
-
-const { TabPane } = Tabs;
+import AdminService from "../../services/admin.service";
 
 const AdminClinicsPage = () => {
     const [showModal, setShowModal] = useState(false);
+    const [data, setData] = useState([]);
 
     const handleOk = () => {
         setShowModal(false);
@@ -21,20 +21,6 @@ const AdminClinicsPage = () => {
         setShowModal(true);
     }
 
-    const dataSource = [
-        {
-            key: '1',
-            name: 'Mike',
-            age: 32,
-            address: '10 Downing Street',
-        },
-        {
-            key: '2',
-            name: 'John',
-            age: 42,
-            address: '10 Downing Street',
-        },
-    ];
     const columns = [
         {
             title: 'Name',
@@ -42,16 +28,56 @@ const AdminClinicsPage = () => {
             key: 'name',
         },
         {
-            title: 'Age',
-            dataIndex: 'age',
-            key: 'age',
+            title: 'Street',
+            dataIndex: 'street',
+            key: 'street',
         },
         {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
+            title: 'Number',
+            dataIndex: 'number',
+            key: 'number',
+        },
+        {
+            title: 'Number',
+            dataIndex: 'number',
+            key: 'number',
+        },
+        {
+            title: 'City',
+            dataIndex: 'city',
+            key: 'city',
+        },
+        {
+            title: 'State',
+            dataIndex: 'state',
+            key: 'state',
+        },
+        {
+            title: 'Zip Code',
+            dataIndex: 'zipCode',
+            key: 'zipCode',
+        },
+        {
+            title: 'Business Hours',
+            dataIndex: 'businessHours',
+            key: 'businessHours',
+        },
+        {
+            title: 'Physicians Count',
+            dataIndex: 'numberOfPhysicians',
+            key: 'numberOfPhysicians',
         },
     ];
+
+    useEffect(() => {
+        AdminService.getAllClinics().then(res => {
+            if (res.success) {
+                setData(res.data);
+            } else {
+                message.error(res.message);
+            }
+        });
+    }, []);
 
     return (
         <Layout current={'/admin/clinics'}>
@@ -60,12 +86,12 @@ const AdminClinicsPage = () => {
                     Clinics
                 </div>
                 <div className='buttons-container'>
-                    <Button type="primary" onClick={handleShowModal}>Add new disease</Button>
+                    <Button type="primary" onClick={handleShowModal}>Add new clinic</Button>
                     {/*<Button type="primary">Primary Button</Button>*/}
                 </div>
                 <div className='content'>
                    <Table
-                       dataSource={dataSource}
+                       dataSource={data}
                        columns={columns}
                    />
                 </div>
