@@ -1,15 +1,18 @@
 package com.example.vaccineresevationsystem.service;
+import com.example.vaccineresevationsystem.handler.ErrorHandler;
+import com.example.vaccineresevationsystem.handler.SuccessHandler;
 import com.example.vaccineresevationsystem.model.User;
 import com.example.vaccineresevationsystem.repository.UserRepository;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.*;
 import org.springframework.stereotype.Service;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.example.vaccineresevationsystem.handler.EmailHandler;
 
-
+import com.example.vaccineresevationsystem.handler.ErrorHandler;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
@@ -17,8 +20,9 @@ import java.util.*;
 
 @Service
 public class UserService {
+    @Autowired
     final UserRepository userRepository;
-    final EmailHandler emailHandler = new EmailHandler();
+
     @Autowired
     private JavaMailSender mailSender;
 
@@ -34,6 +38,24 @@ public class UserService {
         userRepository.save(user);
         sendVerificationEmail(user, siteURL);
         return ResponseEntity.of(Optional.of(user));
+    }
+    public  ResponseEntity<?> loginUser(@RequestParam String email,@RequestParam String password) {
+        User user = userRepository.findByEmail(email);
+
+        if (user == null) {
+            return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST,"User not found");
+        }
+        else if(!user.isVerified().equals(true)){
+            return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST,"User not verified");
+
+        }
+        else if(user.getPassword().equals(password)){
+            return ResponseEntity.of(Optional.of(user));
+        }
+        else{
+            return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST,"some error");
+        }
+
     }
     public void sendVerificationEmail(User user, String siteURL) throws MessagingException, UnsupportedEncodingException {
         String toAddress = user.getEmail();
