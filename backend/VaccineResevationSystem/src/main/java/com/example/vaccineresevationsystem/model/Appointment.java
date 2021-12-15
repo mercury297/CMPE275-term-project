@@ -7,6 +7,8 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
+@Entity
+@Table(name = "Appointment")
 public class Appointment {
     @Id
     @GeneratedValue(generator = "uuid")
@@ -16,29 +18,22 @@ public class Appointment {
 
     private Date appointmentDate;
 
-    @ManyToOne
-    @JoinTable( joinColumns = @JoinColumn(name = "appointmentID"), inverseJoinColumns = @JoinColumn(name = "MRN"))
-    @JsonIgnoreProperties({"appointments","middleName","password","birthDate","street","number","city","state","zipCode"})
-    private User user;
-
-    @OneToOne
-    @JoinTable( joinColumns = @JoinColumn(name = "appointmentID"), inverseJoinColumns = @JoinColumn(name = "ID"))
+    @OneToOne(targetEntity=Clinic.class, cascade=CascadeType.DETACH)
     @JsonIgnoreProperties({"zipCode","street","state","city","number"})
     private Clinic clinic;
 
 
     @OneToMany(targetEntity = Vaccination.class, cascade = CascadeType.DETACH)
-    @JoinTable( joinColumns = @JoinColumn(name = "appointmentID"), inverseJoinColumns = @JoinColumn(name = "vaccinationID"))
+    @JoinTable(name="", joinColumns = @JoinColumn(name = "appointmentID"), inverseJoinColumns = @JoinColumn(name = "vaccinationID"))
     @JsonIgnoreProperties({"Manufacturer", "NumberOfShots","ShotInternalVal","duration"})
     private List<Vaccination> vaccinationList;
     public Appointment(){
 
     }
-    public Appointment( User user,List<Vaccination> vaccinations,Date appointmentDate,Clinic clinic){
+    public Appointment( List<Vaccination> vaccinations,Date appointmentDate,Clinic clinic){
         this.appointmentDate = appointmentDate;
-        this.user = user;
         this.vaccinationList = vaccinations;
-        this.clinic=clinic;
+//        this.clinic=clinic;
     }
 
     public String getAppointmentID() {
@@ -55,14 +50,6 @@ public class Appointment {
 
     public void setAppointmentDate(Date appointmentDate) {
         this.appointmentDate = appointmentDate;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public List<Vaccination> getVaccinationList() {
