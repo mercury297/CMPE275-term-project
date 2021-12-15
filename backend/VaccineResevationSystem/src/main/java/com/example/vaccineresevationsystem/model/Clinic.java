@@ -1,7 +1,7 @@
 package com.example.vaccineresevationsystem.model;
 
 import org.hibernate.annotations.GenericGenerator;
-
+import java.util.List;
 import javax.persistence.*;
 
 @Entity
@@ -18,7 +18,33 @@ public class Clinic {
     private String city;
     private String state;
     private String zipCode;
-    private String bussinessHours;
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinTable(joinColumns = @JoinColumn(name = "ID"), inverseJoinColumns = @JoinColumn(name = "appointmentID"))
+    private List<Appointment> appointments;
+
+
+    public String getID() {
+        return ID;
+    }
+
+    public int getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(int startTime) {
+        this.startTime = startTime;
+    }
+
+    public int getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(int endTime) {
+        this.endTime = endTime;
+    }
+
+    private int startTime;
+    private int endTime;
     private int numberOfPhysicians;
 
     public Clinic() {
@@ -73,13 +99,6 @@ public class Clinic {
         this.zipCode = zipCode;
     }
 
-    public String getBussinessHours() {
-        return bussinessHours;
-    }
-
-    public void setBussinessHours(String bussinessHours) {
-        this.bussinessHours = bussinessHours;
-    }
 
     public int getNumberOfPhysicians() {
         return numberOfPhysicians;
@@ -87,5 +106,11 @@ public class Clinic {
 
     public void setNumberOfPhysicians(int numberOfPhysicians) {
         this.numberOfPhysicians = numberOfPhysicians;
+    }
+    public List<Appointment> getAppointments(){
+        return appointments;
+    }
+    public void setAppointment(List<Appointment> appointments){
+        this.appointments= appointments;
     }
 }

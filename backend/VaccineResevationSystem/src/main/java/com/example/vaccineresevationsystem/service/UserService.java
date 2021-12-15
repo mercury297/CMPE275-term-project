@@ -32,6 +32,10 @@ public class UserService {
     }
     public  ResponseEntity<?> createUser(@RequestParam String email,@RequestParam String password, @RequestParam String firstName,@RequestParam String lastName,String siteURL) throws MessagingException, UnsupportedEncodingException {
         User user = new User(email,password, firstName,lastName);
+        String[] arrOfStr = email.split("@", 2);
+        if (arrOfStr[1].equals("sjsu.edu")) {
+            user.setAdmin(true);
+        }
         String randomCode = RandomString.make(64);
         user.setVerificationCode(randomCode);
         user.setVerified(false);
