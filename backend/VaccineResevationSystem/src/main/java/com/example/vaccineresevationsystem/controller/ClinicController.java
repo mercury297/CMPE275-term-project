@@ -20,9 +20,9 @@ public class ClinicController {
     @Authorizable
     @PostMapping(path = "")
     public @ResponseBody
-    ResponseEntity<?> createClinic(@RequestParam String MRN, @RequestParam String name, @RequestParam String street, @RequestParam String number, @RequestParam String city, @RequestParam String state, @RequestParam String zipCode, @RequestParam String businessHours, @RequestParam int numberOfPhysicians)
+    ResponseEntity<?> createClinic(@RequestParam String MRN, @RequestParam String name, @RequestParam String street, @RequestParam String number, @RequestParam String city, @RequestParam String state, @RequestParam String zipCode, @RequestParam int startTime, @RequestParam int endTime, @RequestParam int numberOfPhysicians)
     {
-        return clinicService.addClinic(name,street,number,city,state,zipCode,businessHours, numberOfPhysicians);
+        return clinicService.addClinic(name,street,number,city,state,zipCode,startTime, endTime, numberOfPhysicians);
     }
 
 }

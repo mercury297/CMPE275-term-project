@@ -18,8 +18,8 @@ public class ClinicService {
     public ClinicService(ClinicRepository clinicRepository) { this.clinicRepository = clinicRepository; }
 
 
-    public ResponseEntity<?> addClinic(String name, String street, String number, String city, String state, String zipCode, String businessHours, int numberOfPhysicians) {
-        if(!checkBusinessHours(businessHours)){
+    public ResponseEntity<?> addClinic(String name, String street, String number, String city, String state, String zipCode, int startTime, int endTime, int numberOfPhysicians) {
+        if(!checkBusinessHours(startTime, endTime)){
             return ErrorHandler.badRequest(HttpStatus.NOT_FOUND, "The business hours have to be at least 8 hours apart ");
         }
 
@@ -31,7 +31,8 @@ public class ClinicService {
         clinic.setName(name);
         clinic.setNumber(number);
         clinic.setNumberOfPhysicians(numberOfPhysicians);
-        clinic.setBussinessHours(businessHours);
+        clinic.setStartTime(startTime);
+        clinic.setEndTime(endTime);
         clinicRepository.save(clinic);
         return ResponseEntity.of(Optional.of(clinic));
     }
@@ -39,28 +40,8 @@ public class ClinicService {
     /**
      * Function to check that business hours of clinic are not more than 8 hours
      * */
-    public Boolean checkBusinessHours(String businessHours)
+    public Boolean checkBusinessHours( int startTime, int endTime)
     {
-        String [] hours = businessHours.split("-");
-        String leftHours = hours[0].trim();
-        String rightHours = hours[1].trim();
-        int startTime = 0;
-        int endTime = 0;
-
-        if(leftHours.contains("am")){
-            startTime =  Integer.parseInt(leftHours.substring(0,leftHours.length() - 2));
-        }
-        else if(leftHours.contains("pm")){
-            startTime = Integer.parseInt(leftHours.substring(0,leftHours.length() - 2)) + 12;
-        }
-
-        if(rightHours.contains("am")){
-            endTime =  Integer.parseInt(rightHours.substring(0,rightHours.length() - 2));
-        }
-        else if(rightHours.contains("pm")){
-            endTime = Integer.parseInt(rightHours.substring(0,rightHours.length() - 2)) + 12;
-        }
-
         return endTime - startTime >= 8;
     }
 
