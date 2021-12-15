@@ -16,18 +16,17 @@ public class Appointment {
     private String appointmentID;
     private String checkIn;//Not Checked in=0, Checked in=1, NoShow=2
 
-    private Date appointmentDate;
+    private String appointmentDate;
 
 
 
-    @OneToMany(targetEntity = Vaccination.class, cascade = CascadeType.DETACH)
-    @JoinColumn(name="appointmentID")
+    @ManyToMany (targetEntity = Vaccination.class, cascade = CascadeType.DETACH)
+    @JoinTable( joinColumns = @JoinColumn(name = "appointmentID"), inverseJoinColumns = @JoinColumn(name = "vaccinationID"))
     @JsonIgnoreProperties({"Manufacturer", "NumberOfShots","ShotInternalVal","duration"})
     private List<Vaccination> vaccinationList;
     public Appointment(){
-
     }
-    public Appointment( List<Vaccination> vaccinations,Date appointmentDate){
+    public Appointment( List<Vaccination> vaccinations,String appointmentDate){
         this.appointmentDate = appointmentDate;
         this.vaccinationList = vaccinations;
 //        this.clinic=clinic;
@@ -41,11 +40,11 @@ public class Appointment {
         this.appointmentID = appointmentID;
     }
 
-    public Date getAppointmentDate() {
+    public String getAppointmentDate() {
         return appointmentDate;
     }
 
-    public void setAppointmentDate(Date appointmentDate) {
+    public void setAppointmentDate(String appointmentDate) {
         this.appointmentDate = appointmentDate;
     }
 

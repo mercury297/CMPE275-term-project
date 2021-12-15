@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -24,8 +26,8 @@ public class AppointmentController {
     @Authorizable
     @PostMapping(path="createAppointment")
     public @ResponseBody
-    ResponseEntity<?> createAppointment(@RequestParam String MRN, @RequestParam List<String> vaccinationId,@RequestParam String ClinicId ,@RequestParam String date) throws ParseException {
-        return appointmentService.createAppointment(MRN, vaccinationId, ClinicId,date);
+    ResponseEntity<?> createAppointment(@RequestParam String MRN, @RequestParam List<String> vaccinationId,@RequestParam String ClinicId ,@RequestParam String date, @RequestParam String currentTime) throws ParseException, MessagingException, UnsupportedEncodingException {
+        return appointmentService.createAppointment(MRN, vaccinationId, ClinicId,date,currentTime);
     }
 
 }
