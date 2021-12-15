@@ -41,13 +41,11 @@ public class UserService {
     }
     public  ResponseEntity<?> loginUser(@RequestParam String email,@RequestParam String password) {
         User user = userRepository.findByEmail(email);
-
         if (user == null) {
             return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST,"User not found");
         }
         else if(!user.isVerified().equals(true)){
             return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST,"User not verified");
-
         }
         else if(user.getPassword().equals(password)){
             return ResponseEntity.of(Optional.of(user));
