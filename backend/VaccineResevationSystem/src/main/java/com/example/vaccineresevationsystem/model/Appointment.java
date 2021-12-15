@@ -18,19 +18,16 @@ public class Appointment {
 
     private Date appointmentDate;
 
-    @OneToOne(targetEntity=Clinic.class, cascade=CascadeType.DETACH)
-    @JsonIgnoreProperties({"zipCode","street","state","city","number"})
-    private Clinic clinic;
 
 
     @OneToMany(targetEntity = Vaccination.class, cascade = CascadeType.DETACH)
-    @JoinTable(name="", joinColumns = @JoinColumn(name = "appointmentID"), inverseJoinColumns = @JoinColumn(name = "vaccinationID"))
+    @JoinColumn(name="appointmentID")
     @JsonIgnoreProperties({"Manufacturer", "NumberOfShots","ShotInternalVal","duration"})
     private List<Vaccination> vaccinationList;
     public Appointment(){
 
     }
-    public Appointment( List<Vaccination> vaccinations,Date appointmentDate,Clinic clinic){
+    public Appointment( List<Vaccination> vaccinations,Date appointmentDate){
         this.appointmentDate = appointmentDate;
         this.vaccinationList = vaccinations;
 //        this.clinic=clinic;
