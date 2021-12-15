@@ -12,7 +12,14 @@ const AppointmentsComponent = () => {
     const [futureAppointments, setFutureAppointments] = useState([]);
     const [pastAppointments, setPastAppointments] = useState([]);
 
-    const handleOk = () => {
+    const handleOk = (payload) => {
+        AdminService.addAppointment(payload).then((res) => {
+            if (res.success) {
+                message.success('Appointment added successfully');
+            } else {
+                message.error(res.message);
+            }
+        });
         setShowModal(false);
     }
 
@@ -74,7 +81,7 @@ const AppointmentsComponent = () => {
     }, []);
 
     return (
-        <Layout current={'/admin/dashboard'}>
+        <Layout current={'/patient/appointments'}>
             <div className='admin-dashboard-container'>
                 <div className='header'>
                     Patient Dashboard

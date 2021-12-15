@@ -13,7 +13,7 @@ const HeaderComponent = ({current, isAdmin}) => {
     }
 
     useEffect(() => {
-        if (!isAdmin) {
+        if (isAdmin) {
             setMenuOptions([{
                     path: '/admin/appointments',
                     label: 'Appointments'
