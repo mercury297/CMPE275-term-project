@@ -1,7 +1,7 @@
 package com.example.vaccineresevationsystem.model;
 
 import org.hibernate.annotations.GenericGenerator;
-
+import java.util.List;
 import javax.persistence.*;
 
 @Entity
@@ -18,6 +18,10 @@ public class Clinic {
     private String city;
     private String state;
     private String zipCode;
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinTable(joinColumns = @JoinColumn(name = "ID"), inverseJoinColumns = @JoinColumn(name = "appointmentID"))
+    private List<Appointment> appointments;
+
 
     public String getID() {
         return ID;
@@ -102,5 +106,11 @@ public class Clinic {
 
     public void setNumberOfPhysicians(int numberOfPhysicians) {
         this.numberOfPhysicians = numberOfPhysicians;
+    }
+    public List<Appointment> getAppointments(){
+        return appointments;
+    }
+    public void setAppointment(List<Appointment> appointments){
+        this.appointments= appointments;
     }
 }
