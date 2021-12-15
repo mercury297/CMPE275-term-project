@@ -1,0 +1,23 @@
+.email-v-container {
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding: 4rem;
+  .email-v-content-cont {
+    background: white;
+    padding: 4rem;
+    max-width: 80%;
+    h2 {
+      font-weight: 400;
+      display: flex;
+      justify-content: space-between;
+      span {
+        font-weight: 500;
+      }
+      &.last {
+        margin-bottom: 6rem;
+      }
+    }
+  }
+}

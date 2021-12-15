@@ -1,7 +1,21 @@
 import API from "../utils/api-util";
 
 export default class AdminService {
-
+    static async verifyEmail(payload) {
+        const url = '/verify-email';
+        try {
+            const res = await API.put(url, payload);
+            return {
+                success: true,
+                res,
+            };
+        } catch (e) {
+            return {
+                success: false,
+                message: e.message || 'Something went wrong',
+            }
+        }
+    }
     // Update NEW entities
     static async updateAppointment(payload) {
         const url = '/appointment';
