@@ -1,6 +1,38 @@
 import API from "../utils/api-util";
 
 export default class AdminService {
+    static async addDisease(payload) {
+        const url = '/disease';
+        try {
+            const res = await API.post(url, payload);
+            return {
+                success: true,
+                res,
+            };
+        } catch (e) {
+            return {
+                success: false,
+                message: e.message || 'Something went wrong',
+            }
+        }
+    }
+
+    static async addClinic(payload) {
+        const url = '/clinic';
+        try {
+            const res = await API.post(url, payload);
+            return {
+                success: true,
+                res,
+            };
+        } catch (e) {
+            return {
+                success: false,
+                message: e.message || 'Something went wrong',
+            }
+        }
+    }
+
     static async getAllDiseases() {
         const url = '/diseases';
         try {
