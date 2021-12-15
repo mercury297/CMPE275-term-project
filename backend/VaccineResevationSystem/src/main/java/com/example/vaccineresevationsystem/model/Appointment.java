@@ -14,7 +14,21 @@ public class Appointment {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String appointmentID;
+
+    public String getCheckIn() {
+        return checkIn;
+    }
+
+    public void setCheckIn(String checkIn) {
+        this.checkIn = checkIn;
+    }
+
+    public void setVaccinationList(List<Vaccination> vaccinationList) {
+        this.vaccinationList = vaccinationList;
+    }
+
     private String checkIn;//Not Checked in=0, Checked in=1, NoShow=2
+
 
     private String appointmentDate;
 
@@ -55,6 +69,7 @@ public class Appointment {
     public void addVaccinations(Vaccination vaccination) {
         this.vaccinationList.add(vaccination);
     }
+
 }
 
 
