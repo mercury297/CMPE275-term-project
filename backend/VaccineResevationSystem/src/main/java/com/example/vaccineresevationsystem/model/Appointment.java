@@ -14,7 +14,7 @@ public class Appointment {
     private String appointmentID;
     private String checkIn;//Not Checked in=0, Checked in=1, NoShow=2
 
-    private String appointmentDate;
+    private Date appointmentDate;
 
     @ManyToOne
     @JoinTable( joinColumns = @JoinColumn(name = "appointmentID"), inverseJoinColumns = @JoinColumn(name = "MRN"))
@@ -34,7 +34,7 @@ public class Appointment {
     public Appointment(){
 
     }
-    public Appointment( User user,List<Vaccination> vaccinations,String appointmentDate,Clinic clinic){
+    public Appointment( User user,List<Vaccination> vaccinations,Date appointmentDate,Clinic clinic){
         this.appointmentDate = appointmentDate;
         this.user = user;
         this.vaccinationList = vaccinations;
@@ -49,11 +49,11 @@ public class Appointment {
         this.appointmentID = appointmentID;
     }
 
-    public String getAppointmentDate() {
+    public Date getAppointmentDate() {
         return appointmentDate;
     }
 
-    public void setAppointmentDate(String appointmentDate) {
+    public void setAppointmentDate(Date appointmentDate) {
         this.appointmentDate = appointmentDate;
     }
 
