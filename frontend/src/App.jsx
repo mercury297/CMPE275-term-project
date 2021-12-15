@@ -14,6 +14,7 @@ import AdminVaccinesPage from "./components/admin/AdminVaccinesPage";
 import AdminClinicsPage from "./components/admin/AdminClinicsPage";
 import SignupPage from "./components/shared/Signup";
 import Appointments from "./components/patient/Appointments";
+import EmailVerificationComponent from "./components/shared/EmailVerificationComponent";
 
 const App = () => {
     const [loading, setLoading] = useState(false);
@@ -59,6 +60,9 @@ const App = () => {
                     </PrivateRoute>
                     <PrivateRoute path="/patient/dashboard" isLoggedIn={user.role !== 'admin'}>
                         <AdminDashboard />
+                    </PrivateRoute>
+                    <PrivateRoute path="/email-verification/:email/:verificationCode" isLoggedIn={user.role !== 'admin'}>
+                        <EmailVerificationComponent />
                     </PrivateRoute>
                 </Switch>
             </BrowserRouter>
