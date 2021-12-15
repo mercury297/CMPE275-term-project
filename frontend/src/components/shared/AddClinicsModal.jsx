@@ -10,7 +10,8 @@ const AddClinicsModal = ({showModal, handleOk, handleCancel}) => {
         city: '',
         state: '',
         zipCode: '',
-        businessHours: '',
+        businessStartTime: '',
+        businessEndTime: '',
         numberOfPhysicians: 1,
     });
 
@@ -83,10 +84,19 @@ const AddClinicsModal = ({showModal, handleOk, handleCancel}) => {
                     />
                 </div>
                 <div className='input-container'>
-                    <div className='form-header'><span>Business Hours</span></div>
+                    <div className='form-header'><span>Business Start Time</span></div>
                     <Input onChange={changeHandler}
                            type='text'
-                           name='businessHours'
+                           name='businessStartTime'
+                           placeholder='Business-hours'
+                           style={{width: "100%"}}
+                    />
+                </div>
+                <div className='input-container'>
+                    <div className='form-header'><span>Business End Time</span></div>
+                    <Input onChange={changeHandler}
+                           type='text'
+                           name='businessEndTime'
                            placeholder='Business-hours'
                            style={{width: "100%"}}
                     />

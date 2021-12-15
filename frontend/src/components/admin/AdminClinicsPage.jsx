@@ -10,7 +10,14 @@ const AdminClinicsPage = () => {
     const [showModal, setShowModal] = useState(false);
     const [data, setData] = useState([]);
 
-    const handleOk = () => {
+    const handleOk = (payload) => {
+        AdminService.addClinic(payload).then((res) => {
+            if (res.success) {
+                message.success('Clinic added successfully');
+            } else {
+                message.error(res.message);
+            }
+        });
         setShowModal(false);
     }
 

@@ -13,6 +13,7 @@ import AdminDiseasesPage from "./components/admin/AdminDiseasesPage";
 import AdminVaccinesPage from "./components/admin/AdminVaccinesPage";
 import AdminClinicsPage from "./components/admin/AdminClinicsPage";
 import SignupPage from "./components/shared/Signup";
+import Appointments from "./components/patient/Appointments";
 
 const App = () => {
     const [loading, setLoading] = useState(false);
@@ -49,6 +50,15 @@ const App = () => {
                     </PrivateRoute>
                     <PrivateRoute path="/admin/clinics" isLoggedIn={user.role !== 'admin'}>
                         <AdminClinicsPage />
+                    </PrivateRoute>
+                    <PrivateRoute path="/patient/appointments" isLoggedIn={user.role !== 'patient'}>
+                        <Appointments />
+                    </PrivateRoute>
+                    <PrivateRoute path="/patient/dashboard" isLoggedIn={user.role !== 'patient'}>
+                        <AdminDashboard />
+                    </PrivateRoute>
+                    <PrivateRoute path="/patient/dashboard" isLoggedIn={user.role !== 'admin'}>
+                        <AdminDashboard />
                     </PrivateRoute>
                 </Switch>
             </BrowserRouter>
