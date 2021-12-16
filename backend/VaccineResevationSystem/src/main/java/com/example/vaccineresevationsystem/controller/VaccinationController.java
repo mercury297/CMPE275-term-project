@@ -37,7 +37,7 @@ public class VaccinationController {
     public @ResponseBody
     ResponseEntity<?> getALlVaccines(@RequestParam String MRN)
     {
-        return vaccinationService.getAllVaccination(MRN);
+        return vaccinationService.getAllVaccinationNames(MRN);
     }
 
 }
