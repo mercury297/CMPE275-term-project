@@ -61,6 +61,23 @@ public class UserService {
         }
 
     }
+    public  ResponseEntity<?> loginOnlyUser(@RequestParam String email) {
+        System.out.println(email);
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST,"User not found");
+        }
+        else if(!user.isVerified().equals(true)){
+            return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST,"User not verified");
+        }
+        else if (user!=null){
+            return ResponseEntity.ok(user);
+        }
+        else{
+            return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST,"Some error");
+        }
+
+    }
     public void sendVerificationEmail(User user, String siteURL) throws MessagingException, UnsupportedEncodingException {
         String toAddress = user.getEmail();
         String subject = "Please verify your registration";

@@ -31,7 +31,8 @@ public class User {
     private Boolean verified;
 
     private boolean enabled;
-    @OneToMany(cascade=CascadeType.ALL)
+
+    @OneToMany
     @JoinTable( joinColumns = @JoinColumn(name = "app"), inverseJoinColumns = @JoinColumn(name = "appointmentID"))
     @JsonIgnoreProperties({"Vaccination"})
     private List<Appointment> appointments;

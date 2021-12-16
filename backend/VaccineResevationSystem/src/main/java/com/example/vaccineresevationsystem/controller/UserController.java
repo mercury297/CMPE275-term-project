@@ -17,7 +17,7 @@ import java.util.Optional;
 
 
 @Controller // This means that this class is a Controller
-@RequestMapping(path="") // This means URL's start with /demo (after Application path)
+@RequestMapping(path="/user") // This means URL's start with /demo (after Application path)
 public class UserController {
     @Autowired
     private UserService userService;
@@ -29,24 +29,32 @@ public class UserController {
 //
 //        return userService.createUser(email,firstName,lastName);
 //    }
-    @PostMapping(path="/register")
+    @GetMapping(path="register")
     public @ResponseBody
     ResponseEntity<?> createUser(@RequestParam String email, @RequestParam String password, @RequestParam String firstName, @RequestParam String lastName, HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {
         return userService.createUser(email,password,firstName,lastName, getSiteURL(request));
     }
 
-    @GetMapping(path="/login")
+    @GetMapping(path="login")
     public @ResponseBody
     ResponseEntity<?> createUser(@RequestParam String email, @RequestParam String password) {
         System.out.println("email: " + email);
         System.out.println("password: " + password);
         return userService.loginUser(email,password);
     }
+
+    @GetMapping(path="loginOnlyEmail")
+    public @ResponseBody
+    ResponseEntity<?> createUser(@RequestParam String email) {
+        System.out.println("email: " + email);
+        return userService.loginOnlyUser(email);
+    }
     private String getSiteURL(HttpServletRequest request) {
         String siteURL = request.getRequestURL().toString();
         return siteURL.replace(request.getServletPath(), "");
     }
-    @GetMapping("/verify")
+
+    @GetMapping("verify")
     public ResponseEntity<?> verifyUser(@Param("code") String code) {
         System.out.println("code: " + code);
         if (userService.verify(code)) {
