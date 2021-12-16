@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Button, message} from 'antd';
 import '../../assets/scss/email.scss';
-import {useParams} from "react-router";
 import AdminService from "../../services/admin.service";
 
 const EmailVerificationComponent = () => {
@@ -17,7 +16,12 @@ const EmailVerificationComponent = () => {
     const handleClick = () => {
         AdminService.verifyEmail({email, verificationCode}).then(res => {
             if (res.success) {
-                window.location = process.env.REACT_APP_ENDPOINT;
+                localStorage.setItem('user', JSON.stringify(res.data));
+                if (res.user.role === 'admin') {
+                    window.location = process.env.REACT_APP_ENDPOINT;
+                } else {
+                    window.location = process.env.REACT_APP_ENDPOINT;
+                }
             } else {
                 message.error(res.message);
             }

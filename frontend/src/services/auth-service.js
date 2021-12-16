@@ -1,24 +1,6 @@
 import API from "../utils/api-util";
 
 class AuthService {
-    static async getCurrentUserInfo() {
-        return {
-            success: false,
-        }
-        const url = '/auth/me';
-        try {
-            const res = await API.get(url);
-            return {
-                success: true,
-                res,
-            };
-        } catch (e) {
-            return {
-                success: false,
-                message: e.message || 'Something went wrong',
-            }
-        }
-    }
     static async login(payload) {
         const url = '/auth/login';
         try {
