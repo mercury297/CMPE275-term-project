@@ -18,7 +18,7 @@ public class Clinic {
     private String city;
     private String state;
     private String zipCode;
-    @OneToMany(cascade=CascadeType.ALL)
+    @OneToMany
     @JoinTable(joinColumns = @JoinColumn(name = "ID"), inverseJoinColumns = @JoinColumn(name = "appointmentID"))
     private List<Appointment> appointments;
 

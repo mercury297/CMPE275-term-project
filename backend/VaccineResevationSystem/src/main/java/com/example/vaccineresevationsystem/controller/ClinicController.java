@@ -15,7 +15,7 @@ public class ClinicController {
     private ClinicService clinicService;
 
     @Authorizable
-    @PostMapping(path = "")
+    @GetMapping(path = "createClinic")
     public @ResponseBody
     ResponseEntity<?> createClinic(@RequestParam String MRN, @RequestParam String name, @RequestParam String street, @RequestParam String number, @RequestParam String city, @RequestParam String state, @RequestParam String zipCode, @RequestParam int startTime, @RequestParam int endTime, @RequestParam int numberOfPhysicians)
     {
@@ -23,7 +23,7 @@ public class ClinicController {
     }
 
     @Authorizable
-    @GetMapping(path = "")
+    @GetMapping(path = "getClinic")
     public @ResponseBody
     ResponseEntity<?> getClinics(@RequestParam String MRN)
     {
