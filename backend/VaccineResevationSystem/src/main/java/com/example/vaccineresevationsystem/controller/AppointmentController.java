@@ -26,6 +26,13 @@ public class AppointmentController {
     ResponseEntity<?> createAppointment(@RequestParam String MRN, @RequestParam List<String> vaccinationId, @RequestParam String ClinicId, @RequestParam String date, @RequestParam String currentTime) throws ParseException, MessagingException, UnsupportedEncodingException {
         return appointmentService.createAppointment(MRN, vaccinationId, ClinicId, date, currentTime);
     }
+    @Authorizable
+    @PostMapping(path = "updateAppointment")
+    public @ResponseBody
+    ResponseEntity<?> updateAppointment(@RequestParam String MRN, @RequestParam List<String> vaccinationId, @RequestParam String ClinicId, @RequestParam String date, @RequestParam String currentTime) throws ParseException, MessagingException, UnsupportedEncodingException {
+//        return appointmentService.createAppointment(MRN, vaccinationId, ClinicId, date, currentTime);
+    return ResponseEntity.ok("Date Updated");
+    }
 
 
     @Authorizable
