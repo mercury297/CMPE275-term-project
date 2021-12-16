@@ -1,5 +1,5 @@
 import './App.css';
-import {BrowserRouter, Switch} from "react-router-dom";
+import {BrowserRouter, Switch, useHistory} from "react-router-dom";
 import "antd/dist/antd.css";
 import "./assets/scss/app.scss";
 import {PublicRoute} from "./components/shared/PublicRoute";
@@ -21,14 +21,14 @@ const App = () => {
     const [user, setUser] = useState({});
     useEffect(() => {
         setLoading(true);
-        AuthService.getCurrentUserInfo().then((data) => {
-            if (data.success) {
-                setUser(data.res.data);
-            } else {
-                message.error(data.message);
-            }
-            setLoading(false);
-        });
+        const user = localStorage.getItem('user');
+        if (user) {
+            const parsedUser = JSON.parse(user);
+            setUser(parsedUser);
+        } else if (window.location.pathname !== '/auth/login') {
+            window.location = '/auth/login';
+        }
+        setLoading(false);
     }, []);
 
     return (

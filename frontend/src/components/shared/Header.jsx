@@ -50,6 +50,11 @@ const HeaderComponent = ({current, isAdmin}) => {
         }
     }, [isAdmin]);
 
+    const handleLogout = () => {
+        localStorage.removeItem('user');
+        window.location = process.env.REACT_APP_ENDPOINT;
+    }
+
     return (
         <div className='menu-container'>
             <div className='font-satisfy logo'>VMS</div>
@@ -61,7 +66,7 @@ const HeaderComponent = ({current, isAdmin}) => {
                         </Menu.Item>
                     ))
                 }
-                <Menu.Item key="logout">
+                <Menu.Item key="logout" onClick={handleLogout}>
                     Logout
                 </Menu.Item>
             </Menu>

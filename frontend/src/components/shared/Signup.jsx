@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {DatePicker, Form, Input, Select} from "antd";
+import {DatePicker, Form, Input, message, Select} from "antd";
 import "../../assets/scss/signup.scss";
 import {toast} from "react-toastify";
 import AuthService from "../../services/auth-service";
@@ -15,7 +15,6 @@ const SignupPage = () => {
         firstName: '',
         middleName: '',
         lastName: '',
-        mrn: '',
         password: '',
         address: '',
         gender: '',
@@ -47,12 +46,13 @@ const SignupPage = () => {
             const res = await AuthService.signup(state);
             if (res.success) {
                 // Navigate to the schedule screen
-                if (res.user.role === 'admin') {
-                    history.replace("/admin-dashboard");
-                } else {
-                    history.replace("/patient/appointments");
-                }
+                // if (res.user.role === 'admin') {
+                //     history.replace("/admin-dashboard");
+                // } else {
+                //     history.replace("/patient/appointments");
+                // }
                 // Check if we have any
+                message.success('Please verify your email, to start using the VMS!')
             } else {
                 toast.error('Something went wrong');
             }
@@ -131,15 +131,6 @@ const SignupPage = () => {
                                    type='text'
                                    name='address'
                                    placeholder='Address'
-                                   style={{width: "100%"}}/>
-                        </div>
-                        <div className='signup-email-container input-container'>
-                            <div className='signup-email-header'><span>MRN</span></div>
-                            <Input onChange={changeHandler}
-                                   type='text'
-                                   name='mrn'
-                                   disabled={true}
-                                   placeholder='MRN'
                                    style={{width: "100%"}}/>
                         </div>
                         <div className='signup-email-container input-container'>

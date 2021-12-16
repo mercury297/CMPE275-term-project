@@ -32,18 +32,60 @@ public class DashboardService {
         this.appointmentRepository = appointmentRepository;
     }
 
+    //======================================================//
+
     public ResponseEntity<?> getVaccinationsDue(String currentTime, String MRN) throws ParseException {
         User user = userRepository.findByMRN(MRN);
         Date futureDate = getDateAfter12Months(currentTime);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
+        String futureTime = dateFormat.format(futureDate);
         System.out.println(futureDate);
         List<Appointment> userAppointments = user.getAppointments();
         List<Appointment> checkedInAppointments = getAllCheckedInAppointments(userAppointments);
         HashMap<String, ArrayList<String>> vaccineMap = getVaccineMap(checkedInAppointments);
         sortVaccineMap(vaccineMap);
         List<VaccinationsDue> vaccinationsDues = getVaccinationsDue(vaccineMap);
-
+        filterBasedOnCurrentTime(vaccinationsDues, currentTime, futureTime);
         return ResponseEntity.of(Optional.of(vaccinationsDues));
     }
+
+    //======================================================//
+
+    public ResponseEntity<?> getVaccinationHistory(String MRN) {
+        User user = userRepository.findByMRN(MRN);
+        List<Appointment> userAppointments = user.getAppointments();
+        List<VaccinationHistory> vaccinations = getAllVaccinations(userAppointments);
+        return ResponseEntity.of(Optional.of(vaccinations));
+    }
+
+    //======================================================//
+
+    public List<VaccinationHistory> getAllVaccinations(List<Appointment> userAppointments)
+    {
+        List<VaccinationHistory> vaccinations = new ArrayList<>();
+
+        for(Appointment appointment: userAppointments){
+            for(Vaccination vaccination: appointment.getVaccinationList()){
+                vaccinations.add(new VaccinationHistory(vaccination.getName(), vaccination.getNumberOfShots(), appointment.getAppointmentDate(), appointment.getClinic().getName()));
+            }
+        }
+        return vaccinations;
+    }
+
+    public void filterBasedOnCurrentTime(List<VaccinationsDue> vaccinationsDues, String currentTime, String futureTime) throws ParseException {
+        for(VaccinationsDue vaccinationsDue: vaccinationsDues){
+            if(!ifDateGreater(vaccinationsDue.dueDate, currentTime)){
+                //if before current time
+                vaccinationsDues.remove(vaccinationsDue);
+            }
+            else if(ifDateGreater(futureTime,vaccinationsDue.dueDate)){
+                //if after 12 months
+                vaccinationsDues.remove(vaccinationsDue);
+            }
+        }
+    }
+
+
 
     /**
      * get date 12 months from current date
@@ -139,6 +181,20 @@ public class DashboardService {
         }
     }
 
+    public class VaccinationHistory {
+        public String name;
+        public int numberOfShotsDue;
+        public String date;
+        public String clinic;
+
+        public VaccinationHistory(String name, int numberOfShotsDue, String date, String clinic) {
+            this.name = name;
+            this.numberOfShotsDue = numberOfShotsDue;
+            this.date = date;
+            this.clinic = clinic;
+        }
+    }
+
     public String addDaysToDate(String date, int days) throws ParseException {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
         Date currentDate = dateFormat.parse(date);
@@ -151,6 +207,7 @@ public class DashboardService {
         Date dueDate = new Date(dueDateInSeconds);
         System.out.println(dueDate);
         return dateFormat.format(dueDate);
+
     }
 
     public void sortVaccineMap(HashMap<String, ArrayList<String>> vaccineMap) throws ParseException {

@@ -5,6 +5,9 @@ import "../../assets/scss/login.scss";
 import {toast} from "react-toastify";
 import AuthService from "../../services/auth-service";
 import {Link, useHistory} from "react-router-dom";
+import {useGoogleLogin} from "react-google-login";
+
+const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
 const LoginComponent = () => {
     const history = useHistory();
@@ -42,6 +45,21 @@ const LoginComponent = () => {
         }
     }
 
+    const onSuccess = () => {
+
+    }
+
+    const onFailure = () => {
+
+    }
+    const { signIn } = useGoogleLogin({
+        onSuccess,
+        onFailure,
+        clientId: CLIENT_ID,
+        isSignedIn: true,
+        accessType: 'offline'
+    });
+
     return (
         <div className="signin">
             <div className='signin-main-container'>
@@ -74,6 +92,10 @@ const LoginComponent = () => {
                     <button onClick={handleSubmit} className='signin-button'
                             disabled={!(state.email && state.password)}>
                         <span>Log in</span>
+                    </button>
+                    <div className='or'>OR</div>
+                    <button type="button" className="login-with-google-btn" onClick={signIn}>
+                        Log in with Google
                     </button>
                     <div className='switch-cont'>
                         <span>Don't have an account?</span> <Link className='link' to={'/auth/signup'}> Sign up </Link>

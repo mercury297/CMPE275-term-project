@@ -20,10 +20,17 @@ public class DashboardController {
     private DashboardService dashboardService;
 
     @Authorizable
-    @GetMapping(path = "")
+    @GetMapping(path = "/due-vaccinations")
     public @ResponseBody
     ResponseEntity<?> getVaccinationsDue(@RequestParam String currentTime,@RequestParam String MRN) throws ParseException {
         return dashboardService.getVaccinationsDue(currentTime, MRN);
+    }
+
+    @Authorizable
+    @GetMapping(path = "/vaccination-history")
+    public @ResponseBody
+    ResponseEntity<?> getVaccinationHistory(@RequestParam String MRN){
+        return dashboardService.getVaccinationHistory(MRN);
     }
 
 }
