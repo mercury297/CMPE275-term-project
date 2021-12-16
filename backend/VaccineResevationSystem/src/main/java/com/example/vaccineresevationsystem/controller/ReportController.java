@@ -16,14 +16,14 @@ public class ReportController {
     @Autowired
     private ReportService reportService;
     @Authorizable
-    @GetMapping(path="/patientreport")
+    @GetMapping(path="patientreport")
     public @ResponseBody
     ResponseEntity<?> getPatientReport(@RequestParam String MRN,@RequestParam String startDate, @RequestParam String endDate, @RequestParam String currentTime) throws ParseException {
         return reportService.getPatientReport(MRN,startDate, endDate,currentTime);
 //        return ResponseEntity.ok("Patient Report");
     }
     @Authorizable
-    @GetMapping (path="/clinicreport")
+    @GetMapping (path="clinicreport")
     public @ResponseBody
     ResponseEntity<?> getClinicReport(@RequestParam String startDate, @RequestParam String endDate, @RequestParam String currentTime) throws ParseException {
         return reportService.getClinicReport(startDate, endDate,currentTime);

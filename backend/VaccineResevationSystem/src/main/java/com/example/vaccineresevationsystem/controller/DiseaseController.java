@@ -14,7 +14,7 @@ public class DiseaseController {
     @Autowired
     private DiseaseService diseaseService;
 
-    @PostMapping(path="")
+    @GetMapping(path="createDisease")
     public @ResponseBody
     ResponseEntity<?> createDisease(@RequestParam String name, @RequestParam String description) {
         //write service
@@ -22,7 +22,7 @@ public class DiseaseController {
     }
 
     @Authorizable
-    @GetMapping
+    @GetMapping(path="getDiseases")
     public @ResponseBody ResponseEntity<?> getDiseases(@RequestParam String MRN){
         return diseaseService.getAllDiseases();
     }
