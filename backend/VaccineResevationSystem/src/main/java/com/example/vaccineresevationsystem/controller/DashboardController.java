@@ -22,8 +22,8 @@ public class DashboardController {
     @Authorizable
     @GetMapping(path = "")
     public @ResponseBody
-    ResponseEntity<?> getVaccinationsDue(@RequestParam String currentTime,@RequestParam String email) throws ParseException {
-        return dashboardService.getVaccinationsDue(currentTime, email);
+    ResponseEntity<?> getVaccinationsDue(@RequestParam String currentTime,@RequestParam String MRN) throws ParseException {
+        return dashboardService.getVaccinationsDue(currentTime, MRN);
     }
 
 }
