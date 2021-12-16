@@ -22,8 +22,10 @@ const App = () => {
     useEffect(() => {
         setLoading(true);
         const user = localStorage.getItem('user');
+        console.log(user);
         if (user) {
             const parsedUser = JSON.parse(user);
+            console.log(parsedUser);
             setUser(parsedUser);
         } else if (window.location.pathname !== '/auth/signup' && window.location.pathname !== '/auth/login') {
             console.log(window.location.pathname);
@@ -42,28 +44,28 @@ const App = () => {
                     <PublicRoute exact path="/auth/login" isLoggedIn={user.role}>
                         <LoginPage />
                     </PublicRoute>
-                    <PrivateRoute path="/admin/dashboard" isLoggedIn={user.role !== 'admin'}>
+                    <PrivateRoute path="/admin/dashboard" isLoggedIn={user.admin}>
                         <AdminDashboard />
                     </PrivateRoute>
-                    <PrivateRoute path="/admin/diseases" isLoggedIn={user.role !== 'admin'}>
+                    <PrivateRoute path="/admin/diseases" isLoggedIn={user.admin}>
                         <AdminDiseasesPage />
                     </PrivateRoute>
-                    <PrivateRoute path="/admin/vaccines" isLoggedIn={user.role !== 'admin'}>
+                    <PrivateRoute path="/admin/vaccines" isLoggedIn={user.admin}>
                         <AdminVaccinesPage />
                     </PrivateRoute>
-                    <PrivateRoute path="/admin/clinics" isLoggedIn={user.role !== 'admin'}>
+                    <PrivateRoute path="/admin/clinics" isLoggedIn={user.admin}>
                         <AdminClinicsPage />
                     </PrivateRoute>
-                    <PrivateRoute path="/patient/appointments" isLoggedIn={user.role !== 'patient'}>
+                    <PrivateRoute path="/patient/appointments" isLoggedIn={!user.admin}>
                         <Appointments />
                     </PrivateRoute>
-                    <PrivateRoute path="/patient/dashboard" isLoggedIn={user.role !== 'patient'}>
+                    <PrivateRoute path="/patient/dashboard" isLoggedIn={!user.admin}>
                         <AdminDashboard />
                     </PrivateRoute>
-                    <PrivateRoute path="/patient/dashboard" isLoggedIn={user.role !== 'admin'}>
+                    <PrivateRoute path="/patient/dashboard" isLoggedIn={user.admin}>
                         <AdminDashboard />
                     </PrivateRoute>
-                    <PrivateRoute path="/email-verification/:email/:verificationCode" isLoggedIn={user.role !== 'admin'}>
+                    <PrivateRoute path="/email-verification/:email/:verificationCode" isLoggedIn={user.admin}>
                         <EmailVerificationComponent />
                     </PrivateRoute>
                 </Switch>

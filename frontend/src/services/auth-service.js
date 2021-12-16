@@ -2,14 +2,15 @@ import API from "../utils/api-util";
 
 class AuthService {
     static async login(payload) {
-        const url = '/auth/login';
+        const url = '/login';
         try {
-            const res = await API.post(url, payload);
+            const res = await API.get(url, {params: payload});
             return {
                 success: true,
                 res,
             };
         } catch (e) {
+            console.log(JSON.stringify(e));
             return {
                 success: false,
                 message: e.message || 'Something went wrong',
