@@ -5,10 +5,7 @@ import com.example.vaccineresevationsystem.service.ClinicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping(path = "/clinic")
@@ -23,6 +20,14 @@ public class ClinicController {
     ResponseEntity<?> createClinic(@RequestParam String MRN, @RequestParam String name, @RequestParam String street, @RequestParam String number, @RequestParam String city, @RequestParam String state, @RequestParam String zipCode, @RequestParam int startTime, @RequestParam int endTime, @RequestParam int numberOfPhysicians)
     {
         return clinicService.addClinic(name,street,number,city,state,zipCode,startTime, endTime, numberOfPhysicians);
+    }
+
+    @Authorizable
+    @GetMapping(path = "")
+    public @ResponseBody
+    ResponseEntity<?> getClinics(@RequestParam String MRN)
+    {
+        return clinicService.getClinics();
     }
 
 }
