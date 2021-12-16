@@ -31,8 +31,9 @@ const LoginComponent = () => {
             });
             if (res.success) {
                 // Navigate to the schedule screen
-                localStorage.setItem('user', JSON.stringify(res));
-                if (res.admin) {
+                console.log(res);
+                localStorage.setItem('user', JSON.stringify(res.res.data));
+                if (res.res.data.admin) {
                     history.replace("/admin/dashboard");
                 } else {
                     history.replace("/patient/appointments");

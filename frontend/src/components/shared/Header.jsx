@@ -38,12 +38,6 @@ const HeaderComponent = ({current, isAdmin}) => {
                 path: '/patient/appointments',
                 label: 'Appointments'
             }, {
-                path: '/patient/diseases',
-                label: 'History'
-            }, {
-                path: '/patient/check-in',
-                label: 'Check-in'
-            }, {
                 path: '/patient/report',
                 label: 'Report'
             }])

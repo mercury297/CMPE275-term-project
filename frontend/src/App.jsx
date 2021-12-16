@@ -28,7 +28,7 @@ const App = () => {
             const parsedUser = JSON.parse(user);
             setIsUserVerified(true);
             setIsAdmin(parsedUser.admin);
-        } else if (window.location.pathname !== '/auth/signup' && window.location.pathname !== '/auth/login') {
+        } else if (window.location.pathname !== '/auth/signup' && window.location.pathname !== '/auth/login' && !window.location.pathname.startsWith('/email-verification')) {
             console.log(window.location.pathname);
             window.location = '/auth/login';
         }
@@ -77,7 +77,7 @@ const App = () => {
                     <PrivateRoute path="/patient/dashboard" isLoggedIn={isAdmin}>
                         <AdminDashboard />
                     </PrivateRoute>
-                    <PrivateRoute path="/email-verification/:email/:verificationCode" isLoggedIn={isAdmin}>
+                    <PrivateRoute path="/email-verification/:email/:verificationCode" isLoggedIn={!isUserVerified}>
                         <EmailVerificationComponent />
                     </PrivateRoute>
                 </Switch>

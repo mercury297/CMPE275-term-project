@@ -96,7 +96,7 @@ export default class AdminService {
     // Add NEW entitties
 
     static async addAppointment(payload) {
-        const url = '/appointment';
+        const url = '/createAppointment';
         let user;
         try {
             user = JSON.parse(localStorage.getItem('user'));
@@ -107,7 +107,7 @@ export default class AdminService {
             }
         }
         try {
-            const res = await API.post(`${url}/${user.MRN}`, payload);
+            const res = await API.get(`${url}/`, {params: {...payload, MRN: user.MRN}});
             return {
                 success: true,
                 res,
@@ -201,7 +201,7 @@ export default class AdminService {
     }
 
     static async getPastAppointments() {
-        const url = '/past-appointments';
+        const url = '/getPastAppointment';
         let user;
         try {
             user = JSON.parse(localStorage.getItem('user'));
@@ -213,7 +213,7 @@ export default class AdminService {
         }
 
         try {
-            const res = await API.post(url, {email: user.email, currentTime: user.currentTime});
+            const res = await API.get(url, {email: user.email, currentTime: user.currentTime});
             return {
                 success: true,
                 res,
@@ -227,7 +227,7 @@ export default class AdminService {
     }
 
     static async getFutureAppointments() {
-        const url = '/dashboard/patientFuture';
+        const url = '/getFutureAppointment';
         let user;
         try {
             user = JSON.parse(localStorage.getItem('user'));
@@ -239,7 +239,8 @@ export default class AdminService {
         }
 
         try {
-            const res = await API.post(url, {email: user.email, currentTime: user.currentTime});
+            console.log(user);
+            const res = await API.get(url, {params: {MRN: user.mrn, currentTime: "2016-12-13-04-00"}});
             return {
                 success: true,
                 res,

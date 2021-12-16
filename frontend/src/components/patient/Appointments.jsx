@@ -77,7 +77,7 @@ const AppointmentsComponent = () => {
     }
 
     useEffect(() => {
-        getTableData();
+        getTableData("future");
     }, []);
 
     return (
@@ -92,13 +92,13 @@ const AppointmentsComponent = () => {
                 </div>
                 <div className='content'>
                     <Tabs defaultActiveKey="1" centered onChange={handleTabChange}>
-                        <TabPane tab="Future Appointments" key="1">
+                        <TabPane tab="Future Appointments" key="future">
                             <Table
                                 columns={columns}
                                 dataSource={futureAppointments}
                             />
                         </TabPane>
-                        <TabPane tab="Past Appointments" key="2">
+                        <TabPane tab="Past Appointments" key="past">
                             <Table
                                 columns={columns}
                                 dataSource={pastAppointments}
