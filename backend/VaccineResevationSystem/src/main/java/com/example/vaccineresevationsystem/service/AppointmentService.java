@@ -97,6 +97,66 @@ public class AppointmentService {
         return ResponseEntity.of(Optional.of(appointment));
 
     }
+
+
+//    public void sortDates(List<String> Dates) throws ParseException {
+//        int n = Dates.size();
+//        String temp;
+//        for(int i=0; i < n; i++){
+//            for(int j=1; j < (n-i); j++){
+//                if(ifDateGreater(Dates.get(j-1), Dates.get(j-1))){
+//                    //swap elements
+//                    temp = Dates.get(j-1);
+//                    Dates.set(j-1, Dates.get(j));
+//                    Dates.set(j, temp);
+//                }
+//            }
+//        }
+//    }
+public ResponseEntity<?> checkInAppointment(String appointmentId, String currentTime) throws ParseException, MessagingException, UnsupportedEncodingException {
+    Appointment appointment = appointmentRepository.findByappointmentID(appointmentId);
+    if (appointment==null){
+        return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST, "Appointment not found");
+    }
+    if (appointment.getCheckIn().equals("1")){
+        return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST, "Appointment already checked in");
+    }
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
+    Date appointmentDate = dateFormat.parse(appointment.getAppointmentDate());
+    Date currentDate = dateFormat.parse(currentTime);
+    System.out.println("current date"+currentDate);
+    if (appointmentDate.compareTo(currentDate)<0){
+        return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST, "Current time is after the appointment time");
+    }
+
+    if (appointmentDate.compareTo(getTimeAfter24Hrs(currentTime))>0){
+        return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST, "Appointment cannot be checked in before 24 hrs");
+    }
+
+    appointment.setCheckIn("1");
+    appointmentRepository.save(appointment);
+    sendEmail(appointment.getUser().getEmail(),"Appointment Checked In","Your appointment has been checked in",appointment.getUser());
+    return ResponseEntity.of(Optional.of(appointment));
+}
+public Date getTimeAfter24Hrs(String currentTime) throws ParseException {
+        System.out.println("current time"+currentTime);
+        String[] arrOfStr = currentTime.split("-");
+        currentTime.split("-") ;
+        arrOfStr[2]=Integer.toString(Integer.parseInt(arrOfStr[2])+1);
+        String newTime = arrOfStr[0]+"-"+arrOfStr[1]+"-"+arrOfStr[2]+"-"+arrOfStr[3]+"-"+arrOfStr[4];
+        System.out.println("after 1 day"+newTime);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
+        Date timeAfter24 = dateFormat.parse(newTime);
+        System.out.println("after 24 hrs current time"+currentTime);
+        return timeAfter24;
+
+}
+    public boolean ifDateGreater(String Date1, String Date2) throws ParseException {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
+        Date date1 = dateFormat.parse(Date1);
+        Date date2 = dateFormat.parse(Date2);
+        return date2.getTime() - date1.getTime() > 0;
+    }
     public ResponseEntity<?> getPastAppointments(String MRN,String currentTime) throws ParseException {
         User user = userRepository.findByMRN(MRN);
         if (user==null){
@@ -105,13 +165,14 @@ public class AppointmentService {
         List<Appointment> appointments = user.getAppointments();
         List<Appointment> pastAppointments = new ArrayList<>();
         for (Appointment appointment:appointments){
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
             Date appointmentDate = dateFormat.parse(appointment.getAppointmentDate());
             Date currentTimeDate = dateFormat.parse(currentTime);
             if (appointmentDate.compareTo(currentTimeDate)<0){
                 pastAppointments.add(appointment);
             }
         }
+
         if (pastAppointments.size()==0){
             return SuccessHandler.successMessage(HttpStatus.OK, "No past appointments");
         }
@@ -126,7 +187,7 @@ public class AppointmentService {
         List<Appointment> appointments = user.getAppointments();
         List<Appointment> futureAppointments = new ArrayList<>();
         for (Appointment appointment:appointments){
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
             Date appointmentDate = dateFormat.parse(appointment.getAppointmentDate());
             Date currentTimeDate = dateFormat.parse(currentTime);
             if (appointmentDate.compareTo(currentTimeDate)>0){
@@ -140,10 +201,20 @@ public class AppointmentService {
         return ResponseEntity.of(Optional.of(futureAppointments));
     }
 
-    public ResponseEntity<?> cancelAppointment(String appointmentId) throws MessagingException, UnsupportedEncodingException {
+    public ResponseEntity<?> cancelAppointment(String appointmentId,String currentTime) throws MessagingException, UnsupportedEncodingException, ParseException {
         Appointment appointment = appointmentRepository.findByappointmentID(appointmentId);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
+        Date appointmentDate = dateFormat.parse(appointment.getAppointmentDate());
+        Date currentTimeDate = dateFormat.parse(currentTime);
+
         if (appointment==null){
             return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST, "Appointment not found");
+        }
+        if (appointment.getCheckIn().equals("1")){
+            return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST, "Appointment already checked in");
+        }
+        if (appointmentDate.compareTo(currentTimeDate)<0){
+            return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST, "Appointment already past");
         }
         Clinic clinic =  removeAppointmentFromClinic(appointment);
         User user = removeAppointmentFromUser(appointment);
@@ -182,7 +253,6 @@ public class AppointmentService {
     }
     public Boolean checkAppointmentClashInClinic(String date, Clinic clinic) throws ParseException {
         int count = 0;
-
         for(Appointment appointment:clinic.getAppointments()){
             System.out.println("Previous appointment "+appointment.getAppointmentDate()+"current appointment"+date);
             if(appointment.getAppointmentDate().equals(date)){
@@ -201,7 +271,6 @@ public class AppointmentService {
        String senderName = "Vaccine Reservation System";
        MimeMessage mail = mailSender.createMimeMessage();
        MimeMessageHelper helper = new MimeMessageHelper(mail);
-
        helper.setFrom(fromAddress, senderName);
        helper.setTo(toAddress);
        helper.setSubject(subject);
@@ -222,8 +291,6 @@ public class AppointmentService {
             }
         };
         return false;
-
-
     }
     public Date getDateAfter12Months(String currentTime) throws ParseException {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
