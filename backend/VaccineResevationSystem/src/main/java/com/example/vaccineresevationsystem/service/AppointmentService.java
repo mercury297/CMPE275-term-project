@@ -1,5 +1,6 @@
 package com.example.vaccineresevationsystem.service;
 import com.example.vaccineresevationsystem.handler.ErrorHandler;
+import com.example.vaccineresevationsystem.handler.SuccessHandler;
 import com.example.vaccineresevationsystem.model.Clinic;
 import com.example.vaccineresevationsystem.model.Appointment;
 import com.example.vaccineresevationsystem.model.User;
@@ -78,7 +79,7 @@ public class AppointmentService {
             return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST, "Appointment clash with users previous appointments");
         }
         System.out.println("vaccination id for this appointment"+vaccinationIds);
-        Appointment appointment = new Appointment(vaccinations,date);
+        Appointment appointment = new Appointment(vaccinations,date,clinic,user);
         List<Appointment>  clinicAppointments;
         clinicAppointments = clinic.getAppointments();
         clinicAppointments.add(appointment);
@@ -93,11 +94,83 @@ public class AppointmentService {
         clinicRepository.save(clinic);
         appointmentRepository.save(appointment);
         sendEmail(user.getEmail(),"Appointment Booked","Your appointment has been booked for "+date,user);
-        return ResponseEntity.of(Optional.of(user));
+        return ResponseEntity.of(Optional.of(appointment));
 
     }
+    public ResponseEntity<?> getPastAppointments(String MRN,String currentTime) throws ParseException {
+        User user = userRepository.findByMRN(MRN);
+        if (user==null){
+            return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST, "User not found");
+        }
+        List<Appointment> appointments = user.getAppointments();
+        List<Appointment> pastAppointments = new ArrayList<>();
+        for (Appointment appointment:appointments){
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH");
+            Date appointmentDate = dateFormat.parse(appointment.getAppointmentDate());
+            Date currentTimeDate = dateFormat.parse(currentTime);
+            if (appointmentDate.compareTo(currentTimeDate)<0){
+                pastAppointments.add(appointment);
+            }
+        }
+        if (pastAppointments.size()==0){
+            return SuccessHandler.successMessage(HttpStatus.OK, "No past appointments");
+        }
+        return ResponseEntity.of(Optional.of(pastAppointments));
+    }
 
-    public List<Vaccination>getAllVaccinations(List<String> vaccinations){
+    public ResponseEntity<?> getFutureAppointments(String MRN, String currentTime) throws ParseException {
+        User user = userRepository.findByMRN(MRN);
+        if (user==null){
+            return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST, "User not found");
+        }
+        List<Appointment> appointments = user.getAppointments();
+        List<Appointment> futureAppointments = new ArrayList<>();
+        for (Appointment appointment:appointments){
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH");
+            Date appointmentDate = dateFormat.parse(appointment.getAppointmentDate());
+            Date currentTimeDate = dateFormat.parse(currentTime);
+            if (appointmentDate.compareTo(currentTimeDate)>0){
+                futureAppointments.add(appointment);
+            }
+
+        }
+        if (futureAppointments.size()==0){
+            return SuccessHandler.successMessage(HttpStatus.OK, "No future appointments");
+        }
+        return ResponseEntity.of(Optional.of(futureAppointments));
+    }
+
+    public ResponseEntity<?> cancelAppointment(String appointmentId) throws MessagingException, UnsupportedEncodingException {
+        Appointment appointment = appointmentRepository.findByappointmentID(appointmentId);
+        if (appointment==null){
+            return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST, "Appointment not found");
+        }
+        Clinic clinic =  removeAppointmentFromClinic(appointment);
+        User user = removeAppointmentFromUser(appointment);
+        appointmentRepository.delete(appointment);
+        sendEmail(user.getEmail(),"Appointment Cancelled","Your appointment has been cancelled",user);
+        return ResponseEntity.of(Optional.of(clinic));
+    }
+    public Clinic removeAppointmentFromClinic(Appointment appointmentId){
+        Clinic clinic = appointmentId.getClinic();
+        List<Appointment> appointments = clinic.getAppointments();
+        appointments.remove(appointmentId);
+        clinic.setAppointment(appointments);
+        clinicRepository.save(clinic);
+        return clinic;
+    }
+    public User removeAppointmentFromUser(Appointment appointmentId){
+        User user = appointmentId.getUser();
+        List<Appointment> appointments = user.getAppointments();
+        appointments.remove(appointmentId);
+        user.setAppointments(appointments);
+        userRepository.save(user);
+        return user;
+    }
+
+
+
+        public List<Vaccination>getAllVaccinations(List<String> vaccinations){
 
         List<Vaccination> vaccinnations = new ArrayList<>();
         for(String vaccinationId : vaccinations){

@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 public interface AppointmentRepository extends CrudRepository<Appointment,Integer> {
-
+    public  Appointment findByappointmentID(String appointmentID);
 
 }
