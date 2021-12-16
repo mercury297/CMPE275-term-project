@@ -38,6 +38,13 @@ public class VaccinationService {
         return ResponseEntity.of(Optional.of(vaccination));
     }
 
+    public ResponseEntity<?> getAllVaccination(String MRN)
+    {
+        List<Vaccination> vaccinations = (List<Vaccination>) vaccinationRepository.findAll();
+        return ResponseEntity.of(Optional.of(vaccinations));
+
+    }
+
     public Set<Disease> getDiseases(List<String> diseaseNames) {
         Set<Disease> diseases = new HashSet<>();
         for(String diseaseName : diseaseNames)
