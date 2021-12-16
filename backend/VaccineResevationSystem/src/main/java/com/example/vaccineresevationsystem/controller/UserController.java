@@ -38,6 +38,8 @@ public class UserController {
     @GetMapping(path="/login")
     public @ResponseBody
     ResponseEntity<?> createUser(@RequestParam String email, @RequestParam String password) {
+        System.out.println("email: " + email);
+        System.out.println("password: " + password);
         return userService.loginUser(email,password);
     }
     private String getSiteURL(HttpServletRequest request) {

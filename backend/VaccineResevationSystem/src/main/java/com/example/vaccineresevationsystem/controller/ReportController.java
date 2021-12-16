@@ -6,10 +6,9 @@ import com.example.vaccineresevationsystem.service.VaccinationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.text.ParseException;
 
 @Controller
 @RequestMapping(path="/report")
@@ -17,17 +16,17 @@ public class ReportController {
     @Autowired
     private ReportService reportService;
     @Authorizable
-    @PostMapping(path="patientreport")
+    @GetMapping(path="/patientreport")
     public @ResponseBody
-    ResponseEntity<?> getPatientReport(@RequestParam String MRN,@RequestParam String startDate, @RequestParam String endDate, @RequestParam String currentTime) {
-//        return reportService.getReport(MRN,startDate, endDate,currentTime);
-        return ResponseEntity.ok("Patient Report");
+    ResponseEntity<?> getPatientReport(@RequestParam String MRN,@RequestParam String startDate, @RequestParam String endDate, @RequestParam String currentTime) throws ParseException {
+        return reportService.getPatientReport(MRN,startDate, endDate,currentTime);
+//        return ResponseEntity.ok("Patient Report");
     }
     @Authorizable
-    @PostMapping(path="clinicRrport")
+    @GetMapping (path="/clinicreport")
     public @ResponseBody
-    ResponseEntity<?> getClinicReport(@RequestParam String clinicId,@RequestParam String startDate, @RequestParam String endDate, @RequestParam String currentTime) {
-//        return reportService.getClinicReport(clinicId,startDate, endDate,currentTime);
-        return ResponseEntity.ok("Clininc Report");
+    ResponseEntity<?> getClinicReport(@RequestParam String startDate, @RequestParam String endDate, @RequestParam String currentTime) throws ParseException {
+        return reportService.getClinicReport(startDate, endDate,currentTime);
+//        return ResponseEntity.ok("Clininc Report");
     }
 }

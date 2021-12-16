@@ -21,7 +21,7 @@ public class AppointmentController {
 
 
     @Authorizable
-    @PostMapping(path = "createAppointment")
+    @GetMapping(path = "createAppointment")
     public @ResponseBody
     ResponseEntity<?> createAppointment(@RequestParam String MRN, @RequestParam List<String> vaccinationId, @RequestParam String ClinicId, @RequestParam String date, @RequestParam String currentTime) throws ParseException, MessagingException, UnsupportedEncodingException {
         return appointmentService.createAppointment(MRN, vaccinationId, ClinicId, date, currentTime);

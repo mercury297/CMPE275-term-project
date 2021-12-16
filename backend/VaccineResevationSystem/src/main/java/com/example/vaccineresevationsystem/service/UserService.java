@@ -44,6 +44,8 @@ public class UserService {
         return ResponseEntity.of(Optional.of(user));
     }
     public  ResponseEntity<?> loginUser(@RequestParam String email,@RequestParam String password) {
+        System.out.println(email);
+        System.out.println(password);
         User user = userRepository.findByEmail(email);
         if (user == null) {
             return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST,"User not found");

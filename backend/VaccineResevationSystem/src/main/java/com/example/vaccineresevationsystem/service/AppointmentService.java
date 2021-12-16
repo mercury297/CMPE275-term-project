@@ -54,7 +54,7 @@ public class AppointmentService {
     public ResponseEntity<?> createAppointment(String MRN, List<String> vaccinationIds, String ClinicId , String date, String currentTime) throws ParseException, MessagingException, UnsupportedEncodingException {
 
         Clinic clinic = clinicRepository.findById(ClinicId);
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
         Date newDate = dateFormat.parse(date);
         if(clinic==null){
             return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST, "Clinic not found");
@@ -92,7 +92,7 @@ public class AppointmentService {
 
         userRepository.save(user);
         clinicRepository.save(clinic);
-        appointmentRepository.save(appointment);
+
         sendEmail(user.getEmail(),"Appointment Booked","Your appointment has been booked for "+date,user);
         return ResponseEntity.of(Optional.of(appointment));
 
@@ -186,7 +186,9 @@ public Date getTimeAfter24Hrs(String currentTime) throws ParseException {
         }
         List<Appointment> appointments = user.getAppointments();
         List<Appointment> futureAppointments = new ArrayList<>();
+//        System.out.println();
         for (Appointment appointment:appointments){
+            System.out.println("appointment date"+appointment.getAppointmentDate());
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
             Date appointmentDate = dateFormat.parse(appointment.getAppointmentDate());
             Date currentTimeDate = dateFormat.parse(currentTime);
@@ -195,9 +197,11 @@ public Date getTimeAfter24Hrs(String currentTime) throws ParseException {
             }
 
         }
+
         if (futureAppointments.size()==0){
             return SuccessHandler.successMessage(HttpStatus.OK, "No future appointments");
         }
+
         return ResponseEntity.of(Optional.of(futureAppointments));
     }
 
