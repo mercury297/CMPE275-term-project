@@ -51,9 +51,9 @@ public class AppointmentService {
     }
 
 
-    public ResponseEntity<?> createAppointment(String MRN, List<String> vaccinationIds, String ClinicId , String date, String currentTime) throws ParseException, MessagingException, UnsupportedEncodingException {
+    public ResponseEntity<?> createAppointment(String MRN, List<String> vaccinationNames, String clinicName , String date, String currentTime) throws ParseException, MessagingException, UnsupportedEncodingException {
 
-        Clinic clinic = clinicRepository.findById(ClinicId);
+        Clinic clinic = clinicRepository.findByName(clinicName);
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
         Date newDate = dateFormat.parse(date);
         if(clinic==null){
@@ -66,19 +66,19 @@ public class AppointmentService {
         if (user==null){
             return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST, "User not found");
         }
-        if (vaccinationIds.size()>4){
+        if (vaccinationNames.size()>4){
             return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST, "Maximum 4 vaccinations can be booked at a time");
         }
 
         List<Vaccination> vaccinations;
-        vaccinations = getAllVaccinations(vaccinationIds);
+        vaccinations = getAllVaccinations(vaccinationNames);
         if (checkAppointmentClashInClinic(date,clinic)){
             return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST, "Appointment clash in clinic");
         }
         if (checkAppointmentClashWithUser(date, MRN)) {
             return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST, "Appointment clash with users previous appointments");
         }
-        System.out.println("vaccination id for this appointment"+vaccinationIds);
+        System.out.println("vaccination id for this appointment"+vaccinationNames);
         Appointment appointment = new Appointment(vaccinations,date,clinic,user);
         List<Appointment>  clinicAppointments;
         clinicAppointments = clinic.getAppointments();
@@ -89,7 +89,7 @@ public class AppointmentService {
         userAppointments = user.getAppointments();
         userAppointments.add(appointment);
         user.setAppointments(userAppointments);
-
+        appointmentRepository.save(appointment);
         userRepository.save(user);
         clinicRepository.save(clinic);
 
@@ -248,8 +248,8 @@ public Date getTimeAfter24Hrs(String currentTime) throws ParseException {
         public List<Vaccination>getAllVaccinations(List<String> vaccinations){
 
         List<Vaccination> vaccinnations = new ArrayList<>();
-        for(String vaccinationId : vaccinations){
-            Vaccination vaccination = vaccinationRepository.findById(vaccinationId);
+        for(String vaccinationName : vaccinations){
+            Vaccination vaccination = vaccinationRepository.findByName(vaccinationName);
             vaccinnations.add(vaccination);
         }
         return vaccinnations;

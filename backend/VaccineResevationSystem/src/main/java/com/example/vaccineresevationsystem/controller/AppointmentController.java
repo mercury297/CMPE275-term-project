@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
-@RequestMapping(path = "/")
+@RequestMapping(path = "/appointment")
 public class AppointmentController {
     @Autowired
     private AppointmentService appointmentService;
@@ -23,27 +23,27 @@ public class AppointmentController {
     @Authorizable
     @GetMapping(path = "createAppointment")
     public @ResponseBody
-    ResponseEntity<?> createAppointment(@RequestParam String MRN, @RequestParam List<String> vaccinationId, @RequestParam String ClinicId, @RequestParam String date, @RequestParam String currentTime) throws ParseException, MessagingException, UnsupportedEncodingException {
-        return appointmentService.createAppointment(MRN, vaccinationId, ClinicId, date, currentTime);
+    ResponseEntity<?> createAppointment(@RequestParam String MRN, @RequestParam List<String> vaccinationName, @RequestParam String clinicName, @RequestParam String date, @RequestParam String currentTime) throws ParseException, MessagingException, UnsupportedEncodingException {
+        return appointmentService.createAppointment(MRN, vaccinationName, clinicName, date, currentTime);
     }
     @Authorizable
-    @PostMapping(path = "updateAppointment")
+    @GetMapping(path = "updateAppointment")
     public @ResponseBody
-    ResponseEntity<?> updateAppointment(@RequestParam String MRN, @RequestParam List<String> vaccinationId, @RequestParam String ClinicId, @RequestParam String date, @RequestParam String currentTime) throws ParseException, MessagingException, UnsupportedEncodingException {
+    ResponseEntity<?> updateAppointment(@RequestParam String MRN, @RequestParam List<String> vaccinationNames, @RequestParam String ClinicName, @RequestParam String date, @RequestParam String currentTime) throws ParseException, MessagingException, UnsupportedEncodingException {
 //        return appointmentService.createAppointment(MRN, vaccinationId, ClinicId, date, currentTime);
     return ResponseEntity.ok("Date Updated");
     }
 
 
     @Authorizable
-    @PostMapping(path = "cancelAppointment")
+    @GetMapping(path = "cancelAppointment")
     public @ResponseBody
     ResponseEntity<?> cancelAppointment(@RequestParam String appointmentID,@RequestParam String currentTime) throws UnsupportedEncodingException, MessagingException, ParseException {
         return appointmentService.cancelAppointment(appointmentID,currentTime);
     }
 
     @Authorizable
-    @PostMapping(path = "checkInAppointment")
+    @GetMapping(path = "checkInAppointment")
     public @ResponseBody
     ResponseEntity<?> checkInAppointment(@RequestParam String appointmentID, String currentTime) throws UnsupportedEncodingException, MessagingException, ParseException {
         return appointmentService.checkInAppointment(appointmentID, currentTime);
