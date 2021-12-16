@@ -4,6 +4,9 @@ import "../../assets/scss/signup.scss";
 import {toast} from "react-toastify";
 import AuthService from "../../services/auth-service";
 import {Link, useHistory} from "react-router-dom";
+import { useGoogleLogin } from "react-google-login";
+
+const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
 const SignupPage = () => {
     const history = useHistory();
@@ -47,7 +50,7 @@ const SignupPage = () => {
                 if (res.user.role === 'admin') {
                     history.replace("/admin-dashboard");
                 } else {
-                    history.replace("/dashboard");
+                    history.replace("/patient/appointments");
                 }
                 // Check if we have any
             } else {
@@ -57,6 +60,21 @@ const SignupPage = () => {
             toast.error('Please enter both email and password to login!');
         }
     }
+
+    const onSuccess = () => {
+
+    }
+
+    const onFailure = () => {
+
+    }
+    const { signIn } = useGoogleLogin({
+        onSuccess,
+        onFailure,
+        clientId: CLIENT_ID,
+        isSignedIn: true,
+        accessType: 'offline'
+    });
 
     return (
         <div className="signup">
@@ -148,6 +166,10 @@ const SignupPage = () => {
                     <button onClick={handleSubmit} className='signup-button'
                             disabled={!(state.email && state.password)}>
                         <span>Sign Up</span>
+                    </button>
+                    <div className='or'>OR</div>
+                    <button type="button" className="login-with-google-btn" onClick={signIn}>
+                        Sign in with Google
                     </button>
                     <div className='switch-cont'>
                         <span>Already have an account?</span> <Link className='link' to={'/auth/login'}> Login </Link>
