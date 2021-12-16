@@ -30,6 +30,7 @@ const App = () => {
             setLoading(false);
         });
     }, []);
+
     return (
         <Spin className='loader-container' tip="Loading..." spinning={loading} >
             <BrowserRouter>
