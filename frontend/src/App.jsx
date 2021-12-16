@@ -25,7 +25,8 @@ const App = () => {
         if (user) {
             const parsedUser = JSON.parse(user);
             setUser(parsedUser);
-        } else if (window.location.pathname !== '/auth/login') {
+        } else if (window.location.pathname !== '/auth/signup' && window.location.pathname !== '/auth/login') {
+            console.log(window.location.pathname);
             window.location = '/auth/login';
         }
         setLoading(false);
