@@ -41,8 +41,16 @@ public class DashboardService {
         HashMap<String, ArrayList<String>> vaccineMap = getVaccineMap(checkedInAppointments);
         sortVaccineMap(vaccineMap);
         List<VaccinationsDue> vaccinationsDues = getVaccinationsDue(vaccineMap);
-
+        filterBasedOnCurrentTime(vaccinationsDues, currentTime);
         return ResponseEntity.of(Optional.of(vaccinationsDues));
+    }
+
+    public void filterBasedOnCurrentTime(List<VaccinationsDue> vaccinationsDues, String currentTime) throws ParseException {
+        for(VaccinationsDue vaccinationsDue: vaccinationsDues){
+            if(!ifDateGreater(currentTime,vaccinationsDue.dueDate)){
+                vaccinationsDues.remove(vaccinationsDue);
+            }
+        }
     }
 
     /**
@@ -151,6 +159,7 @@ public class DashboardService {
         Date dueDate = new Date(dueDateInSeconds);
         System.out.println(dueDate);
         return dateFormat.format(dueDate);
+
     }
 
     public void sortVaccineMap(HashMap<String, ArrayList<String>> vaccineMap) throws ParseException {
