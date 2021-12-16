@@ -19,7 +19,7 @@ public class VaccinationController {
     //MRN?name=vaccineA&diseases=A,B,C&manufacturer:companyA&numberOfShots=2&shotInternalVal=12&duration=10
 
     @Authorizable
-    @PostMapping(path = "")
+    @GetMapping(path = "createVaccination")
     public @ResponseBody
     ResponseEntity<?> createVaccination(@RequestParam String MRN, @RequestParam String name, @RequestParam String diseases, @RequestParam String manufacturer, @RequestParam int numberOfShots,@RequestParam int shotInternalVal, @RequestParam int duration){
         String[] diseaseNameList = diseases.split(",");
@@ -33,7 +33,7 @@ public class VaccinationController {
     }
 
     @Authorizable
-    @GetMapping(path = "")
+    @GetMapping(path = "getALlVaccines")
     public @ResponseBody
     ResponseEntity<?> getALlVaccines(@RequestParam String MRN)
     {
