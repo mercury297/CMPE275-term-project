@@ -31,10 +31,11 @@ const LoginComponent = () => {
             });
             if (res.success) {
                 // Navigate to the schedule screen
-                if (res.user.role === 'admin') {
-                    history.replace("/admin-dashboard");
+                localStorage.setItem('user', JSON.stringify(res));
+                if (res.admin) {
+                    history.replace("/admin/dashboard");
                 } else {
-                    history.replace("/dashboard");
+                    history.replace("/patient/appointments");
                 }
                 // Check if we have any
             } else {

@@ -50,34 +50,34 @@ const App = () => {
         <Spin className='loader-container' tip="Loading..." spinning={loading} >
             <BrowserRouter>
                 <Switch>
-                    <PublicRoute exact path="/auth/signup" isLoggedIn={user.role}>
+                    <PublicRoute exact path="/auth/signup" isLoggedIn={isAdmin}>
                         <SignupPage />
                     </PublicRoute>
-                    <PublicRoute exact path="/auth/login" isLoggedIn={user.role}>
+                    <PublicRoute exact path="/auth/login" isLoggedIn={isAdmin}>
                         <LoginPage />
                     </PublicRoute>
-                    <PrivateRoute path="/admin/dashboard" isLoggedIn={user.role !== 'admin'}>
+                    <PrivateRoute path="/admin/dashboard" isLoggedIn={isAdmin}>
                         <AdminDashboard />
                     </PrivateRoute>
-                    <PrivateRoute path="/admin/diseases" isLoggedIn={user.role !== 'admin'}>
+                    <PrivateRoute path="/admin/diseases" isLoggedIn={isAdmin}>
                         <AdminDiseasesPage />
                     </PrivateRoute>
-                    <PrivateRoute path="/admin/vaccines" isLoggedIn={user.role !== 'admin'}>
+                    <PrivateRoute path="/admin/vaccines" isLoggedIn={isAdmin}>
                         <AdminVaccinesPage />
                     </PrivateRoute>
-                    <PrivateRoute path="/admin/clinics" isLoggedIn={user.role !== 'admin'}>
+                    <PrivateRoute path="/admin/clinics" isLoggedIn={isAdmin}>
                         <AdminClinicsPage />
                     </PrivateRoute>
-                    <PrivateRoute path="/patient/appointments" isLoggedIn={user.role !== 'patient'}>
+                    <PrivateRoute path="/patient/appointments" isLoggedIn={!isAdmin}>
                         <Appointments />
                     </PrivateRoute>
-                    <PrivateRoute path="/patient/dashboard" isLoggedIn={user.role !== 'patient'}>
+                    <PrivateRoute path="/patient/dashboard" isLoggedIn={!isAdmin}>
                         <AdminDashboard />
                     </PrivateRoute>
-                    <PrivateRoute path="/patient/dashboard" isLoggedIn={user.role !== 'admin'}>
+                    <PrivateRoute path="/patient/dashboard" isLoggedIn={isAdmin}>
                         <AdminDashboard />
                     </PrivateRoute>
-                    <PrivateRoute path="/email-verification/:email/:verificationCode" isLoggedIn={user.role !== 'admin'}>
+                    <PrivateRoute path="/email-verification/:email/:verificationCode" isLoggedIn={isAdmin}>
                         <EmailVerificationComponent />
                     </PrivateRoute>
                 </Switch>
