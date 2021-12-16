@@ -18,13 +18,16 @@ import EmailVerificationComponent from "./components/shared/EmailVerificationCom
 
 const App = () => {
     const [loading, setLoading] = useState(false);
-    const [user, setUser] = useState({});
+    const [isUserVerified, setIsUserVerified] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
+
     useEffect(() => {
         setLoading(true);
         const user = localStorage.getItem('user');
         if (user) {
             const parsedUser = JSON.parse(user);
-            setUser(parsedUser);
+            setIsUserVerified(true);
+            setIsAdmin(parsedUser.admin);
         } else if (window.location.pathname !== '/auth/signup' && window.location.pathname !== '/auth/login') {
             console.log(window.location.pathname);
             window.location = '/auth/login';
@@ -32,6 +35,17 @@ const App = () => {
         setLoading(false);
     }, []);
 
+    useEffect(( ) => {
+        if (window.location.pathname === '/' || window.location.pathname === '/auth/login' || window.location.pathname === '/auth/signup') {
+            if (isUserVerified) {
+                if (isAdmin) {
+                    window.location = '/admin/dashaboard';
+                } else {
+                    window.location = '/patient/appointments';
+                }
+            }
+        }
+    }, [isAdmin, isUserVerified]);
     return (
         <Spin className='loader-container' tip="Loading..." spinning={loading} >
             <BrowserRouter>
