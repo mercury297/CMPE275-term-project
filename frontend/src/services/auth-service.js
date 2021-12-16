@@ -2,6 +2,9 @@ import API from "../utils/api-util";
 
 class AuthService {
     static async getCurrentUserInfo() {
+        return {
+            success: false,
+        }
         const url = '/auth/me';
         try {
             const res = await API.get(url);
