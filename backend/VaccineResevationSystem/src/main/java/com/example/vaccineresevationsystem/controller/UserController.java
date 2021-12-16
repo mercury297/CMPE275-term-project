@@ -58,7 +58,6 @@ public class UserController {
     public ResponseEntity<?> verifyUser(@Param("code") String code) {
         System.out.println("code: " + code);
         if (userService.verify(code)) {
-
             return SuccessHandler.successMessage(HttpStatus.OK, "Verification sucessfull");
         } else {
             return  ErrorHandler.badRequest(HttpStatus.BAD_REQUEST, "Verification failed");

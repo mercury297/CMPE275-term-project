@@ -20,7 +20,7 @@ public class Appointment {
     }
     @ManyToOne
     @JoinColumn(name = "clinic")
-    @JsonIgnoreProperties({"name","street","state","street","zipCode","appointments","startTime","endTime","numberOfPhysicians"})
+    @JsonIgnoreProperties({"street","state","street","zipCode","appointments","startTime","endTime","numberOfPhysicians"})
     private Clinic clinic;
 
     public void setCheckIn(String checkIn) {

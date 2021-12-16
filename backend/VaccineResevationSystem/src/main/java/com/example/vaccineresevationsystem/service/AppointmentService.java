@@ -57,26 +57,26 @@ public class AppointmentService {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
         Date newDate = dateFormat.parse(date);
         if(clinic==null){
-            return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST, "Clinic not found");
+            return SuccessHandler.successMessage(HttpStatus.OK, "Clinic not found");
         }
         if(newDate.compareTo(getDateAfter12Months(currentTime))>0){
-            return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST, "Appointment cannot be booked for 12 months");
+            return SuccessHandler.successMessage(HttpStatus.OK, "Appointment cannot be booked for 12 months");
         }
         User user = userRepository.findByMRN(MRN);
         if (user==null){
-            return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST, "User not found");
+            return SuccessHandler.successMessage(HttpStatus.OK, "User not found");
         }
         if (vaccinationNames.size()>4){
-            return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST, "Maximum 4 vaccinations can be booked at a time");
+            return SuccessHandler.successMessage(HttpStatus.OK, "Maximum 4 vaccinations can be booked at a time");
         }
 
         List<Vaccination> vaccinations;
         vaccinations = getAllVaccinations(vaccinationNames);
         if (checkAppointmentClashInClinic(date,clinic)){
-            return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST, "Appointment clash in clinic");
+            return SuccessHandler.successMessage(HttpStatus.OK, "Appointment clash in clinic");
         }
         if (checkAppointmentClashWithUser(date, MRN)) {
-            return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST, "Appointment clash with users previous appointments");
+            return SuccessHandler.successMessage(HttpStatus.OK, "Appointment clash with users previous appointments");
         }
         System.out.println("vaccination id for this appointment"+vaccinationNames);
         Appointment appointment = new Appointment(vaccinations,date,clinic,user);
@@ -116,21 +116,21 @@ public class AppointmentService {
 public ResponseEntity<?> checkInAppointment(String appointmentId, String currentTime) throws ParseException, MessagingException, UnsupportedEncodingException {
     Appointment appointment = appointmentRepository.findByappointmentID(appointmentId);
     if (appointment==null){
-        return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST, "Appointment not found");
+        return SuccessHandler.successMessage(HttpStatus.OK, "Appointment not found");
     }
     if (appointment.getCheckIn().equals("1")){
-        return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST, "Appointment already checked in");
+        return SuccessHandler.successMessage(HttpStatus.OK, "Appointment already checked in");
     }
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
     Date appointmentDate = dateFormat.parse(appointment.getAppointmentDate());
     Date currentDate = dateFormat.parse(currentTime);
     System.out.println("current date"+currentDate);
     if (appointmentDate.compareTo(currentDate)<0){
-        return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST, "Current time is after the appointment time");
+        return SuccessHandler.successMessage(HttpStatus.OK, "Current time is after the appointment time");
     }
 
     if (appointmentDate.compareTo(getTimeAfter24Hrs(currentTime))>0){
-        return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST, "Appointment cannot be checked in before 24 hrs");
+        return SuccessHandler.successMessage(HttpStatus.OK, "Appointment cannot be checked in before 24 hrs");
     }
 
     appointment.setCheckIn("1");
@@ -160,7 +160,7 @@ public Date getTimeAfter24Hrs(String currentTime) throws ParseException {
     public ResponseEntity<?> getPastAppointments(String MRN,String currentTime) throws ParseException {
         User user = userRepository.findByMRN(MRN);
         if (user==null){
-            return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST, "User not found");
+            return SuccessHandler.successMessage(HttpStatus.OK, "User not found");
         }
         List<Appointment> appointments = user.getAppointments();
         List<Appointment> pastAppointments = new ArrayList<>();
@@ -212,13 +212,13 @@ public Date getTimeAfter24Hrs(String currentTime) throws ParseException {
         Date currentTimeDate = dateFormat.parse(currentTime);
 
         if (appointment==null){
-            return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST, "Appointment not found");
+            return SuccessHandler.successMessage(HttpStatus.OK, "Appointment not found");
         }
         if (appointment.getCheckIn().equals("1")){
-            return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST, "Appointment already checked in");
+            return SuccessHandler.successMessage(HttpStatus.OK, "Appointment already checked in");
         }
         if (appointmentDate.compareTo(currentTimeDate)<0){
-            return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST, "Appointment already past");
+            return SuccessHandler.successMessage(HttpStatus.OK, "Appointment already past");
         }
         Clinic clinic =  removeAppointmentFromClinic(appointment);
         User user = removeAppointmentFromUser(appointment);

@@ -48,16 +48,16 @@ public class UserService {
         System.out.println(password);
         User user = userRepository.findByEmail(email);
         if (user == null) {
-            return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST,"User not found");
+            return SuccessHandler.successMessage(HttpStatus.OK,"User not found");
         }
         else if(!user.isVerified().equals(true)){
-            return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST,"User not verified");
+            return SuccessHandler.successMessage(HttpStatus.OK,"User not verified");
         }
         else if(user.getPassword().equals(password)){
             return ResponseEntity.of(Optional.of(user));
         }
         else{
-            return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST,"some error");
+            return SuccessHandler.successMessage(HttpStatus.OK,"some error");
         }
 
     }
@@ -65,16 +65,16 @@ public class UserService {
         System.out.println(email);
         User user = userRepository.findByEmail(email);
         if (user == null) {
-            return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST,"User not found");
+            return SuccessHandler.successMessage(HttpStatus.OK,"User not found");
         }
         else if(!user.isVerified().equals(true)){
-            return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST,"User not verified");
+            return SuccessHandler.successMessage(HttpStatus.OK,"User not verified");
         }
         else if (user!=null){
             return ResponseEntity.ok(user);
         }
         else{
-            return ErrorHandler.badRequest(HttpStatus.BAD_REQUEST,"Some error");
+            return SuccessHandler.successMessage(HttpStatus.OK,"Some error");
         }
 
     }
@@ -118,6 +118,5 @@ public class UserService {
             userRepository.save(user);
             return true;
         }
-
     }
 }
