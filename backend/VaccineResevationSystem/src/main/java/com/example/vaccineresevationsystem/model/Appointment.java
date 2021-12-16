@@ -53,6 +53,7 @@ public class Appointment {
         this.vaccinationList = vaccinations;
         this.clinic=clinic;
         this.user=user;
+        this.checkIn="0";
     }
 
     public String getAppointmentID() {
