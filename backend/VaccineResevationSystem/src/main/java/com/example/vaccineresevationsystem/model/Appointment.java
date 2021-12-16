@@ -18,6 +18,10 @@ public class Appointment {
     public String getCheckIn() {
         return checkIn;
     }
+    @ManyToOne
+    @JoinColumn(name = "clinic")
+    @JsonIgnoreProperties({"name","street","state","street","zipCode","appointments","startTime","endTime","numberOfPhysicians"})
+    private Clinic clinic;
 
     public void setCheckIn(String checkIn) {
         this.checkIn = checkIn;
@@ -29,6 +33,10 @@ public class Appointment {
 
     private String checkIn;//Not Checked in=0, Checked in=1, NoShow=2
 
+    @ManyToOne
+    @JoinColumn(name = "user")
+    @JsonIgnoreProperties({"appointments", "verificationCode","password","verified", "number", "clinic", "street","zipCode","city","state","country","phone","firstName","lastName","birthDate","middleName"})
+    private User user;
 
     private String appointmentDate;
 
@@ -36,14 +44,15 @@ public class Appointment {
 
     @ManyToMany (targetEntity = Vaccination.class, cascade = CascadeType.DETACH)
     @JoinTable( joinColumns = @JoinColumn(name = "appointmentID"), inverseJoinColumns = @JoinColumn(name = "vaccinationID"))
-    @JsonIgnoreProperties({"Manufacturer", "NumberOfShots","ShotInternalVal","duration"})
+    @JsonIgnoreProperties({"manufacturer", "numberOfShots","shotInternalVal","disease"})
     private List<Vaccination> vaccinationList;
     public Appointment(){
     }
-    public Appointment( List<Vaccination> vaccinations,String appointmentDate){
+    public Appointment( List<Vaccination> vaccinations,String appointmentDate,Clinic clinic, User user) {
         this.appointmentDate = appointmentDate;
         this.vaccinationList = vaccinations;
-//        this.clinic=clinic;
+        this.clinic=clinic;
+        this.user=user;
     }
 
     public String getAppointmentID() {
@@ -69,7 +78,21 @@ public class Appointment {
     public void addVaccinations(Vaccination vaccination) {
         this.vaccinationList.add(vaccination);
     }
+    public Clinic getClinic() {
+        return clinic;
+    }
 
+    public void setClinic(Clinic clinic) {
+        this.clinic = clinic;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
 
 

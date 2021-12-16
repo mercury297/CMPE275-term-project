@@ -64,6 +64,10 @@ public class User {
         this.zipCode = zipCode;
         this.gender = gender;
     }
+    public String getMRN(){
+        return MRN;
+    }
+
     public String getEmail() {
         return email;
     }
