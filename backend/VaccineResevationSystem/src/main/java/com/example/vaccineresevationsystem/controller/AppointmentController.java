@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,8 +24,15 @@ public class AppointmentController {
     @Authorizable
     @GetMapping(path = "createAppointment")
     public @ResponseBody
-    ResponseEntity<?> createAppointment(@RequestParam String MRN, @RequestParam List<String> vaccinationName, @RequestParam String clinicName, @RequestParam String date, @RequestParam String currentTime) throws ParseException, MessagingException, UnsupportedEncodingException {
-        return appointmentService.createAppointment(MRN, vaccinationName, clinicName, date, currentTime);
+    ResponseEntity<?> createAppointment(@RequestParam String MRN, @RequestParam String vaccinations, @RequestParam String clinicName, @RequestParam String date, @RequestParam String currentTime) throws ParseException, MessagingException, UnsupportedEncodingException {
+        String[] vaccinationNamesList = vaccinations.split(",");
+        List<String> vaccinationNames = new ArrayList<>();
+
+        for(String vaccinationName: vaccinationNamesList){
+            System.out.println(vaccinationName);
+            vaccinationNames.add(vaccinationName);
+        }
+        return appointmentService.createAppointment(MRN, vaccinationNames, clinicName, date, currentTime);
     }
     @Authorizable
     @GetMapping(path = "updateAppointment")
