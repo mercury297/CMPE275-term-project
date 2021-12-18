@@ -1,22 +1,22 @@
-import {Menu, message} from "antd";
-import {useHistory} from "react-router-dom";
+import { Menu, message } from "antd";
+import { useHistory } from "react-router-dom";
 import "../../assets/scss/header.scss";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import ChangeTime from "../patient/ChangeTime";
 import AdminService from "../../services/admin.service";
 
 const { SubMenu } = Menu;
-const HeaderComponent = ({current, isAdmin}) => {
+const HeaderComponent = ({ current, isAdmin }) => {
 
     const [showModal, setShowModal] = useState(false);
     const [menuOptions, setMenuOptions] = useState([]);
     const history = useHistory();
-    const handleChange = ({key}) => {
-        if(key === 'change-time'){
+    const handleChange = ({ key }) => {
+        if (key === 'change-time') {
             console.log('change time');
             //do nothing
         }
-        else{
+        else {
             history.push(key);
         }
         console.log(key);
@@ -45,24 +45,21 @@ const HeaderComponent = ({current, isAdmin}) => {
         console.log(updatedUser.admin)
         if (updatedUser.admin) {
             setMenuOptions([{
-                    path: '/admin/appointments',
-                    label: 'Appointments'
-                }, {
-                    path: '/admin/diseases',
-                    label: 'Diseases'
-                }, {
-                    path: '/admin/clinics',
-                    label: 'Clinics'
-                }, {
-                    path: '/admin/vaccines',
-                    label: 'Vaccines'
-                }, {
-                    path: '/admin/set-time',
-                    label: 'Set time'
-                }, {
-                    path: '/admin/report',
-                    label: 'Report'
-                }])
+                path: '/admin/diseases',
+                label: 'Diseases'
+            }, {
+                path: '/admin/clinics',
+                label: 'Clinics'
+            }, {
+                path: '/admin/vaccines',
+                label: 'Vaccines'
+            }, {
+                path: '/admin/set-time',
+                label: 'Set time'
+            }, {
+                path: '/admin/report',
+                label: 'Report'
+            }])
         } else {
             setMenuOptions([{
                 path: '/patient/appointments',
@@ -70,7 +67,7 @@ const HeaderComponent = ({current, isAdmin}) => {
             }, {
                 path: '/patient/report',
                 label: 'Report'
-            },{
+            }, {
                 path: '/patient/dashboard',
                 label: 'Dashboard'
             },])
@@ -95,10 +92,10 @@ const HeaderComponent = ({current, isAdmin}) => {
                 }
                 <Menu.Item key="change-time" onClick={handleShowModal}>
                     {"Change Time"}
-                    <ChangeTime 
-                    showModal={showModal}
-                    handleCancel={handleCancel}
-                    handleOk={handleOk}
+                    <ChangeTime
+                        showModal={showModal}
+                        handleCancel={handleCancel}
+                        handleOk={handleOk}
                     />
                 </Menu.Item>
                 <Menu.Item key="logout" onClick={handleLogout}>
