@@ -47,6 +47,7 @@ public class ClinicService {
         for(Clinic clinic: clinics)
         {
             clinicNames.add(clinic.getName());
+            clinicNames.add(clinic.getID());
         }
 
         return ResponseEntity.of(Optional.of(clinicNames));
