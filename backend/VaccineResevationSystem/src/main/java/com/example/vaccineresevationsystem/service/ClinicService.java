@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,15 +43,18 @@ public class ClinicService {
     public ResponseEntity<?> getClinics()
     {
         List<Clinic> clinics = (List<Clinic>) clinicRepository.findAll();
-        List<String> clinicNames = new ArrayList<>();
 
+        List<HashMap<String, String>> clinicList = new ArrayList<>();
         for(Clinic clinic: clinics)
         {
-            clinicNames.add(clinic.getName());
-            clinicNames.add(clinic.getID());
+            HashMap<String, String> clinicMap = new HashMap<>();
+            clinicMap.put("Name",clinic.getName());
+            clinicMap.put("Id",clinic.getID());
+            clinicList.add(clinicMap);
+
         }
 
-        return ResponseEntity.of(Optional.of(clinicNames));
+        return ResponseEntity.of(Optional.of(clinicList));
     }
 
     /**
