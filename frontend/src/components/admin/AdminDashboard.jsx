@@ -26,10 +26,6 @@ const AdminDashboard = () => {
                 <div className='header'>
                     Admin Dashboard
                 </div>
-                <div className='buttons-container'>
-                    <Button type="primary" onClick={handleShowModal}>Add an appointment</Button>
-                    {/*<Button type="primary">Primary Button</Button>*/}
-                </div>
                 <div className='content'>
                     <Tabs defaultActiveKey="1" centered>
                         <TabPane tab="Future Appointments" key="1">

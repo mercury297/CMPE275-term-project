@@ -9,6 +9,8 @@ import AuthService from "./services/auth-service";
 import LoginPage from "./components/shared/LoginPage";
 import {PrivateRoute} from "./components/shared/PrivateRoute";
 import AdminDashboard from "./components/admin/AdminDashboard";
+import PatientDashboard from "./components/patient/PatientDashboard";
+import Report from "./components/patient/Report";
 import AdminDiseasesPage from "./components/admin/AdminDiseasesPage";
 import AdminVaccinesPage from "./components/admin/AdminVaccinesPage";
 import AdminClinicsPage from "./components/admin/AdminClinicsPage";
@@ -72,9 +74,12 @@ const App = () => {
                         <Appointments />
                     </PrivateRoute>
                     <PrivateRoute path="/patient/dashboard" isLoggedIn={!isAdmin}>
-                        <AdminDashboard />
+                        <PatientDashboard />
                     </PrivateRoute>
-                    <PrivateRoute path="/patient/dashboard" isLoggedIn={isAdmin}>
+                    <PrivateRoute path="/patient/report" isLoggedIn={!isAdmin}>
+                        <Report />
+                    </PrivateRoute>
+                    <PrivateRoute path="/admin/dashboard" isLoggedIn={isAdmin}>
                         <AdminDashboard />
                     </PrivateRoute>
                     <PrivateRoute path="/email-verification/:email/:verificationCode" isLoggedIn={!isUserVerified}>

@@ -2,7 +2,7 @@ import API from "../utils/api-util";
 
 class AuthService {
     static async login(payload) {
-        const url = '/login';
+        const url = '/user/login';
         try {
             const res = await API.get(url, {params: payload});
             return {
@@ -19,9 +19,10 @@ class AuthService {
     }
 
     static async signup(payload) {
-        const url = '/user';
+        const url = '/user/register';
         try {
-            const res = await API.post(url, payload);
+            console.log(payload);
+            const res = await API.get(url, {params:payload});
             return {
                 success: true,
                 res,

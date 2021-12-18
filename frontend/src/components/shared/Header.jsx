@@ -1,16 +1,41 @@
-import {Menu} from "antd";
+import {Menu, message} from "antd";
 import {useHistory} from "react-router-dom";
 import "../../assets/scss/header.scss";
 import {useEffect, useState} from "react";
+import ChangeTime from "../patient/ChangeTime";
+import AdminService from "../../services/admin.service";
 
 const { SubMenu } = Menu;
 const HeaderComponent = ({current, isAdmin}) => {
 
+    const [showModal, setShowModal] = useState(false);
     const [menuOptions, setMenuOptions] = useState([]);
     const history = useHistory();
     const handleChange = ({key}) => {
-        history.push(key);
+        if(key === 'change-time'){
+            console.log('change time');
+            //do nothing
+        }
+        else{
+            history.push(key);
+        }
+        console.log(key);
     }
+
+    const handleOk = (payload) => {
+        console.log(payload);
+        localStorage.setItem('currentTime', payload.newTime);
+    }
+
+    const handleCancel = (payload) => {
+        console.log('cancel');
+        setShowModal(false);
+    }
+
+    const handleShowModal = () => {
+        setShowModal(true);
+    }
+
 
     useEffect(() => {
         if (isAdmin) {
@@ -40,7 +65,10 @@ const HeaderComponent = ({current, isAdmin}) => {
             }, {
                 path: '/patient/report',
                 label: 'Report'
-            }])
+            },{
+                path: '/patient/dashboard',
+                label: 'Dashboard'
+            },])
         }
     }, [isAdmin]);
 
@@ -52,14 +80,22 @@ const HeaderComponent = ({current, isAdmin}) => {
     return (
         <div className='menu-container'>
             <div className='font-satisfy logo'>VMS</div>
-            <Menu onClick={handleChange} selectedKeys={[current]} mode="horizontal" theme={'dark'}>
+            <Menu selectedKeys={[current]} mode="horizontal" theme={'dark'}>
                 {
                     menuOptions.map(item => (
-                        <Menu.Item key={item.path}>
+                        <Menu.Item key={item.path} onClick={handleChange}>
                             {item.label}
                         </Menu.Item>
                     ))
                 }
+                <Menu.Item key="change-time" onClick={handleShowModal}>
+                    {"Change Time"}
+                    <ChangeTime 
+                    showModal={showModal}
+                    handleCancel={handleCancel}
+                    handleOk={handleOk}
+                    />
+                </Menu.Item>
                 <Menu.Item key="logout" onClick={handleLogout}>
                     Logout
                 </Menu.Item>

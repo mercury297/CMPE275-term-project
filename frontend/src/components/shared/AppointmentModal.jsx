@@ -4,8 +4,8 @@ import '../../assets/scss/modals.scss';
 
 const AppointmentModal = ({showModal, handleOk, handleCancel}) => {
     const [state, setState] = useState({
-        time: '',
-        clinic: '',
+        date: '',
+        clinicName: '',
         vaccinations: '',
     });
 
@@ -27,7 +27,7 @@ const AppointmentModal = ({showModal, handleOk, handleCancel}) => {
                     <div className='form-header'><span>Time</span></div>
                     <Input onChange={changeHandler}
                            type='text'
-                           name='time'
+                           name='date'
                            placeholder='Time'
                            style={{width: "100%"}}
                     />
@@ -36,7 +36,7 @@ const AppointmentModal = ({showModal, handleOk, handleCancel}) => {
                     <div className='form-header'><span>Clinic</span></div>
                     <Input onChange={changeHandler}
                            type='text'
-                           name='clinic'
+                           name='clinicName'
                            placeholder='Clinic'
                            style={{width: "100%"}}
                     />

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import Layout from "../shared/Layout";
 import {Tabs, Button, Table, message} from "antd";
 import "../../assets/scss/admin-dashboard.scss"
+import {toast} from "react-toastify";
 import AppointmentModal from "../shared/AppointmentModal";
 import AdminService from "../../services/admin.service";
 
@@ -32,22 +33,17 @@ const AppointmentsComponent = () => {
     }
 
     const columns = [{
-        title: 'Appointment ID',
-        dataIndex: 'appointmentID',
-        key: 'appointmentID',
-    }, {
         title: 'Clinic',
         dataIndex: 'clinic',
         key: 'clinic',
     }, {
         title: 'Time',
-        dataIndex: 'time',
+        dataIndex: 'appointmentDate',
         key: 'time',
     }, {
         title: 'Vaccinations',
-        dataIndex: 'vaccinations',
+        dataIndex: 'vaccinationList',
         key: 'vaccinations',
-        render: (val) => val ? val.join(', ') : '',
     }];
 
     const handleTabChange = (value) => {
@@ -60,7 +56,29 @@ const AppointmentsComponent = () => {
         if (type === 'future') {
             AdminService.getFutureAppointments().then(res => {
                 if (res.success) {
-                    setFutureAppointments(res.data);
+                    console.log(res.res.data);
+                    if("SuccessMessage" in res.res.data){
+                        console.log(res.res.data.SuccessMessage.message);
+                        toast.error(res.res.data.SuccessMessage.message);
+                    }
+                    else{
+                        let data = []
+                        for(let i=0; i<res.res.data.length; i++){
+                            let vaccines = "";
+                            for(let j=0; j<res.res.data[i].vaccinationList.length; j++){
+                                vaccines += res.res.data[i].vaccinationList[j].name + ", ";
+                            }
+                            data.push({
+                                key: i,
+                                clinic: res.res.data[i].clinic.name,
+                                appointmentDate: res.res.data[i].appointmentDate,
+                                vaccinationList: vaccines
+                            })
+                        }
+                        console.log(data);
+                        setFutureAppointments(data);
+                    }
+
                 } else {
                     message.error(res.message);
                 }
@@ -68,7 +86,29 @@ const AppointmentsComponent = () => {
         } else if (type === 'past') {
             AdminService.getPastAppointments().then(res => {
                 if (res.success) {
-                    setPastAppointments(res.data);
+                    console.log(res.res.data);
+                    if("SuccessMessage" in res.res.data){
+                        console.log(res.res.data.SuccessMessage.message);
+                        toast.error(res.res.data.SuccessMessage.message);
+                    }
+                    else{
+                        let data = []
+                        for(let i=0; i<res.res.data.length; i++){
+                            let vaccines = "";
+                            for(let j=0; j<res.res.data[i].vaccinationList.length; j++){
+                                vaccines += res.res.data[i].vaccinationList[j].name + ", ";
+                            }
+                            data.push({
+                                key: i,
+                                clinic: res.res.data[i].clinic.name,
+                                appointmentDate: res.res.data[i].appointmentDate,
+                                vaccinationList: vaccines
+                            })
+                        }
+                        console.log(data);
+                        setPastAppointments(data);
+                    }
+
                 } else {
                     message.error(res.message);
                 }
@@ -84,7 +124,7 @@ const AppointmentsComponent = () => {
         <Layout current={'/patient/appointments'}>
             <div className='admin-dashboard-container'>
                 <div className='header'>
-                    Patient Dashboard
+                    Patient Appointments
                 </div>
                 <div className='buttons-container'>
                     <Button type="primary" onClick={handleShowModal}>Add an appointment</Button>

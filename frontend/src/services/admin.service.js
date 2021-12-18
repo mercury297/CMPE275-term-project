@@ -2,9 +2,9 @@ import API from "../utils/api-util";
 
 export default class AdminService {
     static async verifyEmail(payload) {
-        const url = '/verify-email';
+        const url = 'user/verify';
         try {
-            const res = await API.put(url, payload);
+            const res = await API.get(url, {params: payload});
             return {
                 success: true,
                 res,
@@ -96,7 +96,7 @@ export default class AdminService {
     // Add NEW entitties
 
     static async addAppointment(payload) {
-        const url = '/createAppointment';
+        const url = '/appointment/createAppointment';
         let user;
         try {
             user = JSON.parse(localStorage.getItem('user'));
@@ -107,7 +107,7 @@ export default class AdminService {
             }
         }
         try {
-            const res = await API.get(`${url}/`, {params: {...payload, MRN: user.MRN}});
+            const res = await API.get(`${url}/`, {params: {...payload, MRN: user.mrn, currentTime: "2021-11-23-04-00"}});
             return {
                 success: true,
                 res,
@@ -201,7 +201,7 @@ export default class AdminService {
     }
 
     static async getPastAppointments() {
-        const url = '/getPastAppointment';
+        const url = '/appointment/getPastAppointment';
         let user;
         try {
             user = JSON.parse(localStorage.getItem('user'));
@@ -213,7 +213,8 @@ export default class AdminService {
         }
 
         try {
-            const res = await API.get(url, {email: user.email, currentTime: user.currentTime});
+            //current time to be changed
+            const res = await API.get(url, {params: {MRN: user.mrn, currentTime: localStorage.getItem('currentTime')}});
             return {
                 success: true,
                 res,
@@ -227,7 +228,88 @@ export default class AdminService {
     }
 
     static async getFutureAppointments() {
-        const url = '/getFutureAppointment';
+        const url = '/appointment/getFutureAppointment';
+        let user;
+        try {
+            user = JSON.parse(localStorage.getItem('user'));
+        } catch (e) {
+            return {
+                success: false,
+                message: 'Please login first!',
+            }
+        }
+
+        try {
+            console.log(user);
+            const res = await API.get(url, {params: {MRN: user.mrn, currentTime: localStorage.getItem('currentTime')}});
+            return {
+                success: true,
+                res,
+            };
+        } catch (e) {
+            return {
+                success: false,
+                message: e.message || 'Something went wrong',
+            }
+        }
+    }
+
+    static async getDueVaccinations(){
+        const url = '/dashboard/due-vaccinations';
+        let user;
+        try {
+            user = JSON.parse(localStorage.getItem('user'));
+        } catch (e) {
+            return {
+                success: false,
+                message: 'Please login first!',
+            }
+        }
+
+        try {
+            console.log(user);
+            const res = await API.get(url, {params: {MRN: user.mrn, currentTime: localStorage.getItem('currentTime')}});
+            return {
+                success: true,
+                res,
+            };
+        } catch (e) {
+            return {
+                success: false,
+                message: e.message || 'Something went wrong',
+            }
+        }
+    }
+
+    static async getPatientReports(){
+        const url = '/report/patient-report';
+        let user;
+        try {
+            user = JSON.parse(localStorage.getItem('user'));
+        } catch (e) {
+            return {
+                success: false,
+                message: 'Please login first!',
+            }
+        }
+
+        try {
+            console.log(user);
+            const res = await API.get(url, {params: {MRN: user.mrn, currentTime: localStorage.getItem('currentTime')}});
+            return {
+                success: true,
+                res,
+            };
+        } catch (e) {
+            return {
+                success: false,
+                message: e.message || 'Something went wrong',
+            }
+        } 
+    }
+
+    static async getVaccinationHistory(){
+        const url = '/dashboard/vaccination-history';
         let user;
         try {
             user = JSON.parse(localStorage.getItem('user'));

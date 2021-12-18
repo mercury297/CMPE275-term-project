@@ -33,6 +33,7 @@ const LoginComponent = () => {
                 // Navigate to the schedule screen
                 console.log(res);
                 localStorage.setItem('user', JSON.stringify(res.res.data));
+                localStorage.setItem('currentTime', "2021-12-16-18-00");
                 if (res.res.data.admin) {
                     history.replace("/admin/dashboard");
                 } else {

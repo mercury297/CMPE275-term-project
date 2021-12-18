@@ -14,14 +14,10 @@ const EmailVerificationComponent = () => {
     }, []);
 
     const handleClick = () => {
-        AdminService.verifyEmail({email, verificationCode}).then(res => {
+        AdminService.verifyEmail({code:verificationCode}).then(res => {
             if (res.success) {
                 localStorage.setItem('user', JSON.stringify(res.data));
-                if (res.user.role === 'admin') {
-                    window.location = process.env.REACT_APP_ENDPOINT;
-                } else {
-                    window.location = process.env.REACT_APP_ENDPOINT;
-                }
+                message.success('Email verified successfully');
             } else {
                 message.error(res.message);
             }
