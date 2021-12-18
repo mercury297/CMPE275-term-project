@@ -53,8 +53,17 @@ public class VaccinationService {
         for(Vaccination vaccination: vaccinations)
         {
             HashMap<String, String> vaccinationMap = new HashMap<>();
-            vaccinationMap.put("Name",vaccination.getName());
-            vaccinationMap.put("Id",vaccination.getVaccinationID());
+            vaccinationMap.put("name",vaccination.getName());
+            vaccinationMap.put("id",vaccination.getVaccinationID());
+            String diseases = "";
+            for (Disease disease : vaccination.getDiseases()) {
+                diseases += disease.getName() + ",";
+            }
+            vaccinationMap.put("manufacturer",vaccination.getName());
+            vaccinationMap.put("numberOfShots",String.valueOf(vaccination.getNumberOfShots()));
+            vaccinationMap.put("duration",String.valueOf(vaccination.getDuration()));
+            vaccinationMap.put("disease",diseases);
+
             vaccineList.add(vaccinationMap);
         }
 
