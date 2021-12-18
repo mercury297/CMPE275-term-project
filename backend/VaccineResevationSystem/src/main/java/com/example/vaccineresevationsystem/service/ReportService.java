@@ -62,10 +62,10 @@ public class ReportService {
             }
         }
         HashMap<String,Integer> patientReport = new HashMap<>();
-        patientReport.put("NoShow",noShowCount);
-        patientReport.put("TotalAppointments", user.getAppointments().size());
+        patientReport.put("noShow",noShowCount);
+        patientReport.put("totalAppointments", user.getAppointments().size());
         Integer noShowRate = (noShowCount/user.getAppointments().size())*100;
-        patientReport.put("No Show Rate", noShowRate);
+        patientReport.put("noShowRate", noShowRate);
         return ResponseEntity.ok(patientReport);
     }
     public ResponseEntity<?> getClinicReport(String startDate,String endDate, String currentTime, String clinicId) throws ParseException {
@@ -93,10 +93,10 @@ public class ReportService {
                 noShowCount++;
             }
         }
-        clinincNoShowRate.put("NoShow",noShowCount);
-        clinincNoShowRate.put("TotalAppointments", clinic.getAppointments().size());
+        clinincNoShowRate.put("noShow",noShowCount);
+        clinincNoShowRate.put("totalAppointments", clinic.getAppointments().size());
         Integer noShowRate = (noShowCount/clinic.getAppointments().size())*100;
-        clinincNoShowRate.put("No Show Rate", noShowRate);
+        clinincNoShowRate.put("noShowRate", noShowRate);
         if (clinic.getAppointments().size()==0){
             return SuccessHandler.successMessage(HttpStatus.OK, "No clinic appointments for the given range found");
         }
