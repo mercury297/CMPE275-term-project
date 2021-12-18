@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../shared/Layout";
-import {Tabs, Button, Table, message} from "antd";
+import { Tabs, Button, Table, message } from "antd";
 import "../../assets/scss/admin-dashboard.scss"
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 import AppointmentModal from "../shared/AppointmentModal";
 import AdminService from "../../services/admin.service";
 
@@ -31,8 +31,25 @@ const AppointmentsComponent = () => {
     const handleShowModal = () => {
         setShowModal(true);
     }
-
-    const columns = [{
+    const handleCheckIn = value => () => {
+        AdminService.checkInAppointment(value.key).then(res => {
+            console.log(res);
+            if (res.success) {
+                alert("Checked In successfully");
+            }
+            // console.log(success);
+        })
+    };
+    const handleDelete = value => () => {
+        AdminService.cancelAppointment(value.key).then(res => {
+            console.log(res);
+            if (res.success) {
+                alert(res.res.data.SuccessMessage.message);
+            }
+            // console.log(success);
+        })
+    };
+    const futureColumns = [{
         title: 'Clinic',
         dataIndex: 'clinic',
         key: 'clinic',
@@ -44,11 +61,58 @@ const AppointmentsComponent = () => {
         title: 'Vaccinations',
         dataIndex: 'vaccinationList',
         key: 'vaccinations',
-    }];
-
+    }, {
+        title: 'Action',
+        dataIndex: 'action',
+        key: 'action',
+        align: 'center',
+        render: (text, record, index) => < div className="btn-wrap"
+            style={
+                {
+                    marginLeft: "100px",
+                    width: "200px"
+                }
+            } >
+            {
+                record.checkIn == "1" ? <Button type="primary" style={{ marginLeft: "10px" }} danger onClick={handleCheckIn(record)}>
+                    Check In
+                </Button> : <Button type="primary" disabled style={{ marginLeft: "10px" }} danger onClick={handleCheckIn(record)}>
+                    Check In
+                </Button>
+            }
+            {/* <Button type="primary" style={{ marginLeft: "10px" }} danger onClick={handleCheckIn(record)}>
+                Check In
+            </Button> */}
+            <Button type="primary" style={{ marginLeft: "20px" }} danger onClick={handleDelete(record)}>
+                Delete
+            </Button>
+            {/* < button onClick={
+                (e) => {
+                    console.log("corresponding email is :", record.clinic)
+                    console.log("corresponding email is :", record.appointmentDate)
+                    console.log("corresponding email is :", record.vaccinationList)
+                }
+            } > Click </button> */}
+        </div >
+    },
+    ];
+    const pastColumns = [{
+        title: 'Clinic',
+        dataIndex: 'clinic',
+        key: 'clinic',
+    }, {
+        title: 'Time',
+        dataIndex: 'appointmentDate',
+        key: 'time',
+    }, {
+        title: 'Vaccinations',
+        dataIndex: 'vaccinationList',
+        key: 'vaccinations',
+    },
+    ];
     const handleTabChange = (value) => {
         console.log(value);
-    //    Make API call to get the latest data in here
+        //    Make API call to get the latest data in here
         getTableData(value);
     }
 
@@ -57,19 +121,19 @@ const AppointmentsComponent = () => {
             AdminService.getFutureAppointments().then(res => {
                 if (res.success) {
                     console.log(res.res.data);
-                    if("SuccessMessage" in res.res.data){
+                    if ("SuccessMessage" in res.res.data) {
                         console.log(res.res.data.SuccessMessage.message);
                         toast.error(res.res.data.SuccessMessage.message);
                     }
-                    else{
+                    else {
                         let data = []
-                        for(let i=0; i<res.res.data.length; i++){
+                        for (let i = 0; i < res.res.data.length; i++) {
                             let vaccines = "";
-                            for(let j=0; j<res.res.data[i].vaccinationList.length; j++){
+                            for (let j = 0; j < res.res.data[i].vaccinationList.length; j++) {
                                 vaccines += res.res.data[i].vaccinationList[j].name + ", ";
                             }
                             data.push({
-                                key: i,
+                                key: res.res.data[i].appointmentID,
                                 clinic: res.res.data[i].clinic.name,
                                 appointmentDate: res.res.data[i].appointmentDate,
                                 vaccinationList: vaccines
@@ -87,15 +151,15 @@ const AppointmentsComponent = () => {
             AdminService.getPastAppointments().then(res => {
                 if (res.success) {
                     console.log(res.res.data);
-                    if("SuccessMessage" in res.res.data){
+                    if ("SuccessMessage" in res.res.data) {
                         console.log(res.res.data.SuccessMessage.message);
                         toast.error(res.res.data.SuccessMessage.message);
                     }
-                    else{
+                    else {
                         let data = []
-                        for(let i=0; i<res.res.data.length; i++){
+                        for (let i = 0; i < res.res.data.length; i++) {
                             let vaccines = "";
-                            for(let j=0; j<res.res.data[i].vaccinationList.length; j++){
+                            for (let j = 0; j < res.res.data[i].vaccinationList.length; j++) {
                                 vaccines += res.res.data[i].vaccinationList[j].name + ", ";
                             }
                             data.push({
@@ -134,13 +198,13 @@ const AppointmentsComponent = () => {
                     <Tabs defaultActiveKey="1" centered onChange={handleTabChange}>
                         <TabPane tab="Future Appointments" key="future">
                             <Table
-                                columns={columns}
+                                columns={futureColumns}
                                 dataSource={futureAppointments}
                             />
                         </TabPane>
                         <TabPane tab="Past Appointments" key="past">
                             <Table
-                                columns={columns}
+                                columns={pastColumns}
                                 dataSource={pastAppointments}
                             />
                         </TabPane>

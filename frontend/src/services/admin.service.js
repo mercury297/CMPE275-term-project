@@ -4,7 +4,7 @@ export default class AdminService {
     static async verifyEmail(payload) {
         const url = 'user/verify';
         try {
-            const res = await API.get(url, {params: payload});
+            const res = await API.get(url, { params: payload });
             return {
                 success: true,
                 res,
@@ -43,7 +43,7 @@ export default class AdminService {
     }
 
     static async cancelAppointment(appointmentId) {
-        const url = '/appointment';
+        const url = '/appointment/cancelAppointment';
         let user;
         try {
             user = JSON.parse(localStorage.getItem('user'));
@@ -54,7 +54,7 @@ export default class AdminService {
             }
         }
         try {
-            const res = await API.delete(`${url}/${user.MRN}/${appointmentId}`);
+            const res = await API.get(`${url}/`, { params: {appointmentID : appointmentId, currentTime: localStorage.getItem("currentTime") } });
             return {
                 success: true,
                 res,
@@ -68,7 +68,7 @@ export default class AdminService {
     }
 
     static async checkInAppointment(appointmentId) {
-        const url = '/appointment';
+        const url = '/appointment/checkInAppointment';
         let user;
         try {
             user = JSON.parse(localStorage.getItem('user'));
@@ -79,7 +79,7 @@ export default class AdminService {
             }
         }
         try {
-            const res = await API.put(`${url}/${user.MRN}/${appointmentId}`, {checkIn: true});
+            const res = await API.get(`${url}/`, { params: {appointmentID : appointmentId, currentTime: localStorage.getItem("currentTime") } });
             return {
                 success: true,
                 res,
@@ -91,6 +91,7 @@ export default class AdminService {
             }
         }
     }
+
 
 
     // Add NEW entitties
@@ -107,7 +108,7 @@ export default class AdminService {
             }
         }
         try {
-            const res = await API.get(`${url}/`, {params: {...payload, MRN: user.mrn, currentTime: "2021-11-23-04-00"}});
+            const res = await API.get(`${url}/`, { params: { ...payload, MRN: user.mrn, currentTime: "2021-11-23-04-00" } });
             return {
                 success: true,
                 res,
@@ -184,10 +185,22 @@ export default class AdminService {
         }
     }
 
-    static async getAllClinics() {
-        const url = '/clinics';
+    static async getAllClinics(payload) {
+        const url = '/appointment/cancelAppointment';
+        let user;
+
+        user = JSON.parse(localStorage.getItem('user'));
         try {
-            const res = await API.get(url);
+            user = JSON.parse(localStorage.getItem('user'));
+        } catch (e) {
+            return {
+                success: false,
+                message: 'Please login first!',
+            }
+        }
+        try {
+            const res = await API.get(url, { params: { appointmentId: payload.appointmentId, currentTime: localStorage.getItem('currentTime') } });
+            console.log(res);
             return {
                 success: true,
                 res,
@@ -214,7 +227,7 @@ export default class AdminService {
 
         try {
             //current time to be changed
-            const res = await API.get(url, {params: {MRN: user.mrn, currentTime: localStorage.getItem('currentTime')}});
+            const res = await API.get(url, { params: { MRN: user.mrn, currentTime: localStorage.getItem('currentTime') } });
             return {
                 success: true,
                 res,
@@ -241,7 +254,7 @@ export default class AdminService {
 
         try {
             console.log(user);
-            const res = await API.get(url, {params: {MRN: user.mrn, currentTime: localStorage.getItem('currentTime')}});
+            const res = await API.get(url, { params: { MRN: user.mrn, currentTime: localStorage.getItem('currentTime') } });
             return {
                 success: true,
                 res,
@@ -254,7 +267,7 @@ export default class AdminService {
         }
     }
 
-    static async getDueVaccinations(){
+    static async getDueVaccinations() {
         const url = '/dashboard/due-vaccinations';
         let user;
         try {
@@ -268,7 +281,7 @@ export default class AdminService {
 
         try {
             console.log(user);
-            const res = await API.get(url, {params: {MRN: user.mrn, currentTime: localStorage.getItem('currentTime')}});
+            const res = await API.get(url, { params: { MRN: user.mrn, currentTime: localStorage.getItem('currentTime') } });
             return {
                 success: true,
                 res,
@@ -281,7 +294,7 @@ export default class AdminService {
         }
     }
 
-    static async getPatientReports(){
+    static async getPatientReports() {
         const url = '/report/patient-report';
         let user;
         try {
@@ -295,7 +308,7 @@ export default class AdminService {
 
         try {
             console.log(user);
-            const res = await API.get(url, {params: {MRN: user.mrn, currentTime: localStorage.getItem('currentTime')}});
+            const res = await API.get(url, { params: { MRN: user.mrn, currentTime: localStorage.getItem('currentTime') } });
             return {
                 success: true,
                 res,
@@ -305,10 +318,10 @@ export default class AdminService {
                 success: false,
                 message: e.message || 'Something went wrong',
             }
-        } 
+        }
     }
 
-    static async getVaccinationHistory(){
+    static async getVaccinationHistory() {
         const url = '/dashboard/vaccination-history';
         let user;
         try {
@@ -322,7 +335,7 @@ export default class AdminService {
 
         try {
             console.log(user);
-            const res = await API.get(url, {params: {MRN: user.mrn, currentTime: "2016-12-13-04-00"}});
+            const res = await API.get(url, { params: { MRN: user.mrn, currentTime: "2016-12-13-04-00" } });
             return {
                 success: true,
                 res,

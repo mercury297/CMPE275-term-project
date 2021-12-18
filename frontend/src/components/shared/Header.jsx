@@ -38,7 +38,12 @@ const HeaderComponent = ({current, isAdmin}) => {
 
 
     useEffect(() => {
-        if (isAdmin) {
+        // console.log(localStorage.getItem("user").admin);
+        const user = localStorage.getItem("user");
+        // console.log(JSON.parse(user));
+        const updatedUser = JSON.parse(user);
+        console.log(updatedUser.admin)
+        if (updatedUser.admin) {
             setMenuOptions([{
                     path: '/admin/appointments',
                     label: 'Appointments'

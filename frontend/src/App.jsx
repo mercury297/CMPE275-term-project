@@ -1,5 +1,5 @@
 import './App.css';
-import {BrowserRouter, Switch, useHistory} from "react-router-dom";
+import {BrowserRouter, Switch,Route, useHistory} from "react-router-dom";
 import "antd/dist/antd.css";
 import "./assets/scss/app.scss";
 import {PublicRoute} from "./components/shared/PublicRoute";
@@ -17,6 +17,7 @@ import AdminClinicsPage from "./components/admin/AdminClinicsPage";
 import SignupPage from "./components/shared/Signup";
 import Appointments from "./components/patient/Appointments";
 import EmailVerificationComponent from "./components/shared/EmailVerificationComponent";
+import AdminReportPage from "./components/admin/AdminReportPage";
 
 const App = () => {
     const [loading, setLoading] = useState(false);
@@ -41,7 +42,7 @@ const App = () => {
         if (window.location.pathname === '/' || window.location.pathname === '/auth/login' || window.location.pathname === '/auth/signup') {
             if (isUserVerified) {
                 if (isAdmin) {
-                    window.location = '/admin/dashaboard';
+                    window.location = '/admin/dashboard';
                 } else {
                     window.location = '/patient/appointments';
                 }
@@ -58,18 +59,18 @@ const App = () => {
                     <PublicRoute exact path="/auth/login" isLoggedIn={isAdmin}>
                         <LoginPage />
                     </PublicRoute>
-                    <PrivateRoute path="/admin/dashboard" isLoggedIn={isAdmin}>
+                    <Route path="/admin/dashboard">
                         <AdminDashboard />
-                    </PrivateRoute>
-                    <PrivateRoute path="/admin/diseases" isLoggedIn={isAdmin}>
+                    </Route>
+                    <Route path="/admin/diseases">
                         <AdminDiseasesPage />
-                    </PrivateRoute>
-                    <PrivateRoute path="/admin/vaccines" isLoggedIn={isAdmin}>
+                    </Route>
+                    <Route path="/admin/vaccines" >
                         <AdminVaccinesPage />
-                    </PrivateRoute>
-                    <PrivateRoute path="/admin/clinics" isLoggedIn={isAdmin}>
+                    </Route>
+                    <Route path="/admin/clinics" >
                         <AdminClinicsPage />
-                    </PrivateRoute>
+                    </Route>
                     <PrivateRoute path="/patient/appointments" isLoggedIn={!isAdmin}>
                         <Appointments />
                     </PrivateRoute>
@@ -79,12 +80,12 @@ const App = () => {
                     <PrivateRoute path="/patient/report" isLoggedIn={!isAdmin}>
                         <Report />
                     </PrivateRoute>
-                    <PrivateRoute path="/admin/dashboard" isLoggedIn={isAdmin}>
-                        <AdminDashboard />
-                    </PrivateRoute>
                     <PrivateRoute path="/email-verification/:email/:verificationCode" isLoggedIn={!isUserVerified}>
                         <EmailVerificationComponent />
                     </PrivateRoute>
+                    <Route path="/admin/report" >
+                        <AdminReportPage />
+                    </Route>
                 </Switch>
             </BrowserRouter>
         </Spin>
