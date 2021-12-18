@@ -3,6 +3,7 @@ import javax.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.Length;
 
 
 import java.util.*;
@@ -13,6 +14,7 @@ public class User {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @Length(min = 3, max = 9)
     private String MRN;
     @Column(nullable = false, unique = true, length = 45)
     private String email;
