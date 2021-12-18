@@ -33,7 +33,7 @@ public class VaccinationController {
     }
 
     @Authorizable
-    @GetMapping(path = "getALlVaccines")
+    @GetMapping(path = "getAllVaccines")
     public @ResponseBody
     ResponseEntity<?> getALlVaccines(@RequestParam String MRN)
     {

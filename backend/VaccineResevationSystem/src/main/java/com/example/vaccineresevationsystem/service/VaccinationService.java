@@ -48,14 +48,17 @@ public class VaccinationService {
     public ResponseEntity<?> getAllVaccinationNames(String MRN)
     {
         List<Vaccination> vaccinations = (List<Vaccination>) vaccinationRepository.findAll();
-        List<String> vaccinationNames = new ArrayList<>();
+         List<HashMap<String, String>> vaccineList = new ArrayList<>();
 
         for(Vaccination vaccination: vaccinations)
         {
-            vaccinationNames.add(vaccination.getName());
+            HashMap<String, String> vaccinationMap = new HashMap<>();
+            vaccinationMap.put("Name",vaccination.getName());
+            vaccinationMap.put("Id",vaccination.getVaccinationID());
+            vaccineList.add(vaccinationMap);
         }
 
-        return ResponseEntity.of(Optional.of(vaccinationNames));
+        return ResponseEntity.of(Optional.of(vaccineList));
 
     }
 
