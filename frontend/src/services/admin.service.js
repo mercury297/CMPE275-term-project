@@ -122,9 +122,10 @@ export default class AdminService {
     }
 
     static async addDisease(payload) {
-        const url = '/disease';
+        console.log(payload)
+        const url = '/disease/createDisease';
         try {
-            const res = await API.post(url, payload);
+            const res = await API.get(url, { params: { name: payload.name, description: payload.description } });
             return {
                 success: true,
                 res,
@@ -138,9 +139,12 @@ export default class AdminService {
     }
 
     static async addClinic(payload) {
-        const url = '/clinic';
+        console.log(payload)
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        const url = '/clinic/createClinic';
         try {
-            const res = await API.post(url, payload);
+            const res = await API.get(url, {params : {MRN : user.mrn , name : payload.name, street : payload.street , number : payload.number , city : payload.city , state : payload.state , zipCode : payload.zipCode , startTime : Number(payload.businessStartTime) , numberOfPhysicians : payload.numberOfPhysicians , endTime : Number(payload.businessEndTime)}});
             return {
                 success: true,
                 res,
@@ -154,9 +158,10 @@ export default class AdminService {
     }
 
     static async getAllDiseases() {
-        const url = '/diseases';
+        const url = '/disease/getDiseases';
         try {
-            const res = await API.get(url);
+            const user = JSON.parse(localStorage.getItem('user'));
+            const res = await API.get(url, {params : {MRN : user.mrn}});
             return {
                 success: true,
                 res,

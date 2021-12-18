@@ -36,46 +36,21 @@ const AdminClinicsPage = () => {
             key: 'name',
         },
         {
-            title: 'Street',
-            dataIndex: 'street',
-            key: 'street',
-        },
-        {
-            title: 'Number',
-            dataIndex: 'number',
-            key: 'number',
-        },
-        {
-            title: 'City',
-            dataIndex: 'city',
-            key: 'city',
-        },
-        {
-            title: 'State',
-            dataIndex: 'state',
-            key: 'state',
-        },
-        {
-            title: 'Zip Code',
-            dataIndex: 'zipCode',
-            key: 'zipCode',
-        },
-        {
             title: 'Business Hours',
             dataIndex: 'businessHours',
             key: 'businessHours',
         },
         {
             title: 'Physicians Count',
-            dataIndex: 'numberOfPhysicians',
-            key: 'numberOfPhysicians',
+            dataIndex: 'physicianCount',
+            key: 'physicianCount',
         },
     ];
 
     useEffect(() => {
         AdminService.getAllClinics().then(res => {
             if (res.success) {
-                setData(res.data);
+                setData(res.res.data);
             } else {
                 message.error(res.message);
             }

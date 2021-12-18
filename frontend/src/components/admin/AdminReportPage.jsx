@@ -110,7 +110,7 @@ const AdminDashboard = () => {
         }
     )
     return (
-        <Layout current={'/patient/report'}>
+        <Layout current={'/admin/report'}>
             {console.log(options)}
             <div className='admin-dashboard-container'>
                 <div className='header'>

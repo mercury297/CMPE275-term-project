@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../shared/Layout";
-import {Button, message, Table} from "antd";
+import { Button, message, Table } from "antd";
 import "../../assets/scss/admin-diseases.scss"
 import AppointmentModal from "../shared/AppointmentModal";
 import AdminService from "../../services/admin.service";
@@ -36,11 +36,6 @@ const AdminDiseasesPage = () => {
             key: 'name',
         },
         {
-            title: 'Disease ID',
-            dataIndex: 'diseaseID',
-            key: 'diseaseID',
-        },
-        {
             title: 'Description',
             dataIndex: 'description',
             key: 'description',
@@ -50,7 +45,7 @@ const AdminDiseasesPage = () => {
     useEffect(() => {
         AdminService.getAllDiseases().then(res => {
             if (res.success) {
-                setData(res.data);
+                setData(res.res.data);
             } else {
                 message.error(res.message);
             }
@@ -68,10 +63,10 @@ const AdminDiseasesPage = () => {
                     {/*<Button type="primary">Primary Button</Button>*/}
                 </div>
                 <div className='content'>
-                   <Table
-                       dataSource={data}
-                       columns={columns}
-                   />
+                    <Table
+                        dataSource={data}
+                        columns={columns}
+                    />
                 </div>
                 <AddDiseaseModal
                     showModal={showModal}
