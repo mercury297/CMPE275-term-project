@@ -48,8 +48,10 @@ public class ClinicService {
         for(Clinic clinic: clinics)
         {
             HashMap<String, String> clinicMap = new HashMap<>();
-            clinicMap.put("Name",clinic.getName());
-            clinicMap.put("Id",clinic.getID());
+            clinicMap.put("name",clinic.getName());
+            clinicMap.put("id",clinic.getID());
+            clinicMap.put("businessHours",clinic.getStartTime() + "-" + clinic.getEndTime());
+            clinicMap.put("physicianCount",String.valueOf(clinic.getNumberOfPhysicians()));
             clinicList.add(clinicMap);
 
         }
