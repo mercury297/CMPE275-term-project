@@ -185,9 +185,10 @@ export default class AdminService {
         }
     }
 
-    static async getAllClinics(payload) {
-        const url = '/appointment/cancelAppointment';
+    static async getAllClinics() {
+        const url = '/clinic/getClinic';
         let user;
+
 
         user = JSON.parse(localStorage.getItem('user'));
         try {
@@ -199,7 +200,7 @@ export default class AdminService {
             }
         }
         try {
-            const res = await API.get(url, { params: { appointmentId: payload.appointmentId, currentTime: localStorage.getItem('currentTime') } });
+            const res = await API.get(url,{params : {MRN: user.mrn}});
             console.log(res);
             return {
                 success: true,
@@ -336,6 +337,61 @@ export default class AdminService {
         try {
             console.log(user);
             const res = await API.get(url, { params: { MRN: user.mrn, currentTime: "2016-12-13-04-00" } });
+            return {
+                success: true,
+                res,
+            };
+        } catch (e) {
+            return {
+                success: false,
+                message: e.message || 'Something went wrong',
+            }
+        }
+    }
+
+    static async getPatientReport(payload){
+        const url = '/report/patientReport';
+        let user;
+        try {
+            user = JSON.parse(localStorage.getItem('user'));
+        } catch (e) {
+            return {
+                success: false,
+                message: 'Please login first!',
+            }
+        }
+
+        try {
+            console.log(payload);
+            const res = await API.get(url, {params: {MRN: user.mrn, startDate: payload.startDate,endDate: payload.endDate,currentTime : localStorage.getItem("currentTime")}});
+            console.log(res)
+            return {
+                success: true,
+                res,
+            };
+        } catch (e) {
+            return {
+                success: false,
+                message: e.message || 'Something went wrong',
+            }
+        }
+    }
+    static async getAdminReport(payload){
+        const url = '/report/adminReport';
+        let user;
+        try {
+            user = JSON.parse(localStorage.getItem('user'));
+        } catch (e) {
+            return {
+                success: false,
+                message: 'Please login first!',
+            }
+        }
+
+        try {
+            console.log(payload);
+            const res = await API.get(url, {params: {clinicId : payload.clinicId,startDate: payload.startDate,endDate: payload.endDate,currentTime : localStorage.getItem("currentTime")}});
+            console.log(res)
             return {
                 success: true,
                 res,

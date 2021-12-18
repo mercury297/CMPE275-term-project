@@ -6,17 +6,60 @@ import AdminService from "../../services/admin.service";
 import { Input, Modal } from "antd";
 import Select from "react-select";
 
-const PatientDashboard = () => {
+const AdminDashboard = () => {
     // const [futureAppointments, setFutureAppointments] = useState([]);
     // const 
     const [message, setMessage] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [reportData, setReportData] = useState('');
+    const [options, setOptions] = useState([]);
+    const [selectedClinic, setSelectedClinic] = useState('');
+    const [selectedClinicName, setSelectedClinicName] = useState('');
+    const [noShow, setnoShow] = useState('');
+    const [totalAppointments, setTotalAppointment] = useState('');
+    const [noShowRate, setnoShowRate] = useState('');
+    const data = []
 
+    const columns = [
+
+        {
+            title: 'No Show',
+            dataIndex: 'noShow',
+            key: 'noShow',
+
+        },
+        {
+            title: 'Total Appointments',
+            dataIndex: 'totalAppointments',
+            key: 'totalAppointments',
+        },
+        {
+            title: 'No Show Rate(In percent)',
+            dataIndex: 'noShowRate',
+            key: 'noShowRate',
+        },
+        {
+            title: 'Clinic',
+            dataIndex: 'clinicName',
+            key: 'clinicName',
+        },
+
+    ];
+    const opt = []
     useEffect(() => {
-        AdminService.getAllClinics().then({
-            
+        AdminService.getAllClinics().then(res => {
+            console.log(res)
+
+            res.res.data.forEach((d) => {
+                var obj = {
+                    label: d.Name,
+                    value: d.Id
+                }
+                opt.push(obj);
+
+            })
+            setOptions(...options, opt)
         })
     }, []);
     const startDateHandler = e => {
@@ -25,6 +68,11 @@ const PatientDashboard = () => {
     const endDateHandler = e => {
         setEndDate(e.target.value);
     }
+    const handleChange = (e) => {
+        console.log(e);
+        setSelectedClinic(e.value)
+        // setSelectedClinicName(e.label)
+    }
     const handleSubmit = () => {
         if (startDate == '' || endDate == '') {
             alert("Please enter the necessary details")
@@ -32,12 +80,17 @@ const PatientDashboard = () => {
         else {
             const payload = {
                 startDate: startDate,
-                endDate: endDate
+                endDate: endDate,
+                clinicId: selectedClinic
             }
-            AdminService.getPatientReport(payload).then((res) => {
+            AdminService.getAdminReport(payload).then((res) => {
                 if (res.success) {
-                    // console.log(res.res.data.SuccessMessage.message)
-                    setReportData(res.res.data.SuccessMessage.message)
+                    console.log(res)
+                    setnoShow(res.res.data.noShow)
+                    setnoShowRate(res.res.data.noShowRate)
+                    setTotalAppointment(res.res.data.totalAppointments)
+                    setSelectedClinicName(res.res.data.clinicName)
+                    // setReportData(res.res.data.SuccessMessage.message);
                     // console.log(res.data.successMessage.message)
                     // message.success('Appointment added successfully');
                 } else {
@@ -47,11 +100,21 @@ const PatientDashboard = () => {
             // AdminService.getPatientReport
         }
     }
+    data.push(
+        {
+            key : 0,
+            totalAppointments : totalAppointments,
+            noShow : noShow,
+            noShowRate : noShowRate,
+            clinicName : selectedClinicName
+        }
+    )
     return (
         <Layout current={'/patient/report'}>
+            {console.log(options)}
             <div className='admin-dashboard-container'>
                 <div className='header'>
-                    Patient Report
+                    Admin Report
                 </div>
                 <div className='content'>
                     <div className='form-container'>
@@ -74,8 +137,8 @@ const PatientDashboard = () => {
                             />
                         </div>
                         <div className='input-container'>
-                            <div className='form-header' style = {{marginRight : "-470px"}}><span>Select Clinic</span></div>
-                            <Select>
+                            <div className='form-header' style={{ marginRight: "-470px" }}><span>Select Clinic</span></div>
+                            <Select options={options} onChange={handleChange}>
 
                             </Select>
                         </div>
@@ -85,7 +148,7 @@ const PatientDashboard = () => {
                     </div>
                 </div>
                 <div className="content">
-                    <h1>{reportData}</h1>
+                    <Table columns={columns} dataSource={data}></Table>
                 </div>
 
             </div>
@@ -94,4 +157,4 @@ const PatientDashboard = () => {
     )
 }
 
-export default PatientDashboard;
+export default AdminDashboard;
