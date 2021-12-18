@@ -52,6 +52,7 @@ public class ClinicService {
             clinicMap.put("id",clinic.getID());
             clinicMap.put("businessHours",clinic.getStartTime() + "-" + clinic.getEndTime());
             clinicMap.put("physicianCount",String.valueOf(clinic.getNumberOfPhysicians()));
+            clinicMap.put("address",String.valueOf(clinic.getStreet()+" "+clinic.getCity()+" "+clinic.getState()+" "+clinic.getZipCode()));
             clinicList.add(clinicMap);
 
         }
