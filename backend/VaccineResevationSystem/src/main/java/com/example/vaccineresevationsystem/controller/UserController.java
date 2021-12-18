@@ -55,7 +55,7 @@ public class UserController {
     }
 
     @GetMapping("verify")
-    public ResponseEntity<?> verifyUser(@Param("code") String code) {
+    public ResponseEntity<?> verifyUser(@RequestParam ("code") String code) {
         System.out.println("code: " + code);
         if (userService.verify(code)) {
             return SuccessHandler.successMessage(HttpStatus.OK, "Verification sucessfull");

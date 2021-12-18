@@ -89,7 +89,8 @@ public class UserService {
         String fromAddress = "kasle36pratik@gmail.com";
         String senderName = "Vaccine Reservation System";
         content = content.replace("[[name]]", user.getFirstName());
-        String verifyURL = siteURL + "/verify?code=" + user.getVerificationCode();
+        String verifyURL = siteURL + "/user/verify?code=" + user.getVerificationCode();
+//        String verifyURL = "http://localhost:3000/email-verification/"+ toAddress + "/" + user.getVerificationCode();
         content = content.replace("[[URL]]", verifyURL);
 
         MimeMessage message = mailSender.createMimeMessage();
