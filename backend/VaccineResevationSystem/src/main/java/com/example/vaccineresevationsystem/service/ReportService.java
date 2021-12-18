@@ -71,7 +71,7 @@ public class ReportService {
     public ResponseEntity<?> getClinicReport(String startDate,String endDate, String currentTime, String clinicId) throws ParseException {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
         Date newStartDate = dateFormat.parse(startDate);
-        Date newEndDate = dateFormat.parse(startDate);
+        Date newEndDate = dateFormat.parse(endDate);
         Date newCurrentTime = dateFormat.parse(currentTime);
         if (newStartDate.compareTo(newEndDate)>0){
             return SuccessHandler.successMessage(HttpStatus.OK, "Start date cannot be greater than end date");
@@ -81,22 +81,30 @@ public class ReportService {
         }
         Clinic clinic =  clinicRepository.findById(clinicId);
         List<Appointment>appointments;
-        HashMap<String, Integer> clinincNoShowRate = new HashMap<>();
+        HashMap<String, Float> clinincNoShowRate = new HashMap<>();
         int noShowCount = 0;
 
         noShowCount=0;
         appointments = clinic.getAppointments();
 
         for (Appointment appointment: appointments){
+            System.out.println(appointment.getCheckIn());
             setUpNoshow(appointment.getUser().getMRN(),newCurrentTime);
-            if (appointment.getCheckIn().equals("2") && dateFormat.parse(appointment.getAppointmentDate()).compareTo(newStartDate)>=0 && dateFormat.parse(appointment.getAppointmentDate()).compareTo(newEndDate)<=0){
-                noShowCount++;
+            if (appointment.getCheckIn().equals("2")){
+                String appointmentTime = appointment.getAppointmentDate();
+                if (dateFormat.parse(appointmentTime).compareTo(newStartDate)>=0) {
+                    if (dateFormat.parse(appointmentTime).compareTo(newEndDate)<=0){
+                        noShowCount++;
+                    }
+                }
             }
         }
-        clinincNoShowRate.put("noShow",noShowCount);
-        clinincNoShowRate.put("totalAppointments", clinic.getAppointments().size());
-        Integer noShowRate = (noShowCount/clinic.getAppointments().size())*100;
+        clinincNoShowRate.put("noShow", (float) noShowCount);
+        clinincNoShowRate.put("totalAppointments", (float) clinic.getAppointments().size());
+        float noShowRate = (float) noShowCount/clinic.getAppointments().size()*100;
+        System.out.println(noShowRate);
         clinincNoShowRate.put("noShowRate", noShowRate);
+
         if (clinic.getAppointments().size()==0){
             return SuccessHandler.successMessage(HttpStatus.OK, "No clinic appointments for the given range found");
         }
