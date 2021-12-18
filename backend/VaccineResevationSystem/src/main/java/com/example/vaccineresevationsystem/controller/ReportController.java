@@ -25,8 +25,8 @@ public class ReportController {
     @Authorizable
     @GetMapping (path="clinicreport")
     public @ResponseBody
-    ResponseEntity<?> getClinicReport(@RequestParam String startDate, @RequestParam String endDate, @RequestParam String currentTime) throws ParseException {
-        return reportService.getClinicReport(startDate, endDate,currentTime);
+    ResponseEntity<?> getClinicReport(@RequestParam String startDate, @RequestParam String clinicId,@RequestParam String endDate, @RequestParam String currentTime) throws ParseException {
+        return reportService.getClinicReport(startDate, endDate,currentTime,clinicId);
 //        return ResponseEntity.ok("Clininc Report");
     }
 }

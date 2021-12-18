@@ -4,6 +4,7 @@ package com.example.vaccineresevationsystem.service;
 import com.example.vaccineresevationsystem.handler.SuccessHandler;
 import com.example.vaccineresevationsystem.model.Appointment;
 import com.example.vaccineresevationsystem.model.Clinic;
+import com.example.vaccineresevationsystem.model.User;
 import com.example.vaccineresevationsystem.repository.AppointmentRepository;
 import com.example.vaccineresevationsystem.repository.ClinicRepository;
 import com.example.vaccineresevationsystem.repository.UserRepository;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -52,7 +52,8 @@ public class ReportService {
 //            System.out.println("start  time after 12"+getDateAfter12Months(startDate));
             return SuccessHandler.successMessage(HttpStatus.OK, "You cannot view reports for dates before or after 12 months");
         };
-        List<Appointment> appointments = userRepository.findByMRN(MRN).getAppointments() ;
+        User user = userRepository.findByMRN(MRN);
+        List<Appointment> appointments = user.getAppointments() ;
         setUpNoshow(MRN,newCurrentTime);
         int noShowCount = 0;
         for (Appointment appointment: appointments){
@@ -60,9 +61,14 @@ public class ReportService {
                 noShowCount++;
             }
         }
-        return SuccessHandler.successMessage(HttpStatus.OK, "No of appointments: " + appointments.size() + " No of no shows: " + noShowCount);
+        HashMap<String,Integer> patientReport = new HashMap<>();
+        patientReport.put("NoShow",noShowCount);
+        patientReport.put("TotalAppointments", user.getAppointments().size());
+        Integer noShowRate = (noShowCount/user.getAppointments().size())*100;
+        patientReport.put("No Show Rate", noShowRate);
+        return ResponseEntity.ok(patientReport);
     }
-    public ResponseEntity<?> getClinicReport(String startDate,String endDate, String currentTime) throws ParseException {
+    public ResponseEntity<?> getClinicReport(String startDate,String endDate, String currentTime, String clinicId) throws ParseException {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
         Date newStartDate = dateFormat.parse(startDate);
         Date newEndDate = dateFormat.parse(startDate);
@@ -73,26 +79,26 @@ public class ReportService {
         if (newEndDate.compareTo(getDateAfter12Months(currentTime))>0 ||getDateAfter12Months(startDate).compareTo(newCurrentTime)<0){
             return SuccessHandler.successMessage(HttpStatus.OK, "You cannot view reports for dates before or after 12 months");
         }
-        List<Clinic> clinics = (List<Clinic>) clinicRepository.findAll();
+        Clinic clinic =  clinicRepository.findById(clinicId);
         List<Appointment>appointments;
-        HashMap<String, List<Integer>> clinincNoShowRate = new HashMap<String,List<Integer>>();
+        HashMap<String, Integer> clinincNoShowRate = new HashMap<>();
         int noShowCount = 0;
-        for (Clinic c: clinics){
-            noShowCount=0;
-            appointments = c.getAppointments();
-            List<Integer> appointmentsData = new ArrayList<Integer>();
-            for (Appointment appointment: appointments){
-                setUpNoshow(appointment.getUser().getMRN(),newCurrentTime);
-                if (appointment.getCheckIn().equals("2") && dateFormat.parse(appointment.getAppointmentDate()).compareTo(newStartDate)>=0 && dateFormat.parse(appointment.getAppointmentDate()).compareTo(newEndDate)<=0){
-                    noShowCount++;
-                }
+
+        noShowCount=0;
+        appointments = clinic.getAppointments();
+
+        for (Appointment appointment: appointments){
+            setUpNoshow(appointment.getUser().getMRN(),newCurrentTime);
+            if (appointment.getCheckIn().equals("2") && dateFormat.parse(appointment.getAppointmentDate()).compareTo(newStartDate)>=0 && dateFormat.parse(appointment.getAppointmentDate()).compareTo(newEndDate)<=0){
+                noShowCount++;
             }
-            appointmentsData.add(noShowCount);
-            appointmentsData.add(c.getAppointments().size());
-            clinincNoShowRate.put(c.getName(),appointmentsData);
         }
-        if (clinincNoShowRate.isEmpty()){
-            return SuccessHandler.successMessage(HttpStatus.OK, "No clinic appointments for the given rangefound");
+        clinincNoShowRate.put("NoShow",noShowCount);
+        clinincNoShowRate.put("TotalAppointments", clinic.getAppointments().size());
+        Integer noShowRate = (noShowCount/clinic.getAppointments().size())*100;
+        clinincNoShowRate.put("No Show Rate", noShowRate);
+        if (clinic.getAppointments().size()==0){
+            return SuccessHandler.successMessage(HttpStatus.OK, "No clinic appointments for the given range found");
         }
         return ResponseEntity.ok(clinincNoShowRate);
 
