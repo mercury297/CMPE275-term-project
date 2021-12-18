@@ -92,10 +92,8 @@ public class AppointmentService {
         appointmentRepository.save(appointment);
         userRepository.save(user);
         clinicRepository.save(clinic);
-
         sendEmail(user.getEmail(),"Appointment Booked","Your appointment has been booked for "+date,user);
         return ResponseEntity.of(Optional.of(appointment));
-
     }
 
 

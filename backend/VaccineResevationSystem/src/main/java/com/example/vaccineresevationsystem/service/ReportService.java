@@ -68,6 +68,7 @@ public class ReportService {
         patientReport.put("noShowRate", noShowRate);
         return ResponseEntity.ok(patientReport);
     }
+
     public ResponseEntity<?> getClinicReport(String startDate,String endDate, String currentTime, String clinicId) throws ParseException {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
         Date newStartDate = dateFormat.parse(startDate);
@@ -81,12 +82,9 @@ public class ReportService {
         }
         Clinic clinic =  clinicRepository.findById(clinicId);
         List<Appointment>appointments;
-        HashMap<String, Float> clinincNoShowRate = new HashMap<>();
+        HashMap<String,String> clinincNoShowRate = new HashMap<>();
         int noShowCount = 0;
-
-        noShowCount=0;
         appointments = clinic.getAppointments();
-
         for (Appointment appointment: appointments){
             System.out.println(appointment.getCheckIn());
             setUpNoshow(appointment.getUser().getMRN(),newCurrentTime);
@@ -99,11 +97,12 @@ public class ReportService {
                 }
             }
         }
-        clinincNoShowRate.put("noShow", (float) noShowCount);
-        clinincNoShowRate.put("totalAppointments", (float) clinic.getAppointments().size());
+        clinincNoShowRate.put("noShow", String.valueOf(noShowCount));
+        clinincNoShowRate.put("totalAppointments", String.valueOf(clinic.getAppointments().size()));
         float noShowRate = (float) noShowCount/clinic.getAppointments().size()*100;
         System.out.println(noShowRate);
-        clinincNoShowRate.put("noShowRate", noShowRate);
+        clinincNoShowRate.put("noShowRate", String.valueOf(noShowRate));
+        clinincNoShowRate.put("clinicName", clinic.getName());
 
         if (clinic.getAppointments().size()==0){
             return SuccessHandler.successMessage(HttpStatus.OK, "No clinic appointments for the given range found");
