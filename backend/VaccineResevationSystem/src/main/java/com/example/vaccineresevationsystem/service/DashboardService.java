@@ -45,6 +45,7 @@ public class DashboardService {
         HashMap<String, ArrayList<String>> vaccineMap = getVaccineMap(checkedInAppointments);
         sortVaccineMap(vaccineMap);
         List<VaccinationsDue> vaccinationsDues = getVaccinationsDue(vaccineMap);
+        System.out.println(vaccinationsDues);
         filterBasedOnCurrentTime(vaccinationsDues, currentTime, futureTime);
         return ResponseEntity.of(Optional.of(vaccinationsDues));
     }
