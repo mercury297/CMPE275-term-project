@@ -18,6 +18,8 @@ const AdminDashboard = () => {
     const [selectedClinicName, setSelectedClinicName] = useState('');
     const [noShow, setnoShow] = useState('');
     const [totalAppointments, setTotalAppointment] = useState('');
+    const [totalVaccines, setTotalVaccines] = useState([]);
+
     const [noShowRate, setnoShowRate] = useState('');
     const data = []
 
@@ -47,20 +49,22 @@ const AdminDashboard = () => {
 
     ];
     const opt = []
+    const vaccineOpt = []
     useEffect(() => {
         AdminService.getAllClinics().then(res => {
             console.log(res)
 
             res.res.data.forEach((d) => {
                 var obj = {
-                    label: d.Name,
-                    value: d.Id
+                    label: d.name,
+                    value: d.id
                 }
                 opt.push(obj);
 
             })
             setOptions(...options, opt)
         })
+
     }, []);
     const startDateHandler = e => {
         setStartDate(e.target.value);
@@ -102,11 +106,11 @@ const AdminDashboard = () => {
     }
     data.push(
         {
-            key : 0,
-            totalAppointments : totalAppointments,
-            noShow : noShow,
-            noShowRate : noShowRate,
-            clinicName : selectedClinicName
+            key: 0,
+            totalAppointments: totalAppointments,
+            noShow: noShow,
+            noShowRate: noShowRate,
+            clinicName: selectedClinicName
         }
     )
     return (

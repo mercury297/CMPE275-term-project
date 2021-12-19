@@ -54,7 +54,7 @@ export default class AdminService {
             }
         }
         try {
-            const res = await API.get(`${url}/`, { params: {appointmentID : appointmentId, currentTime: localStorage.getItem("currentTime") } });
+            const res = await API.get(`${url}/`, { params: { appointmentID: appointmentId, currentTime: localStorage.getItem("currentTime") } });
             return {
                 success: true,
                 res,
@@ -79,7 +79,7 @@ export default class AdminService {
             }
         }
         try {
-            const res = await API.get(`${url}/`, { params: {appointmentID : appointmentId, currentTime: localStorage.getItem("currentTime") } });
+            const res = await API.get(`${url}/`, { params: { appointmentID: appointmentId, currentTime: localStorage.getItem("currentTime") } });
             return {
                 success: true,
                 res,
@@ -108,7 +108,14 @@ export default class AdminService {
             }
         }
         try {
-            const res = await API.get(`${url}/`, { params: { ...payload, MRN: user.mrn, currentTime: "2021-11-23-04-00" } });
+            console.log(payload.vaccines)
+            let vaccines = "";
+            for (let i = 0; i < payload.vaccines.length; i++) {
+                vaccines = vaccines + payload.vaccines[i] + ",";
+            }
+            vaccines = vaccines.slice(0, -1);
+            console.log(vaccines);
+            const res = await API.get(`${url}/`, { params: { MRN: user.mrn, vaccinations: vaccines, clinicName: payload.clinicName, date: payload.date, currentTime: localStorage.getItem("currentTime") } });
             return {
                 success: true,
                 res,
@@ -144,7 +151,7 @@ export default class AdminService {
 
         const url = '/clinic/createClinic';
         try {
-            const res = await API.get(url, {params : {MRN : user.mrn , name : payload.name, street : payload.street , number : payload.number , city : payload.city , state : payload.state , zipCode : payload.zipCode , startTime : Number(payload.businessStartTime) , numberOfPhysicians : payload.numberOfPhysicians , endTime : Number(payload.businessEndTime)}});
+            const res = await API.get(url, { params: { MRN: user.mrn, name: payload.name, street: payload.street, number: payload.number, city: payload.city, state: payload.state, zipCode: payload.zipCode, startTime: Number(payload.businessStartTime), numberOfPhysicians: payload.numberOfPhysicians, endTime: Number(payload.businessEndTime) } });
             return {
                 success: true,
                 res,
@@ -179,7 +186,7 @@ export default class AdminService {
         const url = '/disease/getDiseases';
         try {
             const user = JSON.parse(localStorage.getItem('user'));
-            const res = await API.get(url, {params : {MRN : user.mrn}});
+            const res = await API.get(url, { params: { MRN: user.mrn } });
             return {
                 success: true,
                 res,
@@ -196,7 +203,7 @@ export default class AdminService {
         const url = '/vaccination/getAllVaccines';
         try {
             const user = JSON.parse(localStorage.getItem('user'));
-            const res = await API.get(url,{params : {MRN : user.mrn}});
+            const res = await API.get(url, { params: { MRN: user.mrn } });
             return {
                 success: true,
                 res,
@@ -224,7 +231,7 @@ export default class AdminService {
             }
         }
         try {
-            const res = await API.get(url,{params : {MRN: user.mrn}});
+            const res = await API.get(url, { params: { MRN: user.mrn } });
             console.log(res);
             return {
                 success: true,
@@ -373,7 +380,7 @@ export default class AdminService {
         }
     }
 
-    static async getPatientReport(payload){
+    static async getPatientReport(payload) {
         const url = '/report/patientReport';
         let user;
         try {
@@ -387,7 +394,7 @@ export default class AdminService {
 
         try {
             console.log(payload);
-            const res = await API.get(url, {params: {MRN: user.mrn, startDate: payload.startDate,endDate: payload.endDate,currentTime : localStorage.getItem("currentTime")}});
+            const res = await API.get(url, { params: { MRN: user.mrn, startDate: payload.startDate, endDate: payload.endDate, currentTime: localStorage.getItem("currentTime") } });
             console.log(res)
             return {
                 success: true,
@@ -400,7 +407,7 @@ export default class AdminService {
             }
         }
     }
-    static async getAdminReport(payload){
+    static async getAdminReport(payload) {
         const url = '/report/adminReport';
         let user;
         try {
@@ -414,7 +421,7 @@ export default class AdminService {
 
         try {
             console.log(payload);
-            const res = await API.get(url, {params: {clinicId : payload.clinicId,startDate: payload.startDate,endDate: payload.endDate,currentTime : localStorage.getItem("currentTime")}});
+            const res = await API.get(url, { params: { clinicId: payload.clinicId, startDate: payload.startDate, endDate: payload.endDate, currentTime: localStorage.getItem("currentTime") } });
             console.log(res)
             return {
                 success: true,
