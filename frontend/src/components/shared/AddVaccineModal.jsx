@@ -5,9 +5,8 @@ import '../../assets/scss/modals.scss';
 const AddVaccineModal = ({showModal, handleOk, handleCancel}) => {
     const [state, setState] = useState({
         name: '',
-        vaccinationId: '',
-        manufacture: '',
-        diseases: [],
+        manufacturer: '',
+        diseases: '',
         numberOfShots: 1,
         shotInternalVal: 20,
         duration: 20,
@@ -36,15 +35,7 @@ const AddVaccineModal = ({showModal, handleOk, handleCancel}) => {
                            style={{width: "100%"}}
                     />
                 </div>
-                <div className='input-container'>
-                    <div className='form-header'><span>Vaccination ID</span></div>
-                    <Input onChange={changeHandler}
-                           type='text'
-                           name='vaccinationID'
-                           placeholder='vaccination-id'
-                           style={{width: "100%"}}
-                    />
-                </div>
+              
                 <div className='input-container'>
                     <div className='form-header'><span>Manufacturer</span></div>
                     <Input onChange={changeHandler}
