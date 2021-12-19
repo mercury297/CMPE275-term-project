@@ -10,7 +10,14 @@ const AdminVaccinesPage = () => {
     const [showModal, setShowModal] = useState(false);
     const [data, setData] = useState([]);
 
-    const handleOk = () => {
+    const handleOk = (payload) => {
+        AdminService.addVaccine(payload).then((res) => {
+            if (res.success) {
+                message.success('Vaccine added successfully');
+            } else {
+                message.error(res.message);
+            }
+        });
         setShowModal(false);
     }
 
@@ -41,8 +48,8 @@ const AdminVaccinesPage = () => {
             dataIndex: 'numberOfShots',
             key: 'numberOfShots',
         }, {
-            title: 'Shot Interval',
-            dataIndex: 'shotInterval',
+            title: 'Shot Internal Val',
+            dataIndex: 'shotInternalval',
             key: 'shotInterval',
         }, {
             title: 'Duration',

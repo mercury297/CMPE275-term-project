@@ -156,6 +156,24 @@ export default class AdminService {
             }
         }
     }
+    static async addVaccine(payload) {
+        console.log(payload)
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        const url = '/vaccination/createVaccination';
+        try {
+            const res = await API.get(url, {params : {MRN : user.mrn , name : payload.name, diseases: payload.diseases,manufacturer: payload.manufacturer, numberOfShots: payload.numberOfShots, shotInternalVal: payload.shotInternalVal,duration: payload.duration}});
+            return {
+                success: true,
+                res,
+            };
+        } catch (e) {
+            return {
+                success: false,
+                message: e.message || 'Something went wrong',
+            }
+        }
+    }
 
     static async getAllDiseases() {
         const url = '/disease/getDiseases';
