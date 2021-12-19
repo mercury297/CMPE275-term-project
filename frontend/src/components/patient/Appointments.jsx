@@ -14,13 +14,7 @@ const AppointmentsComponent = () => {
     const [pastAppointments, setPastAppointments] = useState([]);
 
     const handleOk = (payload) => {
-        console.log(payload.vaccines)
-        let vaccines = "";
-        for(let i=0 ; i<payload.vaccines.length ; i++){
-            vaccines = vaccines + payload.vaccines[i] + ",";
-        }
-        vaccines = vaccines.slice(0,-1);
-        console.log(vaccines);
+
         AdminService.addAppointment(payload).then((res) => {
             if (res.success) {
                 message.success('Appointment added successfully');
@@ -42,7 +36,12 @@ const AppointmentsComponent = () => {
         AdminService.checkInAppointment(value.key).then(res => {
             console.log(res);
             if (res.success) {
-                alert("Checked In successfully");
+                if(res.res.data.checkIn === "1"){
+                    message.success("Checked In successfully")
+                }
+                else{
+                    message.success(res.res.data.SuccessMessage.message)
+                }
             }
             // console.log(success);
         })
@@ -80,8 +79,9 @@ const AppointmentsComponent = () => {
                     width: "200px"
                 }
             } >
+                {console.log(record.checkIn)}
             {
-                record.checkIn == "1" ? <Button type="primary" style={{ marginLeft: "10px" }} danger onClick={handleCheckIn(record)}>
+                record.checkIn === '0' ? <Button type="primary" style={{ marginLeft: "10px" }} danger onClick={handleCheckIn(record)}>
                     Check In
                 </Button> : <Button type="primary" disabled style={{ marginLeft: "10px" }} danger onClick={handleCheckIn(record)}>
                     Check In
@@ -93,13 +93,6 @@ const AppointmentsComponent = () => {
             <Button type="primary" style={{ marginLeft: "20px" }} danger onClick={handleDelete(record)}>
                 Delete
             </Button>
-            {/* < button onClick={
-                (e) => {
-                    console.log("corresponding email is :", record.clinic)
-                    console.log("corresponding email is :", record.appointmentDate)
-                    console.log("corresponding email is :", record.vaccinationList)
-                }
-            } > Click </button> */}
         </div >
     },
     ];
@@ -143,7 +136,8 @@ const AppointmentsComponent = () => {
                                 key: res.res.data[i].appointmentID,
                                 clinic: res.res.data[i].clinic.name,
                                 appointmentDate: res.res.data[i].appointmentDate,
-                                vaccinationList: vaccines
+                                vaccinationList: vaccines,
+                                checkIn : res.res.data[i].checkIn
                             })
                         }
                         console.log(data);

@@ -27,7 +27,7 @@ const HeaderComponent = ({ current, isAdmin }) => {
         localStorage.setItem('currentTime', payload.newTime);
     }
 
-    const handleCancel = (payload) => {
+    const handleCancel = () => {
         console.log('cancel');
         setShowModal(false);
     }
@@ -53,9 +53,6 @@ const HeaderComponent = ({ current, isAdmin }) => {
             }, {
                 path: '/admin/vaccines',
                 label: 'Vaccines'
-            }, {
-                path: '/admin/set-time',
-                label: 'Set time'
             }, {
                 path: '/admin/report',
                 label: 'Report'

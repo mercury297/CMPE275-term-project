@@ -41,6 +41,11 @@ const AdminClinicsPage = () => {
             key: 'businessHours',
         },
         {
+            title: 'Address',
+            dataIndex: 'address',
+            key: 'address',
+        },
+        {
             title: 'Physicians Count',
             dataIndex: 'physicianCount',
             key: 'physicianCount',

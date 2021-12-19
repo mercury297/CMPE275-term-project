@@ -115,7 +115,7 @@ export default class AdminService {
             }
             vaccines = vaccines.slice(0, -1);
             console.log(vaccines);
-            const res = await API.get(`${url}/`, { params: { MRN: user.mrn, vaccinations: vaccines, clinicName: payload.clinicName, date: payload.date, currentTime: localStorage.getItem("currentTime") } });
+            const res = await API.get(`${url}/`, { params: { MRN: user.mrn, vaccinationIds: vaccines, clinicId: payload.clinicName, date: payload.date, currentTime: localStorage.getItem("currentTime") } });
             return {
                 success: true,
                 res,

@@ -28,9 +28,9 @@ const AppointmentModal = ({ showModal, handleOk, handleCancel }) => {
 
     const handleDone = () => {
         const builtObj = {
-            date : state.date,
-            clinicName : selectedClinic,
-            vaccines : selectedVaccines
+            date: state.date,
+            clinicName: selectedClinic,
+            vaccines: selectedVaccines
         }
         console.log(builtObj)
         // console.log(this.props)
@@ -109,13 +109,13 @@ const AppointmentModal = ({ showModal, handleOk, handleCancel }) => {
                 <div className='input-container'>
                     <div className='form-header'><span>Vaccinations</span></div>
                     <Multiselect style={{ marginTop: "10%" }}
-                        options={vaccineOptions} max={1}
+                        options={vaccineOptions} max={4}
                         onSelectedChanged={handleVaccineChange}
                         selected={selectedVaccines}
                         disableSearch={true}
                         overrideStrings={{
-                            selectSomeItems: "Select Vaccines",
-                            allItemsAreSelected: "All Vaccines selected",
+                            selectSomeItems: "Select Diseases",
+                            allItemsAreSelected: "All Diseases selected",
                         }}
                     />
                 </div>

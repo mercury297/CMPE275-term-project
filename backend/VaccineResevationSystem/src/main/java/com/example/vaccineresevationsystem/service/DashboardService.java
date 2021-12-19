@@ -1,6 +1,5 @@
 package com.example.vaccineresevationsystem.service;
 
-import com.example.vaccineresevationsystem.handler.SuccessHandler;
 import com.example.vaccineresevationsystem.model.Appointment;
 import com.example.vaccineresevationsystem.model.User;
 import com.example.vaccineresevationsystem.model.Vaccination;
@@ -8,7 +7,6 @@ import com.example.vaccineresevationsystem.repository.AppointmentRepository;
 import com.example.vaccineresevationsystem.repository.UserRepository;
 import com.example.vaccineresevationsystem.repository.VaccinationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -72,17 +70,20 @@ public class DashboardService {
         return vaccinations;
     }
 
-    public void filterBasedOnCurrentTime(List<VaccinationsDue> vaccinationsDues, String currentTime, String futureTime) throws ParseException {
+    public List<VaccinationsDue> filterBasedOnCurrentTime(List<VaccinationsDue> vaccinationsDues, String currentTime, String futureTime) throws ParseException {
+        List<VaccinationsDue> temp = new ArrayList<>();
         for(VaccinationsDue vaccinationsDue: vaccinationsDues){
-            if(!ifDateGreater(vaccinationsDue.dueDate, currentTime)){
+            if(ifDateGreater(vaccinationsDue.dueDate, currentTime)){
                 //if before current time
-                vaccinationsDues.remove(vaccinationsDue);
+                temp.add(vaccinationsDue);
             }
-            else if(ifDateGreater(futureTime,vaccinationsDue.dueDate)){
+            else if(!ifDateGreater(futureTime,vaccinationsDue.dueDate)){
                 //if after 12 months
-                vaccinationsDues.remove(vaccinationsDue);
+                temp.add(vaccinationsDue);
             }
+
         }
+        return temp;
     }
 
 

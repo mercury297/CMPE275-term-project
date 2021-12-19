@@ -30,12 +30,21 @@ const LoginComponent = () => {
                 password: state.password,
             });
             if (res.success) {
+                let today = new Date();
+                let year = today.getFullYear();
+                let month = Number(today.getMonth()) + 1;
+                let day = today.getDate();
+                let hours = today.getHours();
+                let minutes = today.getMinutes();
+                let currentDate = year + "-" + month + "-" + day + "-" + hours + "-" + minutes;
+                console.log(currentDate);
+
                 // Navigate to the schedule screen
                 console.log(res);
                 localStorage.setItem('user', JSON.stringify(res.res.data));
-                localStorage.setItem('currentTime', "2021-12-16-18-00");
+                localStorage.setItem('currentTime', currentDate);
                 if (res.res.data.admin) {
-                    history.replace("/admin/dashboard");
+                    history.replace("/admin/report");
                 } else {
                     history.replace("/patient/appointments");
                 }

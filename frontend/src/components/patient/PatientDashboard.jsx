@@ -13,6 +13,20 @@ const PatientDashboard = () => {
 
 
     const columns = [{
+        title: 'Date',
+        dataIndex: 'dueDate',
+        key: 'date',
+    }, {
+        title: 'Name',
+        dataIndex: 'name',
+        key: 'name'
+    },{
+        title: 'Number Of Shots Left',
+        dataIndex: 'numberOfShotsDue',
+        key: 'numberOfShots'
+    }];
+
+    const columnsHistory = [{
         title: 'Clinic',
         dataIndex: 'clinic',
         key: 'clinic',
@@ -76,7 +90,7 @@ const PatientDashboard = () => {
                         </TabPane>
                         <TabPane tab="Vaccination History" key="past">
                             <Table
-                                columns={columns}
+                                columns={columnsHistory}
                                 dataSource={pastAppointments}
                             />
                         </TabPane>
