@@ -28,26 +28,22 @@ const AdminVaccinesPage = () => {
             dataIndex: 'name',
             key: 'name',
         }, {
-            title: 'Vaccination ID',
-            dataIndex: 'vaccinationID',
-            key: 'vaccinationID',
-        }, {
             title: 'Manufacturer',
             dataIndex: 'manufacturer',
             key: 'manufacturer',
         }, {
             title: 'Diseases',
-            dataIndex: 'diseases',
-            key: 'diseases',
-            render: (val) => val ? val.join(', ') : '',
+            dataIndex: 'disease',
+            key: 'disease',
+            
         }, {
             title: 'No Of Shots',
             dataIndex: 'numberOfShots',
             key: 'numberOfShots',
         }, {
             title: 'Shot Interval',
-            dataIndex: 'shotInternalVal',
-            key: 'shotInternalVal',
+            dataIndex: 'shotInterval',
+            key: 'shotInterval',
         }, {
             title: 'Duration',
             dataIndex: 'duration',
@@ -58,7 +54,8 @@ const AdminVaccinesPage = () => {
     useEffect(() => {
         AdminService.getAllVaccines().then(res => {
             if (res.success) {
-                setData(res.data);
+                console.log(res.res.data);
+                setData(res.res.data);
             } else {
                 message.error(res.message);
             }

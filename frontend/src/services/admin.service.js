@@ -175,9 +175,10 @@ export default class AdminService {
     }
 
     static async getAllVaccines() {
-        const url = '/vaccines';
+        const url = '/vaccination/getAllVaccines';
         try {
-            const res = await API.get(url);
+            const user = JSON.parse(localStorage.getItem('user'));
+            const res = await API.get(url,{params : {MRN : user.mrn}});
             return {
                 success: true,
                 res,
