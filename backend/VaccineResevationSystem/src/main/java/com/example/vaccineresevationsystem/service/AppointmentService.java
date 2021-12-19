@@ -193,13 +193,10 @@ public Date getTimeAfter24Hrs(String currentTime) throws ParseException {
             if (appointmentDate.compareTo(currentTimeDate)>0){
                 futureAppointments.add(appointment);
             }
-
         }
-
         if (futureAppointments.size()==0){
             return SuccessHandler.successMessage(HttpStatus.OK, "No future appointments");
         }
-
         return ResponseEntity.of(Optional.of(futureAppointments));
     }
 
@@ -222,7 +219,7 @@ public Date getTimeAfter24Hrs(String currentTime) throws ParseException {
         User user = removeAppointmentFromUser(appointment);
         appointmentRepository.delete(appointment);
         sendEmail(user.getEmail(),"Appointment Cancelled","Your appointment has been cancelled",user);
-        return ResponseEntity.of(Optional.of(clinic));
+        return  SuccessHandler.successMessage(HttpStatus.OK, "Appointment Cancelled Sucessfully");
     }
     public Clinic removeAppointmentFromClinic(Appointment appointmentId){
         Clinic clinic = appointmentId.getClinic();
