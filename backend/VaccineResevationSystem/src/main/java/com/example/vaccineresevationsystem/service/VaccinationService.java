@@ -57,12 +57,13 @@ public class VaccinationService {
             vaccinationMap.put("id",vaccination.getVaccinationID());
             String diseases = "";
             for (Disease disease : vaccination.getDiseases()) {
-                diseases += disease.getName() + " ";
+                diseases += disease.getName() + ",";
             }
             vaccinationMap.put("manufacturer",vaccination.getName());
             vaccinationMap.put("numberOfShots",String.valueOf(vaccination.getNumberOfShots()));
             vaccinationMap.put("duration",String.valueOf(vaccination.getDuration()));
             vaccinationMap.put("disease",diseases);
+            vaccinationMap.put("shotInterval",String.valueOf(vaccination.getShotInternalVal()));
 
             vaccineList.add(vaccinationMap);
         }
