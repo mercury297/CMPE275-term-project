@@ -8,8 +8,8 @@ import Multiselect from "@khanacademy/react-multi-select";
 const AddVaccineModal = ({ showModal, handleOk, handleCancel }) => {
     const [state, setState] = useState({
         name: '',
-        manufacture: '',
-        disease: "",
+        manufacturer: '',
+        diseases: '',
         numberOfShots: 1,
         shotInternalVal: 20,
         duration: 20,
