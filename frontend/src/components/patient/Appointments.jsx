@@ -14,6 +14,13 @@ const AppointmentsComponent = () => {
     const [pastAppointments, setPastAppointments] = useState([]);
 
     const handleOk = (payload) => {
+        console.log(payload.vaccines)
+        let vaccines = "";
+        for(let i=0 ; i<payload.vaccines.length ; i++){
+            vaccines = vaccines + payload.vaccines[i] + ",";
+        }
+        vaccines = vaccines.slice(0,-1);
+        console.log(vaccines);
         AdminService.addAppointment(payload).then((res) => {
             if (res.success) {
                 message.success('Appointment added successfully');
