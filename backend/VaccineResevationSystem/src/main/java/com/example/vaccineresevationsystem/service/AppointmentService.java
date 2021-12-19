@@ -51,9 +51,9 @@ public class AppointmentService {
     }
 
 
-    public ResponseEntity<?> createAppointment(String MRN, List<String> vaccinationNames, String clinicName , String date, String currentTime) throws ParseException, MessagingException, UnsupportedEncodingException {
+    public ResponseEntity<?> createAppointment(String MRN, List<String> vaccinationIds, String clinicId , String date, String currentTime) throws ParseException, MessagingException, UnsupportedEncodingException {
 
-        Clinic clinic = clinicRepository.findByName(clinicName);
+        Clinic clinic = clinicRepository.findById(clinicId);
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
         Date newDate = dateFormat.parse(date);
         if(clinic==null){
@@ -66,19 +66,19 @@ public class AppointmentService {
         if (user==null){
             return SuccessHandler.successMessage(HttpStatus.OK, "User not found");
         }
-        if (vaccinationNames.size()>4){
+        if (vaccinationIds.size()>4){
             return SuccessHandler.successMessage(HttpStatus.OK, "Maximum 4 vaccinations can be booked at a time");
         }
 
         List<Vaccination> vaccinations;
-        vaccinations = getAllVaccinations(vaccinationNames);
+        vaccinations = getAllVaccinations(vaccinationIds);
         if (checkAppointmentClashInClinic(date,clinic)){
             return SuccessHandler.successMessage(HttpStatus.OK, "Appointment clash in clinic");
         }
         if (checkAppointmentClashWithUser(date, MRN)) {
             return SuccessHandler.successMessage(HttpStatus.OK, "Appointment clash with users previous appointments");
         }
-        System.out.println("vaccination id for this appointment"+vaccinationNames);
+        System.out.println("vaccination id for this appointment"+vaccinations);
         Appointment appointment = new Appointment(vaccinations,date,clinic,user);
         List<Appointment>  clinicAppointments;
         clinicAppointments = clinic.getAppointments();
@@ -243,11 +243,11 @@ public Date getTimeAfter24Hrs(String currentTime) throws ParseException {
 
 
 
-        public List<Vaccination>getAllVaccinations(List<String> vaccinations){
+        public List<Vaccination>getAllVaccinations(List<String> vaccinationIds){
 
         List<Vaccination> vaccinnations = new ArrayList<>();
-        for(String vaccinationName : vaccinations){
-            Vaccination vaccination = vaccinationRepository.findByName(vaccinationName);
+        for(String vaccinationId : vaccinationIds){
+            Vaccination vaccination = vaccinationRepository.findById(vaccinationId);
             vaccinnations.add(vaccination);
         }
         return vaccinnations;

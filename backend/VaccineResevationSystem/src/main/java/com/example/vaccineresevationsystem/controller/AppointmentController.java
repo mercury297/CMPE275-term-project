@@ -24,15 +24,15 @@ public class AppointmentController {
     @Authorizable
     @GetMapping(path = "createAppointment")
     public @ResponseBody
-    ResponseEntity<?> createAppointment(@RequestParam String MRN, @RequestParam String vaccinations, @RequestParam String clinicName, @RequestParam String date, @RequestParam String currentTime) throws ParseException, MessagingException, UnsupportedEncodingException {
-        String[] vaccinationNamesList = vaccinations.split(",");
-        List<String> vaccinationNames = new ArrayList<>();
+    ResponseEntity<?> createAppointment(@RequestParam String MRN, @RequestParam String vaccinationIds, @RequestParam String clinicId, @RequestParam String date, @RequestParam String currentTime) throws ParseException, MessagingException, UnsupportedEncodingException {
+        String[] vaccinationIdsArray = vaccinationIds.split(",");
+        List<String> vaccinations = new ArrayList<>();
 
-        for(String vaccinationName: vaccinationNamesList){
-            System.out.println(vaccinationName);
-            vaccinationNames.add(vaccinationName);
+        for(String vaccinationId: vaccinationIdsArray){
+            System.out.println(vaccinationId);
+            vaccinations.add(vaccinationId);
         }
-        return appointmentService.createAppointment(MRN, vaccinationNames, clinicName, date, currentTime);
+        return appointmentService.createAppointment(MRN, vaccinations, clinicId, date, currentTime);
     }
     @Authorizable
     @GetMapping(path = "updateAppointment")
