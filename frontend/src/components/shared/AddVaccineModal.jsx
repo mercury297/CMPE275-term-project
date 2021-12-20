@@ -47,7 +47,7 @@ const AddVaccineModal = ({ showModal, handleOk, handleCancel }) => {
         console.log(selectedDiseases);
         let buildObj = {
             name: state.name,
-            manufacturer: state.manufacture,
+            manufacturer: state.manufacturer,
             diseases: selectedDiseases,
             numberOfShots: state.numberOfShots,
             shotInternalVal: state.shotInternalVal,
