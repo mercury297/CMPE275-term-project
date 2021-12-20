@@ -30,7 +30,7 @@ const HeaderComponent = ({ current, isAdmin }) => {
     const handleCancel = () => {
         console.log('cancel');
         setShowModal(false);
-        console.log('showModal', showModal);
+        // console.log('showModal', showModal);
     }
 
     const handleShowModal = () => {

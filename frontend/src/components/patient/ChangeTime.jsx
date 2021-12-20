@@ -22,9 +22,7 @@ const ChangeTime = ({showModal, handleCancel, handleOk}) => {
     
 
     return(
-        <Modal title="Change Time" visible={showModal} onOk={handleDone} onClose={e => {
-            e.stopPropagation();
-            handleCancel();}} okText={'Change Time'}>
+        <Modal title="Change Time" visible={showModal} onOk={handleDone}  onCancel={handleCancel} okText={'Change Time'}>
             <div className='form-container'>
                 <div className='input-container'>
                     <div className='form-header'><span>Current Time</span></div>

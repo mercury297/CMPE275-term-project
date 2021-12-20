@@ -24,10 +24,13 @@ public class VaccinationController {
     ResponseEntity<?> createVaccination(@RequestParam String MRN, @RequestParam String name, @RequestParam String diseases, @RequestParam String manufacturer, @RequestParam int numberOfShots,@RequestParam int shotInternalVal, @RequestParam int duration){
         String[] diseaseNameList = diseases.split(",");
         List<String> diseaseNames = new ArrayList<>();
-
+        System.out.println(diseases);
         for(String disease: diseaseNameList){
             System.out.println(disease);
             diseaseNames.add(disease);
+        }
+        for(String disease: diseaseNames){
+            System.out.println(diseaseNames);
         }
         return vaccinationService.createVaccination(name, diseaseNames, manufacturer, numberOfShots, shotInternalVal, duration);
     }
